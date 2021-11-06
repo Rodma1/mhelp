@@ -28,4 +28,12 @@ public class TaskVo {
     private TaskBodyVo body;
     //  任务类别
     private CategoryVo category;
+    /**
+     * 接受任务的用户id
+     */
+    private Long acceptUserId;
+    /**
+     * 发布任务的学校id
+     */
+    private Long publishSchoolId;
 }

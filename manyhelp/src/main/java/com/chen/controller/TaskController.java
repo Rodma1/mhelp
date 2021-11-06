@@ -38,8 +38,6 @@ public class TaskController {
     }
 //    最热任务路由
     @PostMapping("hot")
-//    加入注解，只存在五分钟
-    @Cache(expire = 5 * 60 * 1000,name = "hot_task")
     public Result hotTask(){
         int limit=5;
         return taskService.hotTask(limit);
@@ -74,4 +72,15 @@ public class TaskController {
 //        taskParam数据存入到数据库后在返回
         return taskService.publish(taskParam);
     }
+    /**
+     * 查询指定的用户信息
+     * 用户id
+     */
+    @GetMapping("userTasks/{id}")
+    public Result userTask(@PathVariable("id") Long id){
+        return taskService.getUserTask(id);
+
+    }
+
+
 }

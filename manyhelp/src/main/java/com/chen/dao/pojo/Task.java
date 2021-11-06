@@ -36,6 +36,13 @@ public class Task {
      *类别id
      */
     private Long categoryId;
-
+    /**
+     * 接受任务的用户id
+     */
+    private Long acceptUserId;
+    /**
+     * 发布任务的学校id
+     */
+    private Long publishSchoolId;
 
 }

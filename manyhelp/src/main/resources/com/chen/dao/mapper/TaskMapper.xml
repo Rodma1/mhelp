@@ -22,6 +22,8 @@
         <result column="weight" property="weight"/>
         <result column="body_id" property="bodyId"/>
         <result column="category_id" property="categoryId"/>
+        <result column="accept_user_id" property="acceptUserId"/>
+        <result column="publish_school_id" property="publishSchoolId"/>
     </resultMap>
 <!--    设置查询sql语句  taskMap是映射的上面的id->
 <!-    IPage<Task> listTask(Page<Task> page, Long categoryId, Long tagId, String year, String month);-->

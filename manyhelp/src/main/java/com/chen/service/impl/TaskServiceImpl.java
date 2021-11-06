@@ -247,4 +247,36 @@ public class TaskServiceImpl implements TaskService {
         return Result.success(taskVo);
     }
 
+    /**
+     * 获取指定用户的任务消息
+     * @param authorid
+     * @return
+     */
+    @Override
+    public Result getUserTask(Long authorid) {
+        LambdaQueryWrapper<Task> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Task::getAuthorId,authorid);
+        return Result.success(copyList(taskMapper.selectList(queryWrapper),true,true));
+    }
+
+    @Override
+    public Result getUserATask(Integer stuid) {
+        return null;
+    }
+
+    @Override
+    public Result updateTask(TaskVo taskVo) {
+        return null;
+    }
+
+    @Override
+    public Result getTaskByKeys(String words, Long schoolid) {
+        return null;
+    }
+
+    @Override
+    public Result getTaskByKeysNoState(String words, Long schoolid) {
+        return null;
+    }
+
 }

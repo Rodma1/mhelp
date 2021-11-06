@@ -16,8 +16,35 @@ public interface TaskService {
 //   任务归档
    Result listArchives();
 
-//   点击进入任务内容查看详情
+//   读取任务，点击进入任务内容查看详情
    TaskVo findTaskById(Long id);
-// 获取任务内容
+// 发布任务
     Result publish(TaskParam taskParam);
+//    读取某用户发布的任务
+   Result getUserTask(Long authorid);
+   /**
+    * 读取某用户接受任务
+    * @return
+    */
+   Result getUserATask(Integer stuid);
+   /**
+    * 更新任务
+    * @param taskVo
+    * @return
+    */
+    Result updateTask(TaskVo taskVo);
+   /**
+    * selectTaskByKeys
+    * @param
+    * @return
+    */
+   Result getTaskByKeys(String words,Long schoolid);
+
+   /**
+    * selectTaskByKeysNoState
+    * @param
+    * @return
+    */
+   Result getTaskByKeysNoState(String words,Long schoolid);
+
 }
