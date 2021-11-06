@@ -1,34 +1,77 @@
 package com.chen.controller;
 
+import com.chen.common.aop.LogAnnotation;
+import com.chen.common.cache.Cache;
 import com.chen.service.TaskService;
+import com.chen.vo.TaskVo;
 import com.chen.vo.Result;
+import com.chen.vo.params.TaskParam;
+import com.chen.vo.params.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.chen.vo.params.PageParams;;
+import org.springframework.web.bind.annotation.*;
+
 //通过json数据进行交互
 @RestController
 //设置映射路径（通俗理解就是路由）
-@RequestMapping("Tasks")
+@RequestMapping("tasks")
 public class TaskController {
     /*
-    首页：文章列表
-    路由:/articles
+    首页：任务列表
+    路由:/tasks
     参数：pageParams页数
     返回值：json数据
     请求：post
      */
     @Autowired
-    private TaskService articleService;
+    private TaskService taskService;
+
     @PostMapping//post请求
-    public Result listArticle(@RequestBody PageParams pageParams){
-////        ArticleVo页面接收数据
-//        Result articles=articleService.listArticlesPage(pageParams);
-//        System.out.println(articles);
+//    加上注解，代表要对此接口记录日志，module是模块名称，operation是操作名称
+    @LogAnnotation(module = "任务",operation = "获取任务列表")
+    @Cache(expire = 5 * 60 * 1000,name = "listTask")
+    public Result listTask(@RequestBody PageParams pageParams){
+////        TaskVo页面接收数据
+//        Result Tasks=taskService.listTasksPage(pageParams);
+//        System.out.println(tasks);
 //        我们这里要传入数据给Result,数据要从service层里获取
-        return articleService.listArticlesPage(pageParams);
+        return taskService.listTasksPage(pageParams);
+    }
+//    最热任务路由
+    @PostMapping("hot")
+//    加入注解，只存在五分钟
+    @Cache(expire = 5 * 60 * 1000,name = "hot_task")
+    public Result hotTask(){
+        int limit=5;
+        return taskService.hotTask(limit);
+    }
+//    最新任务
+
+    @PostMapping("new")
+    public Result newTask(){
+        int limit=5;
+        return taskService.newTasks(limit);
+    }
+//    任务归档
+    @PostMapping("listTasks")
+    public Result listArchives(){
+        return taskService.listArchives();
+    }
+
+    /**
+     * 任务内容
+     */
+    @PostMapping("view/{id}")
+    @Cache(expire = 5 * 60 * 1000,name = "findTaskById")
+    public Result findTaskById(@PathVariable("id") Long id){
+        TaskVo taskVo = taskService.findTaskById(id);
+        return Result.success(taskVo);
+    }
+    /**
+     * 提交任务接口
+     */
+    @PostMapping("publish")
+    public Result publish(@RequestBody TaskParam taskParam){
+//        taskParam数据存入到数据库后在返回
+        return taskService.publish(taskParam);
     }
 }
