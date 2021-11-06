@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/manyhelp/manyhelp.iml" filepath="$PROJECT_DIR$/manyhelp/manyhelp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mhelp.iml" filepath="$PROJECT_DIR$/mhelp.iml" />
+    </modules>
+  </component>
+</project>
