@@ -309,7 +309,14 @@ public class TaskServiceImpl implements TaskService {
 //        插入到任务表
         taskBodyMapper.updateById(taskBody);
 
-        return Result.success("更新成功");
+        /**
+         * 数据已经更新完毕了，接下来就是将任务id返回给前端了，前端就可以通过id在请求任务路由进行任务展示
+         */
+
+        TaskVo taskVo = new TaskVo();
+//        这里直接调用TaskVo对象，你也可以单独设置一个只返回id的对象
+        taskVo.setId(String.valueOf(task.getId()));
+        return Result.success(taskVo);
 
     }
     /**
@@ -398,9 +405,45 @@ public class TaskServiceImpl implements TaskService {
         task.setAcceptUserId(sysUser.getId());
         task.setStatus((long)1);
         taskMapper.updateById(task);
+        /**
+         * 数据已经更新完毕了，接下来就是将任务id返回给前端了，前端就可以通过id在请求任务路由进行任务展示
+         */
 
-//        将这个任务返回更新
-        return Result.success(task);
+        TaskVo taskVo = new TaskVo();
+//        这里直接调用TaskVo对象，你也可以单独设置一个只返回id的对象
+        taskVo.setId(String.valueOf(task.getId()));
+        return Result.success(taskVo);
+    }
+
+    /**
+     * 确认任务完成
+     * 修改status状态就可以了
+     * @param taskId
+     * @return
+     */
+    @Override
+    public Result successTask(Long taskId) {
+        /**
+         * 用户需要登录
+         * 获取用户id,判断是否更发布的用户是一致
+         * 修改status=2，表示任务完成
+         */
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+        Task task=taskMapper.selectById(taskId);
+
+        if (!sysUser.getId().equals(task.getAuthorId())){
+            return Result.success("你不是发布用户");
+        }
+//        更新状态
+        Task task1=new Task();
+        task1.setId(taskId);
+        task1.setStatus((long)2);
+        taskMapper.updateById(task1);
+        TaskVo taskVo = new TaskVo();
+//        这里直接调用TaskVo对象，你也可以单独设置一个只返回id的对象
+        taskVo.setId(String.valueOf(task.getId()));
+        return Result.success(taskVo);
     }
 
 }

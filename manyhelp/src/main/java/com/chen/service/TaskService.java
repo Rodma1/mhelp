@@ -59,5 +59,9 @@ public interface TaskService {
     * 用户接受任务
     */
    Result acceptTask(Long taskId);
+   /**
+    * 确认任务完成
+    */
+   Result successTask(Long taskId);
 
 }

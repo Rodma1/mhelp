@@ -133,4 +133,12 @@ public class TaskController {
     public Result acceptTask(@PathVariable("id") Long id){
         return  taskService.acceptTask(id);
     }
+    /**
+     * 确认任务完成
+     * 确认任务完成需要获取任务的id
+     */
+    @PostMapping("successtask/{id}")
+    public Result successTask(@PathVariable("id") Long id){
+        return  taskService.successTask(id);
+    }
 }
