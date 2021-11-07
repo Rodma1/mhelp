@@ -29,10 +29,18 @@ public interface TaskService {
    Result getUserATask(Long acceptuserid);
    /**
     * 更新任务
-    * @param taskVo
+    * @param taskParam
     * @return
     */
-    Result updateTask(TaskVo taskVo);
+   Result updateTask(TaskParam taskParam);
+   /**
+    * 删除任务里面的标签
+    */
+   Result delTaskTag(Long id);
+   /**
+    * 增加已经发布任务里面的标签
+    */
+   Result insertTaskTag(TaskParam taskParam);
    /**
     * selectTaskByKeys
     * @param:String words,Long schoolid

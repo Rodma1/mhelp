@@ -104,6 +104,26 @@ public class TaskController {
     public Result taskbynostatus(@RequestBody PageParams pageParams){
         return taskService.getTaskByKeysNoState(pageParams);
     }
-
+    /**
+     * 更新任务
+     */
+    @PostMapping("updatetask")
+    public Result updateTask(@RequestBody TaskParam taskParam){
+        return taskService.updateTask(taskParam);
+    }
+    /**
+     * 删除某个发布了任务的标签
+     */
+    @GetMapping("deltasktag/{id}")
+    public Result delTaskTag(@PathVariable("id") Long id){
+        return taskService.delTaskTag(id);
+    }
+    /**
+     * 增加已经发布任务里面的标签
+     */
+    @PostMapping("insertTaskTag")
+    public Result insertTaskTag(@RequestBody TaskParam taskParam){
+        return taskService.insertTaskTag(taskParam);
+    }
 
 }

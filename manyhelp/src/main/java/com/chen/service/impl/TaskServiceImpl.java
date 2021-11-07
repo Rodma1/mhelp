@@ -20,12 +20,15 @@ import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //实现任务服务层的接口
+
 @Service
+@Transactional
 public class TaskServiceImpl implements TaskService {
     @Autowired(required = false)
     private TaskMapper taskMapper;
@@ -272,14 +275,69 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 更新任务
-     * @param taskVo
+     * @param taskParam
      * @return
      */
     @Override
-    public Result updateTask(TaskVo taskVo) {
-        return null;
-    }
+    public Result updateTask(TaskParam taskParam) {
+        /**
+         * 所需参数及具体实现
+         * 1. 发布任务  目的 构建Task对象
+         * 2. 作者id 当前的登录用户
+         * 3. 标签  要将标签加入到 并联列表当中
+         * 4. body 内容存储 task bodyId
+         */
+//        将所需数据表所需字段都存入到数据表中
+        Task task = new Task();
+        task.setId(taskParam.getId());
+        Long id=Long.parseLong(taskParam.getCategory().getId());
+        task.setCategoryId(id);
+        task.setSummary(taskParam.getSummary());
+        task.setTitle(taskParam.getTitle());
+//        执行插入 ,插入之后 会生成一个任务id
+        this.taskMapper.updateById(task);
+        /**
+         * 接下来是任务内容表的插入mh_task_body
+         */
+        TaskBody taskBody = new TaskBody();
+//        获取body对应的id
+        taskBody.setId(taskMapper.selectById(task.getId()).getBodyId());
+        taskBody.setContent(taskParam.getBody().getContent());
+        taskBody.setContentHtml(taskParam.getBody().getContentHtml());
+        taskBody.setTaskId(task.getId());
+//        插入到任务表
+        taskBodyMapper.updateById(taskBody);
 
+        return Result.success("更新成功");
+
+    }
+    /**
+     * 删除任务里面的标签
+     */
+    public Result delTaskTag(Long id){
+        taskTagMapper.deleteById(id);
+        return Result.success("删除成功");
+    };
+    /**
+     * 增加已经发布任务里面的标签
+     */
+    public Result insertTaskTag(TaskParam taskParam){
+        /**
+         * 接下来是标签表的插入
+         * 如果标签参数不为空，那么就将任务Id和对应的标签Id存入到任务标签表mh_task_tag
+         */
+        List<TagVo> tags= taskParam.getTags();
+        if (tags!=null) {
+            for (TagVo tag : tags) {
+                TaskTag taskTag = new TaskTag();
+                taskTag.setTaskId(taskParam.getId());
+                taskTag.setTagId(Long.parseLong(tag.getId()));
+//                将获取的数据插入到任务标签表
+                this.taskTagMapper.insert(taskTag);
+            }
+        }
+       return Result.success("增加成功");
+    };
     /**
      * selectTaskByKeys
      * 查询指定词或者学校id的任务

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.dao.dos.Archives;
 import com.chen.dao.pojo.Task;
+import com.chen.vo.params.TaskParam;
+
 
 import java.util.List;
 
@@ -30,4 +32,6 @@ public interface TaskMapper extends BaseMapper<Task>{
      * @return
      */
     IPage<Task> selectTaskByKeysNoState(Page<Task> page,String words,Long schoolid);
+
+
 }
