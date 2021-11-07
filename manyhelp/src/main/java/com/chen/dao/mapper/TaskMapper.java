@@ -16,4 +16,18 @@ public interface TaskMapper extends BaseMapper<Task>{
     List<Archives> listArchives();
 //任务列表and任务归档功能
     IPage<Task> listTask(Page<Task> page, Long categoryId, Long tagId, String year, String month);
+
+    /**
+     * selectTaskByKeys
+     * @param
+     * @return
+     */
+    IPage<Task> selectTaskByKeys(Page<Task> page, String words,Long schoolid);
+
+    /**
+     * selectTaskByKeysNoState
+     * @param
+     * @return
+     */
+    IPage<Task> selectTaskByKeysNoState(Page<Task> page,String words,Long schoolid);
 }

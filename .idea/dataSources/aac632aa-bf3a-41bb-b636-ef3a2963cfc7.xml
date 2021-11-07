@@ -1279,7 +1279,7 @@ SELECT,DELETE|ycudata.zg
     <column id="371" parent="325" name="status">
       <Position>4</Position>
       <Comment>状态</Comment>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>int(10)|0s</DataType>
     </column>
     <key id="372" parent="325" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
@@ -1481,15 +1481,15 @@ SELECT,DELETE|ycudata.zg
     <column id="411" parent="329" name="category_id">
       <Position>11</Position>
       <Comment>类别id</Comment>
-      <DataType>int(11)|0s</DataType>
+      <DataType>bigint(11)|0s</DataType>
     </column>
-    <column id="412" parent="329" name="acceptUserId">
+    <column id="412" parent="329" name="accept_user_id">
       <Position>12</Position>
       <Comment>&#xd;
 接收任务的用户id</Comment>
       <DataType>bigint(255)|0s</DataType>
     </column>
-    <column id="413" parent="329" name="publishSchoolId">
+    <column id="413" parent="329" name="publish_school_id">
       <Position>13</Position>
       <Comment>发布的学校id</Comment>
       <DataType>bigint(20)|0s</DataType>
@@ -1497,7 +1497,7 @@ SELECT,DELETE|ycudata.zg
     <column id="414" parent="329" name="status">
       <Position>14</Position>
       <Comment>状态</Comment>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>int(10)|0s</DataType>
     </column>
     <key id="415" parent="329" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>

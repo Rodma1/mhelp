@@ -248,7 +248,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * 获取指定用户的任务消息
+     * 获取指定用户发布的任务消息
      * @param authorid
      * @return
      */
@@ -258,25 +258,65 @@ public class TaskServiceImpl implements TaskService {
         queryWrapper.eq(Task::getAuthorId,authorid);
         return Result.success(copyList(taskMapper.selectList(queryWrapper),true,true));
     }
-
+    /**
+     * 获取指定用户接受的任务消息
+     * @param acceptuserid
+     * @return
+     */
     @Override
-    public Result getUserATask(Integer stuid) {
-        return null;
+    public Result getUserATask(Long acceptuserid) {
+        LambdaQueryWrapper<Task> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Task::getAcceptUserId,acceptuserid);
+        return Result.success(copyList(taskMapper.selectList(queryWrapper),true,true));
     }
 
+    /**
+     * 更新任务
+     * @param taskVo
+     * @return
+     */
     @Override
     public Result updateTask(TaskVo taskVo) {
         return null;
     }
 
+    /**
+     * selectTaskByKeys
+     * 查询指定词或者学校id的任务
+     * @param
+     * @return
+     */
     @Override
-    public Result getTaskByKeys(String words, Long schoolid) {
-        return null;
+    public Result getTaskByKeys(PageParams pageParams) {
+        //        创建页数对象
+        Page<Task> page = new Page<>(pageParams.getPage(),pageParams.getPageSize());
+//        查询对应的关键词和学校id
+        IPage<Task> taskIPage = this.taskMapper.selectTaskByKeys(
+                page,
+                pageParams.getWords(),
+                pageParams.getSchoolid()
+        );
+        List<Task> record=taskIPage.getRecords();
+        return Result.success(copyList(record,true,true));
     }
 
+    /**
+     * 寻找未被接受的任务
+     * @param pageParams
+     * @return
+     */
     @Override
-    public Result getTaskByKeysNoState(String words, Long schoolid) {
-        return null;
+    public Result getTaskByKeysNoState(PageParams pageParams) {
+        //        创建页数对象
+        Page<Task> page = new Page<>(pageParams.getPage(),pageParams.getPageSize());
+//        查询对应的关键词和学校id
+        IPage<Task> taskIPage = this.taskMapper.selectTaskByKeys(
+                page,
+                pageParams.getWords(),
+                pageParams.getSchoolid()
+        );
+        List<Task> record=taskIPage.getRecords();
+        return Result.success(copyList(record,true,true));
     }
 
 }

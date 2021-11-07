@@ -13,6 +13,10 @@ public class PageParams {
     private Long categoryId;
 //  标签id
     private Long tagId;
+//    搜索词
+    private String words;
+//    学校id
+    private Long schoolid;
     /**
      * 获取年月
      */

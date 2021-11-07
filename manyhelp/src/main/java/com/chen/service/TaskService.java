@@ -26,7 +26,7 @@ public interface TaskService {
     * 读取某用户接受任务
     * @return
     */
-   Result getUserATask(Integer stuid);
+   Result getUserATask(Long acceptuserid);
    /**
     * 更新任务
     * @param taskVo
@@ -35,16 +35,16 @@ public interface TaskService {
     Result updateTask(TaskVo taskVo);
    /**
     * selectTaskByKeys
-    * @param
+    * @param:String words,Long schoolid
     * @return
     */
-   Result getTaskByKeys(String words,Long schoolid);
+   Result getTaskByKeys(PageParams pageParams);
 
    /**
     * selectTaskByKeysNoState
-    * @param
+    * @param:String words,Long schoolid
     * @return
     */
-   Result getTaskByKeysNoState(String words,Long schoolid);
+   Result getTaskByKeysNoState(PageParams pageParams);
 
 }

@@ -50,7 +50,7 @@ public class TaskController {
         return taskService.newTasks(limit);
     }
 //    任务归档
-    @PostMapping("listTasks")
+    @PostMapping("listtasks")
     public Result listArchives(){
         return taskService.listArchives();
     }
@@ -73,13 +73,36 @@ public class TaskController {
         return taskService.publish(taskParam);
     }
     /**
-     * 查询指定的用户信息
+     * 查询指定的用户发布的任务信息
      * 用户id
      */
-    @GetMapping("userTasks/{id}")
+    @GetMapping("usertasks/{id}")
     public Result userTask(@PathVariable("id") Long id){
         return taskService.getUserTask(id);
 
+    }
+    /**
+     * 查询指定的用户接受的任务信息
+     * 用户id
+     */
+    @GetMapping("uaccepttasks/{id}")
+    public Result userATask(@PathVariable("id") Long id){
+        return taskService.getUserATask(id);
+
+    }
+    /**
+     * 查找对应词语或者学校的的任务
+     */
+    @PostMapping("taskbykeys")
+    public Result taskbykeys(@RequestBody PageParams pageParams){
+        return taskService.getTaskByKeys(pageParams);
+    }
+    /**
+     * 查找对应词语或者学校的为完成的任务
+     */
+    @PostMapping("taskbynostatus")
+    public Result taskbynostatus(@RequestBody PageParams pageParams){
+        return taskService.getTaskByKeysNoState(pageParams);
     }
 
 

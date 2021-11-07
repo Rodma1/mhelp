@@ -44,5 +44,9 @@ public class Task {
      * 发布任务的学校id
      */
     private Long publishSchoolId;
+    /**
+     * 任务进行状态
+     */
+    private Long status;
 
 }

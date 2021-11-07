@@ -24,6 +24,7 @@
         <result column="category_id" property="categoryId"/>
         <result column="accept_user_id" property="acceptUserId"/>
         <result column="publish_school_id" property="publishSchoolId"/>
+        <result column="status" property="status"/>
     </resultMap>
 <!--    设置查询sql语句  taskMap是映射的上面的id->
 <!-    IPage<Task> listTask(Page<Task> page, Long categoryId, Long tagId, String year, String month);-->
@@ -39,6 +40,33 @@
             </if>
             <if test="tagId!=null">
                 and id in (select task_id from mh_task_tag where tag_id=#{tagId})
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+<!--    List<Task> selectTaskByKeys(String words,Long schoolid)-->
+    <select id="selectTaskByKeys" resultMap="taskMap">
+        select * from mh_task
+        <where>
+            <if test="words!=null and words!=''">
+                and title like concat('%',#{words},'%')
+            </if>
+            <if test="schoolid!=null and schoolid!='-1'">
+                and publish_school_id=#{schoolid}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+<!--     IPage<Task> selectTaskByKeysNoState(Page<Task> page,String words,Long schoolid);-->
+    <select id="selectTaskByKeysNoState" resultMap="taskMap">
+        select * from mh_task
+        <where>
+            status=0
+            <if test="words!=null and words!=''">
+                and title like concat('%',#{words},'%')
+            </if>
+            <if test="schoolid!=null and schoolid!='-1'">
+                and publish_school_id=#{schoolid}
             </if>
         </where>
         order by create_date desc
