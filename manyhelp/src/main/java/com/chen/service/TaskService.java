@@ -60,8 +60,8 @@ public interface TaskService {
     */
    Result acceptTask(Long taskId);
    /**
-    * 确认任务完成
+    * 修改任务状态
     */
-   Result successTask(Long taskId);
+   Result  alterTask(TaskParam taskParam);
 
 }

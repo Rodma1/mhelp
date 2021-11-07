@@ -416,13 +416,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * 确认任务完成
+     * 修改任务状态
      * 修改status状态就可以了
-     * @param taskId
+     * @param taskParam
      * @return
      */
     @Override
-    public Result successTask(Long taskId) {
+    public Result alterTask(TaskParam taskParam) {
         /**
          * 用户需要登录
          * 获取用户id,判断是否更发布的用户是一致
@@ -430,15 +430,15 @@ public class TaskServiceImpl implements TaskService {
          */
         //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
         SysUser sysUser= UserThreadLocal.get();
-        Task task=taskMapper.selectById(taskId);
+        Task task=taskMapper.selectById(taskParam.getId());
 
         if (!sysUser.getId().equals(task.getAuthorId())){
             return Result.success("你不是发布用户");
         }
 //        更新状态
         Task task1=new Task();
-        task1.setId(taskId);
-        task1.setStatus((long)2);
+        task1.setId(taskParam.getId());
+        task1.setStatus(taskParam.getStatus());
         taskMapper.updateById(task1);
         TaskVo taskVo = new TaskVo();
 //        这里直接调用TaskVo对象，你也可以单独设置一个只返回id的对象

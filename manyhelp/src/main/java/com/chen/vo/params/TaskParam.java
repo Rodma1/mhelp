@@ -22,5 +22,7 @@ public class TaskParam {
     private List<TagVo> tags;
 //    标题
     private String title;
+//    任务状态
+    private Long status;
 
 }
