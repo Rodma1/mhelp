@@ -125,5 +125,12 @@ public class TaskController {
     public Result insertTaskTag(@RequestBody TaskParam taskParam){
         return taskService.insertTaskTag(taskParam);
     }
-
+    /**
+     * 用户接受任务
+     * 传入要接收的任务id
+     */
+    @PostMapping("accepttask/{id}")
+    public Result acceptTask(@PathVariable("id") Long id){
+        return  taskService.acceptTask(id);
+    }
 }

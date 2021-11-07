@@ -16,6 +16,7 @@ import com.chen.utils.UserThreadLocal;
 import com.chen.vo.*;
 import com.chen.vo.params.TaskParam;
 import com.chen.vo.params.PageParams;
+import com.sun.javafx.scene.control.skin.TooltipSkin;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,7 +180,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * 获取任务内容
+     * 发布任务内容
      * @param taskParam
      * @return
      */
@@ -375,6 +376,31 @@ public class TaskServiceImpl implements TaskService {
         );
         List<Task> record=taskIPage.getRecords();
         return Result.success(copyList(record,true,true));
+    }
+
+    /**
+     * 用户接受任务
+     * @param taskId
+     * @return
+     */
+    @Override
+    public Result acceptTask(Long taskId) {
+        /**
+         * 接受任务需要登录
+         * 检查用户是否登录
+         * 获取用户id存入对应的任务表表
+         * 修改任务状态status=1，任务在进行中
+         */
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+        Task task=new Task();
+        task.setId(taskId);
+        task.setAcceptUserId(sysUser.getId());
+        task.setStatus((long)1);
+        taskMapper.updateById(task);
+
+//        将这个任务返回更新
+        return Result.success(task);
     }
 
 }

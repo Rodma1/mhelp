@@ -54,5 +54,10 @@ public interface TaskService {
     * @return
     */
    Result getTaskByKeysNoState(PageParams pageParams);
+   /**
+    *
+    * 用户接受任务
+    */
+   Result acceptTask(Long taskId);
 
 }
