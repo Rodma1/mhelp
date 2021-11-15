@@ -12,10 +12,14 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path:'/',
+      component: r => require.ensure([], () => r(require('@/views/BaseHeader')), 'BaseHeader')
     },
+    // {
+    //   path: '/',
+    //   name: 'HelloWorld',
+    //   component: HelloWorld
+    // },
     {
       path: '/login',
       component: r => require.ensure([], () => r(require('@/views/Login')), 'login')
