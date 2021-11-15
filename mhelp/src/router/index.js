@@ -20,6 +20,10 @@ const router = new Router({
       path: '/login',
       component: r => require.ensure([], () => r(require('@/views/Login')), 'login')
     },
+    {
+      path: '/register',
+      component: r => require.ensure([], () => r(require('@/views/Register')), 'register')
+    }
   ]
 })
 router.beforeEach((to, from, next) => {

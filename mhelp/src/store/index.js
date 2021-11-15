@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import {getToken, setToken, removeToken} from '@/request/token'
-import {login, getUserInfo} from '@/api/login'
+import {login, getUserInfo,register} from '@/api/login'
 
 Vue.use(Vuex);
 
@@ -80,6 +80,23 @@ export default new Vuex.Store({
         })
       })
     },
+    register({commit}, user) {
+      console.log(user)
+      return new Promise((resolve, reject) => {
+        register(user.account, user.nickname, user.password).then((data) => {
+          console.log(data)
+          if(data.success){
+            commit('SET_TOKEN', data.data)
+            setToken(data.data)
+            resolve()
+          }else{
 
+            reject(data.msg)
+          }
+        }).catch((error) => {
+          reject(error)
+        })
+      })
+    }
   }
 })
