@@ -46,6 +46,6 @@ export default {
 <style scoped>
 .el-menu-vertical-demo {
   width: 299px;
-  min-height: 900px;
+  min-height: 850px;
 }
 </style>
