@@ -29,6 +29,13 @@ const router = new Router({
           path: '/archives/:year?/:month?',
           component: r => require.ensure([], () => r(require('@/views/task/TaskArchive')), 'archives')
         },
+        {
+          path: '/subtasks',
+          component: r => require.ensure([], () => r(require('@/views/user/TaskUserScrollPage')), 'taskuserscrollpage'),
+          meta: {
+            requireLogin: true
+          },
+        },
       ]
     },
     // {

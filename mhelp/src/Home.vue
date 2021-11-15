@@ -4,6 +4,7 @@
 <!--        定义容器头部-->
         <base-header></base-header>
 <!--        定义侧边栏容器-->
+
         <div class="box">
           <div class="aside">
             <base-aside></base-aside>
