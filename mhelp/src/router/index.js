@@ -7,13 +7,15 @@ import {Message} from 'element-ui';
 import store from '@/store'
 
 import {getToken} from '@/request/token'
+import Home from '@/Home'
 Vue.use(Router)
 
 const router = new Router({
   routes: [
     {
-      path:'/',
-      component: r => require.ensure([], () => r(require('@/views/BaseHeader')), 'BaseHeader')
+      path:'',
+      name:'Home',
+      component: Home,
     },
     // {
     //   path: '/',
