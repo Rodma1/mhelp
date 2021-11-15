@@ -31,7 +31,7 @@ const router = new Router({
         },
         {
           path: '/subtasks',
-          component: r => require.ensure([], () => r(require('@/views/user/TaskUserScrollPage')), 'taskuserscrollpage'),
+          component: r => require.ensure([], () => r(require('@/views/IndexUserTask')), 'taskuserscrollpage'),
           meta: {
             requireLogin: true
           },
