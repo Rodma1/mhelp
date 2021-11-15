@@ -1,8 +1,8 @@
 <template>
 <!--  任务首页-->
-      <el-main class="me-articles">
+      <el-main >
 
-        <article-scroll-page></article-scroll-page>
+        <task-scroll-page></task-scroll-page>
 
       </el-main>
 </template>
@@ -12,7 +12,7 @@ import TaskScrollPage from "@/views/common/TaskScrollPage";
 export default {
   name: "Index",
   components:{
-    'article-scroll-page':TaskScrollPage
+    'task-scroll-page':TaskScrollPage
   }
 }
 </script>

@@ -20,7 +20,11 @@ const router = new Router({
         {
           path: '/',
           component: r => require.ensure([], () => r(require('../views/Index')), 'index')
-        }
+        },
+        {
+          path: '/:type/all',
+          component: r => require.ensure([], () => r(require('@/views/task/TaskAllCategoryTag')), 'taskallcategorytag')
+        },
       ]
     },
     // {
