@@ -63,6 +63,7 @@ public class TaskServiceImpl implements TaskService {
         IPage<Task> taskIPage = this.taskMapper.listTask(
                 page,
                 null,
+                null,
                 pageParams.getCategoryId(),
                 pageParams.getTagId(),
                 pageParams.getYear(),
@@ -267,6 +268,7 @@ public class TaskServiceImpl implements TaskService {
         IPage<Task> taskIPage = this.taskMapper.listTask(
                 page,
                 sysUser.getId(),
+                null,
                 pageParams.getCategoryId(),
                 pageParams.getTagId(),
                 pageParams.getYear(),
@@ -276,14 +278,26 @@ public class TaskServiceImpl implements TaskService {
     }
     /**
      * 获取指定用户接受的任务消息
-     * @param acceptuserid
+     * @param
      * @return
      */
     @Override
-    public Result getUserATask(Long acceptuserid) {
-        LambdaQueryWrapper<Task> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(Task::getAcceptUserId,acceptuserid);
-        return Result.success(copyList(taskMapper.selectList(queryWrapper),true,true));
+    public Result getUserATask(PageParams pageParams) {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+        //        创建页数对象
+        Page<Task> page = new Page<>(pageParams.getPage(),pageParams.getPageSize());
+//        任务归档返回对应的年月分类和标签
+        IPage<Task> taskIPage = this.taskMapper.listTask(
+                page,
+                null,
+                sysUser.getId(),
+                pageParams.getCategoryId(),
+                pageParams.getTagId(),
+                pageParams.getYear(),
+                pageParams.getMonth());
+        List<Task> record=taskIPage.getRecords();
+        return Result.success(copyList(record,true,true));
     }
 
     /**

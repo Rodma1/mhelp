@@ -26,7 +26,7 @@ public interface TaskService {
     * 读取某用户接受任务
     * @return
     */
-   Result getUserATask(Long acceptuserid);
+   Result getUserATask(PageParams pageParams);
    /**
     * 更新任务
     * @param taskParam

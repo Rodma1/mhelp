@@ -85,9 +85,9 @@ public class TaskController {
      * 查询指定的用户接受的任务信息
      * 用户id
      */
-    @GetMapping("uaccepttasks/{id}")
-    public Result userATask(@PathVariable("id") Long id){
-        return taskService.getUserATask(id);
+    @PostMapping("uaccepttasks")
+    public Result userATask(@RequestBody PageParams pageParams){
+        return taskService.getUserATask(pageParams);
 
     }
     /**

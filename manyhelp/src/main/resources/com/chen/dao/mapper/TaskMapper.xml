@@ -38,6 +38,9 @@
             <if test="authorId!=null">
                 and author_id=#{authorId}
             </if>
+            <if test="acceptUserId!=null">
+                and  accept_user_id=#{acceptUserId}
+            </if>
             <if test="year !=null and year.length>0 and month != null and month.length>0">
                 and ( FROM_UNIXTIME(create_date/1000,'%Y') = #{year} and FROM_UNIXTIME(create_date/1000,'%m') = #{month} )
             </if>
