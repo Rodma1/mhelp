@@ -25,6 +25,10 @@ const router = new Router({
           path: '/:type/all',
           component: r => require.ensure([], () => r(require('@/views/task/TaskAllCategoryTag')), 'taskallcategorytag')
         },
+        {
+          path: '/archives/:year?/:month?',
+          component: r => require.ensure([], () => r(require('@/views/task/TaskArchive')), 'archives')
+        },
       ]
     },
     // {
@@ -39,7 +43,8 @@ const router = new Router({
     {
       path: '/register',
       component: r => require.ensure([], () => r(require('@/views/Register')), 'register')
-    }
+    },
+
   ]
 })
 router.beforeEach((to, from, next) => {

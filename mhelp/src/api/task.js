@@ -17,3 +17,10 @@ export function getTasks(query, page) {
     }
   })
 }
+//任务归档
+export function listArchives(){
+  return request({
+    url:'/tasks/listtasks',
+    method:'post'
+  })
+}
