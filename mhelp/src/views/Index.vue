@@ -1,16 +1,19 @@
 <template>
 <!--  任务首页-->
-  <div>
-    <h1>中间容器</h1>
+      <el-main class="me-articles">
 
-  </div>
+        <article-scroll-page></article-scroll-page>
 
+      </el-main>
 </template>
 
 <script>
-
+import TaskScrollPage from "@/views/common/TaskScrollPage";
 export default {
   name: "Index",
+  components:{
+    'article-scroll-page':TaskScrollPage
+  }
 }
 </script>
 

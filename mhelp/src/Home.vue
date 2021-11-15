@@ -51,4 +51,8 @@ export default {
   .main {
     flex: 1;
   }
+
+  .me-container{
+    margin: 100px auto 140px;
+  }
 </style>
