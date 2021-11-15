@@ -257,9 +257,11 @@ public class TaskServiceImpl implements TaskService {
      * @return
      */
     @Override
-    public Result getUserTask(Long authorid) {
+    public Result getUserTask() {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
         LambdaQueryWrapper<Task> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(Task::getAuthorId,authorid);
+        queryWrapper.eq(Task::getAuthorId,sysUser.getId());
         return Result.success(copyList(taskMapper.selectList(queryWrapper),true,true));
     }
     /**

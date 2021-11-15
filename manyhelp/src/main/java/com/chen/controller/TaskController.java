@@ -74,11 +74,11 @@ public class TaskController {
     }
     /**
      * 查询指定的用户发布的任务信息
-     * 用户id
+     *
      */
-    @GetMapping("usertasks/{id}")
-    public Result userTask(@PathVariable("id") Long id){
-        return taskService.getUserTask(id);
+    @GetMapping("usertasks")
+    public Result userTask(){
+        return taskService.getUserTask();
 
     }
     /**
