@@ -17,12 +17,32 @@ export function getTasks(query, page) {
     }
   })
 }
-
+//获取用户发布的任务
 export function getUserTasks(query, page,token) {
   console.log(token)
   return request({
     headers: {'Authorization': token},
     url: '/tasks/usertasks',
+    method: 'post',
+    data: {
+      page: page.pageNumber,
+      pageSize: page.pageSize,
+      name: page.name,
+      sort: page.sort,
+      year: query.year,
+      month: query.month,
+      tagId: query.tagId,
+      categoryId: query.categoryId
+    }
+  })
+}
+//获取用户接受的任务
+//获取用户发布的任务
+export function getUserAccTasks(query, page,token) {
+  console.log(token)
+  return request({
+    headers: {'Authorization': token},
+    url: '/tasks/uaccepttasks',
     method: 'post',
     data: {
       page: page.pageNumber,
@@ -43,3 +63,4 @@ export function listArchives(){
     method:'post'
   })
 }
+

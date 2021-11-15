@@ -35,6 +35,15 @@ const router = new Router({
           meta: {
             requireLogin: true
           },
+
+        },
+        {
+          path: '/taskaccepted',
+          component: r => require.ensure([], () => r(require('@/views/usertask/TaskUserAccScrollPage')), 'taskusersccscrollpage'),
+          meta: {
+            requireLogin: true
+          },
+
         },
       ]
     },
