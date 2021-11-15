@@ -17,7 +17,7 @@ public interface TaskMapper extends BaseMapper<Task>{
 //    获取任务的同一年月发布的数量
     List<Archives> listArchives();
 //任务列表and任务归档功能
-    IPage<Task> listTask(Page<Task> page, Long categoryId, Long tagId, String year, String month);
+    IPage<Task> listTask(Page<Task> page,Long authorId,Long categoryId, Long tagId, String year, String month);
 
     /**
      * selectTaskByKeys

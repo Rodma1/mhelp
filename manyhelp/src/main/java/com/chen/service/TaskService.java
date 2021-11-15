@@ -21,7 +21,7 @@ public interface TaskService {
 // 发布任务
     Result publish(TaskParam taskParam);
 //    读取某用户发布的任务
-   Result getUserTask();
+   Result getUserTask(PageParams pageParams);
    /**
     * 读取某用户接受任务
     * @return

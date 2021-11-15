@@ -76,9 +76,9 @@ public class TaskController {
      * 查询指定的用户发布的任务信息
      *
      */
-    @GetMapping("usertasks")
-    public Result userTask(){
-        return taskService.getUserTask();
+    @PostMapping("usertasks")
+    public Result userTask(@RequestBody PageParams pageParams){
+        return taskService.getUserTask(pageParams);
 
     }
     /**
