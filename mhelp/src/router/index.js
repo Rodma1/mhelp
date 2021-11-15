@@ -16,6 +16,12 @@ const router = new Router({
       path:'',
       name:'Home',
       component: Home,
+      children: [
+        {
+          path: '/',
+          component: r => require.ensure([], () => r(require('../views/Index')), 'index')
+        }
+      ]
     },
     // {
     //   path: '/',
