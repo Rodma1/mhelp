@@ -45,12 +45,17 @@ const router = new Router({
           },
 
         },
-      //  查看任务
+      //  查看任务内容
         {
-          path: '',
+          path: '/view/:id',
           name:'taskview',
           component: r => require.ensure([], () => r(require('@/views/task/TaskView')), 'taskview')
         },
+      //  发布任务
+        {
+          path:'/tasks/publish',
+          component: r => require.ensure([], () => r(require('@/views/task/TaskWrite')), 'taskwrite')
+        }
       ]
     },
     // {

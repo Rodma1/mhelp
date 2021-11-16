@@ -43,7 +43,7 @@ export default {
   .box{
     height: 100%;
     width: 100%;
-    background-color: orange;
+    background-color: white;
     display: flex;
   }
   .box .aside{

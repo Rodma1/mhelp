@@ -71,3 +71,12 @@ export function viewTask(id) {
     method: 'post'
   })
 }
+//发布任务
+export function publishTask(task,token) {
+  return request({
+    headers: {'Authorization': token},
+    url: '/tasks/publish',
+    method: 'post',
+    data: task
+  })
+}

@@ -18,7 +18,7 @@
         <el-menu-item-group>
           <el-menu-item index="/subtasks">已发布的任务</el-menu-item>
           <el-menu-item index="/taskaccepted">已接受的任务</el-menu-item>
-          <el-menu-item index="/ptask">发布新任务</el-menu-item>
+          <el-menu-item index="/tasks/publish">发布新任务</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item index="2">

@@ -7,3 +7,9 @@ export function getAllTagsDetail() {
     method: 'get',
   })
 }
+export function getAllTags() {
+  return request({
+    url: '/tags',
+    method: 'get',
+  })
+}
