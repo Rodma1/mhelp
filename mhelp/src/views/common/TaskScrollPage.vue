@@ -70,9 +70,9 @@ export default {
     load() {
       this.getTasks()
     },
-    view(id) {
-      this.$router.push({path: `/view/${id}`})
-    },
+    // view(id) {
+    //   this.$router.push({path: `/view/${id}`})
+    // },
     getTasks() {
       let that = this
       that.loading = true

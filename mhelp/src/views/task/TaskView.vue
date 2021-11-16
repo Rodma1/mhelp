@@ -1,52 +1,59 @@
 <template>
+  <el-dialog :visible.sync="dialogVisible">
   <el-table
     :data="tasksummary"
-    border
-    style="width: 50%" :row-class-name="tableRowClassName">
-    <el-table-column
-      prop="name"
+    style="width: 100%"
+    :row-class-name="tableRowClassName">
 
-      width="180">
+    <el-table-column
+      prop="name">
     </el-table-column>
     <el-table-column
-      prop="name"
-
-      width="180">
+      prop="task">
     </el-table-column>
+
+
   </el-table>
+  </el-dialog>
 </template>
 
 <script>
 import {viewTask } from '@/api/task.js'
   export  default  {
-  data()
-  {
-    return {
-      tasksummary:[
-        {
+    name: 'TaskView',
+    created() {
+      this.getTask()
+    },
+    watch: {
+      '$route': 'getTask'
+    },
+    data()
+    {
+      return {
+        dialogVisible:true,
+        tasksummary:[
+          {
 
-          name: '任务标题',
-          task: ''
-        }, {
-          name: '详细描述',
-          task: ''
-        }, {
-          name: '发布者',
-          task: ''
-        }, {
-          name: '奖励',
-          task: ''
-        }
-        , {
-          name: '发布时间',
-          task: ''
-        }
-      ]
-    }
-  },
-  mounted() {
-        this.getTask()
-      },
+            name: '任务标题',
+            task: ''
+          }, {
+            name: '详细描述',
+            task: ''
+          }, {
+            name: '发布者',
+            task: ''
+          }, {
+            name: '奖励',
+            task: ''
+          }
+          , {
+            name: '发布时间',
+            task: ''
+          }
+        ]
+      }
+    },
+
     methods: {
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 1) {
@@ -55,10 +62,11 @@ import {viewTask } from '@/api/task.js'
           return 'success-row';
         }
         return '';
+
       },
       getTask(){
         let that=this
-        viewTask('1456906922047352833').then(res=>{
+        viewTask(that.$route.params.id).then(res=>{
           console.log(res)
           this.tasksummary[0].task=res.data.title
           this.tasksummary[1].task=res.data.summary
@@ -73,13 +81,13 @@ import {viewTask } from '@/api/task.js'
 </script>
 
 
-<style scoped>
+<style>
 
-.el-table .warning-row {
-  background: oldlace;
-}
+  .el-table .warning-row {
+    background: oldlace;
+  }
 
-.el-table .success-row {
-  background: #f0f9eb;
-}
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>
