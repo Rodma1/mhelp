@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import {getToken, setToken, removeToken} from '@/request/token'
-import {login, getUserInfo,register} from '@/api/login'
+import {login, logout,getUserInfo,register} from '@/api/login'
 
 Vue.use(Vuex);
 
@@ -78,6 +78,40 @@ export default new Vuex.Store({
           removeToken()
           reject(error)
         })
+      })
+    },
+    //退出登录
+    logout({commit, state}) {
+      return new Promise((resolve, reject) => {
+        logout(state.token).then(data => {
+          if(data.success){
+
+            commit('SET_TOKEN', '')
+            commit('SET_ACCOUNT', '')
+            commit('SET_NAME', '')
+            commit('SET_AVATAR', '')
+            commit('SET_ID', '')
+            removeToken()
+            resolve()
+          }
+
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 前端 登出
+    fedLogOut({commit}) {
+      return new Promise(resolve => {
+        commit('SET_TOKEN', '')
+        commit('SET_ACCOUNT', '')
+        commit('SET_NAME', '')
+        commit('SET_AVATAR', '')
+        commit('SET_ID', '')
+        removeToken()
+        resolve()
+      }).catch(error => {
+        reject(error)
       })
     },
     register({commit}, user) {

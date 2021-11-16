@@ -77,7 +77,9 @@
         }
       }
     },
+
     methods: {
+      //退出登录
       logout() {
         let that = this
         this.$store.dispatch('logout').then(() => {

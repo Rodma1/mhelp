@@ -13,6 +13,15 @@ export function login(account, password) {
   })
 }
 
+//退出登录
+export function logout(token) {
+  return request({
+    headers: {'Authorization': token},
+    url: '/logout',
+    method: 'get'
+  })
+}
+
 
 export function getUserInfo(token) {
   return request({
