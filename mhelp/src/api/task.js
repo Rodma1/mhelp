@@ -80,3 +80,12 @@ export function publishTask(task,token) {
     data: task
   })
 }
+//接受任务
+//发布任务
+export function acceptTask(id,token) {
+  return request({
+    headers: {'Authorization': token},
+    url: `/tasks/accepttask/${id}`,
+    method: 'post'
+  })
+}

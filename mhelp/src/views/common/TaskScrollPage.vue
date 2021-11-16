@@ -1,8 +1,12 @@
 <template>
 
+
+
+
   <scroll-page :loading="loading" :offset="offset" :no-data="noData" v-on:load="load">
     <task-item v-for="a in tasks" :key="a.id" v-bind="a"></task-item>
   </scroll-page>
+
 </template>
 
 <script>
@@ -15,7 +19,7 @@ export default {
   props: {
     offset: {
       type: Number,
-      default: 100
+      default:100
     },
     page: {
       type: Object,
@@ -55,10 +59,10 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      loading: true,
       noData: false,
       innerPage: {
-        pageSize: 5,
+        pageSize: 4,
         pageNumber: 1,
         name: 'a.createDate',
         sort: 'desc'
@@ -70,9 +74,9 @@ export default {
     load() {
       this.getTasks()
     },
-    // view(id) {
-    //   this.$router.push({path: `/view/${id}`})
-    // },
+    view(id) {
+      this.$router.push({path: `/view/${id}`})
+    },
     getTasks() {
       let that = this
       that.loading = true

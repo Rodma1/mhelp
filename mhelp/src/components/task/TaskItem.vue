@@ -2,7 +2,7 @@
   <el-card class="me-area" :body-style="{ padding: '16px' }">
     <div class="me-task-header">
       <a @click="dialogVisible=true" class="me-task-title">{{title}}</a>
-
+      <el-tag >{{Status()}}</el-tag>
         <el-button v-if="weight > 0" class="me-task-icon" type="text">置顶</el-button>
       <span class="me-pull-right me-task-count">
 	    	<i class="me-icon-comment"></i>&nbsp;{{commentCounts}}
@@ -30,8 +30,7 @@
     <el-dialog :visible.sync="dialogVisible">
       <el-table
         :data="tasksummary"
-        style="width: 100%"
-        :row-class-name="tableRowClassName">
+        style="width: 100%"  :row-class-name="tableRowClassName">
 
         <el-table-column
           prop="name">
@@ -40,8 +39,8 @@
           prop="task">
         </el-table-column>
 
-
       </el-table>
+      <el-button type="primary" round @click="postAcceptTask">接受任务</el-button>
     </el-dialog>
   </el-card>
 
@@ -50,7 +49,8 @@
 
 <script>
 import { formatTime } from "../../utils/time";
-import {viewTask } from '@/api/task.js'
+import {acceptTask} from "../../api/task";
+
 export default {
   name: 'TaskItem',
   props: {
@@ -62,10 +62,14 @@ export default {
     summary: String,
     author: String,
     tags: Array,
-    createDate: String
+    createDate: String,
+    //任务状态
+    status:Number
   },
+
   data() {
     return {
+
       dialogVisible:false,
       tasksummary:[
         {
@@ -101,17 +105,34 @@ export default {
       }
       return '';
 
+    },
+    //任务状态
+    Status(){
+      if (this.status===0){
+        return '未解决'
+      }
+      else if (this.status===1){
+        return '进行中'
+      }
+      else{
+        return '已完成'
+      }
+    },
+  //  接受任务
+    postAcceptTask(){
+      let that = this
+      if (this.$store.state.token==null){
+        that.$message({message:'请先登录哦'})
+      }
+      acceptTask(this.id,this.$store.state.token).then(data => {
+        that.$message({type: 'success', message: '任务接受成功', showClose: true})
+      }).catch(error => {
+        if (error !== 'error') {
+          that.$message({type: 'error', message: '任务接受失败', showClose: true})
+        }
+      })
     }
   },
-  //组件内的守卫 调整body的背景色
-  beforeRouteEnter(to, from, next) {
-    window.document.body.style.backgroundColor = '#fff';
-    next();
-  },
-  beforeRouteLeave(to, from, next) {
-    window.document.body.style.backgroundColor = '#f5f5f5';
-    next();
-  }
 }
 </script>
 

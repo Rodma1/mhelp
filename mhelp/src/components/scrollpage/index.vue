@@ -21,6 +21,7 @@
     },
     name: "index",
     mounted() {
+      // console.log(11)
       window.addEventListener('scroll', this.handleScroll, false);
     },
     beforeDestroy() {
