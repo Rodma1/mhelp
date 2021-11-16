@@ -64,3 +64,10 @@ export function listArchives(){
   })
 }
 
+//查看任务
+export function viewTask(id) {
+  return request({
+    url: `/tasks/view/${id}`,
+    method: 'post'
+  })
+}

@@ -45,6 +45,11 @@ const router = new Router({
           },
 
         },
+      //  查看任务
+        {
+          path: '/view',
+          component: r => require.ensure([], () => r(require('@/views/task/TaskView')), 'taskview')
+        },
       ]
     },
     // {
