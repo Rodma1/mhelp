@@ -7,18 +7,21 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="mhelp" />
+        <module name="mhelp-admin" />
         <module name="manyhelp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="manyhelp" target="1.8" />
       <module name="mhelp" target="1.8" />
+      <module name="mhelp-admin" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="manyhelp" options="-parameters" />
       <module name="mhelp" options="-parameters" />
+      <module name="mhelp-admin" options="-parameters" />
     </option>
   </component>
 </project>

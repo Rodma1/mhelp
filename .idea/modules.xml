@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/manyhelp/manyhelp.iml" filepath="$PROJECT_DIR$/manyhelp/manyhelp.iml" />
       <module fileurl="file://$PROJECT_DIR$/mhelp.iml" filepath="$PROJECT_DIR$/mhelp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mhelp-admin/mhelp-admin.iml" filepath="$PROJECT_DIR$/mhelp-admin/mhelp-admin.iml" />
     </modules>
   </component>
 </project>
