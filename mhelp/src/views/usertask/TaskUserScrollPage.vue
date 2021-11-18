@@ -1,7 +1,7 @@
 <template>
 
   <scroll-page :loading="loading" :offset="offset" :no-data="noData" v-on:load="load">
-    <task-item v-for="a in tasks" :key="a.id" v-bind="a"></task-item>
+    <task-item v-for="a in tasks" :key="a.id" v-bind="a" update="true"></task-item>
   </scroll-page>
 </template>
 
@@ -58,7 +58,7 @@ export default {
       loading: false,
       noData: false,
       innerPage: {
-        pageSize: 5,
+        pageSize: 2,
         pageNumber: 1,
         name: 'a.createDate',
         sort: 'desc'

@@ -54,6 +54,7 @@ const router = new Router({
       //  发布任务
         {
           path:'/tasks/publish',
+          name:'publish',
           component: r => require.ensure([], () => r(require('@/views/task/TaskWrite')), 'taskwrite'),
           meta: {
             requireLogin: true

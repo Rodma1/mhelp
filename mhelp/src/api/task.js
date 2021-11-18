@@ -89,3 +89,11 @@ export function acceptTask(id,token) {
     method: 'post'
   })
 }
+//修改任务
+//发布任务
+export function updateTask() {
+  return request({
+    url: `/tasks/updateTask`,
+    method: 'post'
+  })
+}

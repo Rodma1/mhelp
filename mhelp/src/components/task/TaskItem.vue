@@ -3,6 +3,7 @@
     <div class="me-task-header">
       <a @click="dialogVisible=true" class="me-task-title">{{title}}</a>
       <el-tag >{{Status()}}</el-tag>
+
         <el-button v-if="weight > 0" class="me-task-icon" type="text">置顶</el-button>
       <span class="me-pull-right me-task-count">
 	    	<i class="me-icon-comment"></i>&nbsp;{{commentCounts}}
@@ -15,11 +16,12 @@
     <div class="me-artile-description">
       {{summary}}
     </div>
+
     <div class="me-task-footer">
 	  	<span class="me-task-author">
 	    	<i class="me-icon-author"></i>&nbsp;{{author}}
 	    </span>
-
+      <el-button type="primary" v-if="update" @click="write">修改</el-button>
       <el-tag v-for="t in tags" :key="t.tagName" size="mini" type="success">{{t.tagName}}</el-tag>
 
       <span class="me-pull-right me-task-count">
@@ -27,6 +29,7 @@
 	    </span>
 
     </div>
+
     <el-dialog :visible.sync="dialogVisible">
       <el-table
         :data="tasksummary"
@@ -64,7 +67,8 @@ export default {
     tags: Array,
     createDate: String,
     //任务状态
-    status:Number
+    status:Number,
+    update:false,
   },
 
   data() {
@@ -131,7 +135,11 @@ export default {
           that.$message({type: 'error', message: '任务接受失败', showClose: true})
         }
       })
-    }
+    },
+  //  修改用户，跳转到发布连接
+    write() {
+      this.$router.push({name:'publish',params:{update:"true",id:this.id}});
+    },
   },
 }
 </script>
