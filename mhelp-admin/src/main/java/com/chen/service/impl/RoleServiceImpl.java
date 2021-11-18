@@ -1,7 +1,7 @@
 package com.chen.service.impl;
 
-import com.chen.entity.Role;
-import com.chen.mapper.RoleMapper;
+import com.chen.dao.entity.Role;
+import com.chen.dao.mapper.RoleMapper;
 import com.chen.service.RoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

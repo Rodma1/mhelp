@@ -1,6 +1,6 @@
 package com.chen.service;
 
-import com.chen.entity.Menu;
+import com.chen.dao.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

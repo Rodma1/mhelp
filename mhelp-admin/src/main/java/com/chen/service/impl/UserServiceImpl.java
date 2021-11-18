@@ -1,7 +1,7 @@
 package com.chen.service.impl;
 
-import com.chen.entity.User;
-import com.chen.mapper.UserMapper;
+import com.chen.dao.entity.User;
+import com.chen.dao.mapper.UserMapper;
 import com.chen.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

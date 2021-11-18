@@ -1,7 +1,7 @@
 package com.chen.service.impl;
 
-import com.chen.entity.RoleMenu;
-import com.chen.mapper.RoleMenuMapper;
+import com.chen.dao.entity.RoleMenu;
+import com.chen.dao.mapper.RoleMenuMapper;
 import com.chen.service.RoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

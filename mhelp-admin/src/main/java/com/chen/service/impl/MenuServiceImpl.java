@@ -1,7 +1,7 @@
 package com.chen.service.impl;
 
-import com.chen.entity.Menu;
-import com.chen.mapper.MenuMapper;
+import com.chen.dao.entity.Menu;
+import com.chen.dao.mapper.MenuMapper;
 import com.chen.service.MenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
