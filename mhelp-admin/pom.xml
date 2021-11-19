@@ -90,6 +90,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.11</version>
         </dependency>
+<!--        配置有问题-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

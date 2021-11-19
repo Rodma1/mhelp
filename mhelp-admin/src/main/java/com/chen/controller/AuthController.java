@@ -28,6 +28,9 @@ public class AuthController extends BaseController {
 		String key = UUID.randomUUID().toString();
 //		生成验证码
 		String code = producer.createText();
+		// 为了测试登录
+		key = "aaaaa";
+		code = "11111";
 //返回64位的一串数据
 		BufferedImage image = producer.createImage(code);
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
