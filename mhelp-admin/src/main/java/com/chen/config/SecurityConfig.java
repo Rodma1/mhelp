@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -34,12 +35,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager());
         return filter;
     }
+//   密码加密和验证
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+//    白名单,就是访问不会提示登录
     public static final String[] URL_WHITELIST={
             "/webjars/**",
             "/favicon.ico",
             "/captcha",
             "/login",
             "/logout",
+            "/test/pass",
     };
     @Override
     protected void configure(HttpSecurity http) throws Exception{
