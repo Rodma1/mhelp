@@ -1,15 +1,15 @@
 package com.chen.config;
 
-import com.chen.security.CaptchaFilter;
-import com.chen.security.LoginFailureHandler;
-import com.chen.security.LoginSuccessHandler;
+import com.chen.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -17,12 +17,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    LoginFailureHandler loginFailureHandler;
+    private LoginFailureHandler loginFailureHandler;
 //    成功配置
     @Autowired
-    LoginSuccessHandler loginSuccessHandler;
+    private LoginSuccessHandler loginSuccessHandler;
+//    验证码校验
     @Autowired
-    CaptchaFilter captchaFilter;
+    private CaptchaFilter captchaFilter;
+//  认证失败类
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    //认证过滤器
+    @Bean
+    JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception{
+        //认证管理
+        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager());
+        return filter;
+    }
     public static final String[] URL_WHITELIST={
             "/webjars/**",
             "/favicon.ico",
@@ -42,11 +53,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(URL_WHITELIST).permitAll()//白名单
                 .anyRequest().authenticated()
-                //不会创建session
+                //禁用session
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//              定义认证失败过滤器
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                //在登录前认证一下
+                .addFilter(jwtAuthenticationFilter())
+//                先加载过滤验证码在登录
                 .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)//登录验证码校验过滤器
 
         ;
