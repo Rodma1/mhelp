@@ -52,6 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/login",
             "/logout",
             "/test/pass",
+            "/user/authority/**",
+
     };
     @Override
     protected void configure(HttpSecurity http) throws Exception{

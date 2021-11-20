@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("mh_user_role")
-public class UserRole  {
+public class UserRole   extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
 

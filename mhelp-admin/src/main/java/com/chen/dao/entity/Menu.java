@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("mh_menu")
-public class Menu{
+public class Menu extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
 

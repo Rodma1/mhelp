@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * 为了以后更方便调整用户的一些数据,这里编写一个方法来返回用户信息数据

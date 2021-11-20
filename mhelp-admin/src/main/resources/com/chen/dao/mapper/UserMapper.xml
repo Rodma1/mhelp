@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.dao.mapper.UserMapper">
+<!-- List<Long> getNavMenuIds(Long userId);获取菜单id-->
+    <select id="getNavMenuIds" resultType="java.lang.Long">
+        select menu_id from mh_user_role as ur
+        left join mh_role_menu as rm on rm.role_id=ur.role_id
+        where ur.user_id=#{userId}
+    </select>
+</mapper>
