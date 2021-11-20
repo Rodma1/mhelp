@@ -4,6 +4,7 @@ import cn.hutool.core.map.MapUtil;
 import com.chen.service.UserService;
 import com.chen.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,8 @@ public class TestController {
     //    加密和验证策略
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+//    表示test接口需要sys:user:list权限
+    @PreAuthorize("hasAuthority('mh:user:list')")
     @GetMapping("/test")
     public Object test(){
         return userService.list();

@@ -77,11 +77,11 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         User user=userService.getByUsername(username);
         List<GrantedAuthority> grantedAuthorities= userDetailsServicel.getUserAuthority(user.getId());
 //        ，获取到用户名之后我们直接把封装成UsernamePasswordAuthenticationToken
-        log.info("用户-{}-的权限-{}",username,grantedAuthorities);
+//        log.info("用户-{}-的权限-{}",username,grantedAuthorities);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 =new UsernamePasswordAuthenticationToken(username,null,grantedAuthorities);
 
-        log.info("UsernamePasswordAuthenticationToken:{}",usernamePasswordAuthenticationToken);
+//        log.info("UsernamePasswordAuthenticationToken:{}",usernamePasswordAuthenticationToken);
         //        交给SecurityContextHolder参数,传递authentication对象
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 //        传递到下一个Filter

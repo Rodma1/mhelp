@@ -35,7 +35,6 @@ public class UserDetailsServicelImpl implements UserDetailsService {
     }
     // 通过内置的工具类，把权限字符串封装成GrantedAuthority列表
     public List<GrantedAuthority> getUserAuthority(Long userId){
-
         return AuthorityUtils.commaSeparatedStringToAuthorityList(userService.getUserAuthorityInfo(userId));
     }
 }
