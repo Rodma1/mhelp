@@ -4,11 +4,14 @@ import com.chen.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.chen.dao.entity.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.TreeSet;
 
 //想要重新获取数据，就要重写UserDetailsService接口
@@ -29,5 +32,10 @@ public class UserDetailsServicelImpl implements UserDetailsService {
 //        调用自定义的AccountUser，返回值
         return new AccountUser(user.getId(),user.getUsername(),user.getPassword(),new TreeSet<>());
 
+    }
+    // 通过内置的工具类，把权限字符串封装成GrantedAuthority列表
+    public List<GrantedAuthority> getUserAuthority(Long userId){
+
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(userService.getUserAuthorityInfo(userId));
     }
 }
