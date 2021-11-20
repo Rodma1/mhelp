@@ -4,13 +4,13 @@ import com.chen.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -40,6 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
+//    自定义获取用户信息
+    @Autowired
+    private  UserDetailsServicelImpl userDetailsServicel;
+
 //    白名单,就是访问不会提示登录
     public static final String[] URL_WHITELIST={
             "/webjars/**",
@@ -56,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
-
+                // 配置拦截规则
                 .and()
                 .authorizeRequests()
                 .antMatchers(URL_WHITELIST).permitAll()//白名单
@@ -77,6 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         ;
     }
-
-
+//    UserDetailsServiceImpl配置
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsServicel);
+    }
 }
