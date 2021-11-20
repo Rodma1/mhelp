@@ -35,6 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager());
         return filter;
     }
+//    登出
+    @Autowired
+    private JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
 //   密码加密和验证
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -62,6 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
+                //登出配置
+                .and()
+                .logout()
+                .logoutSuccessHandler(jwtLogoutSuccessHandler)
                 // 配置拦截规则
                 .and()
                 .authorizeRequests()
