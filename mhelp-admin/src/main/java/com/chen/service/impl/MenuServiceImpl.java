@@ -1,6 +1,7 @@
 package com.chen.service.impl;
 
 import cn.hutool.core.map.MapUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chen.dao.entity.Menu;
 import com.chen.dao.entity.User;
 import com.chen.dao.mapper.MenuMapper;
@@ -32,6 +33,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private UserService userService;
     @Autowired(required = false)
     private UserMapper userMapper;
+    @Autowired(required = false)
+    private MenuMapper menuMapper;
     /**
      * 获取当前用户的菜单栏以及权限
      */
@@ -65,6 +68,31 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 .map()
         );
     }
+
+    /**
+     * 通过id获取菜单
+     * @param id
+     */
+    @Override
+    public Result getIDMenu(Long id) {
+
+        return Result.success(menuMapper.selectById(id));
+    }
+
+    /**
+     * 获取菜单树
+     * @return
+     */
+
+    @Override
+    public Result tree() {
+//        获取所有菜单信息,进行排序
+        List<Menu> menuList=this.list(new QueryWrapper<Menu>().orderByAsc("orderNum"));
+
+        //转成树状结构
+        return Result.success( buildTreeMenu(menuList));
+    }
+
     /**
      * 构造菜单树
      * @param menus

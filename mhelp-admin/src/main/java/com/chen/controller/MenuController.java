@@ -1,6 +1,7 @@
 package com.chen.controller;
 
 
+import com.chen.dao.entity.Menu;
 import com.chen.service.MenuService;
 import com.chen.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -37,7 +40,16 @@ public class MenuController {
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('mh:menu:list')")
     public Result info(@PathVariable("id") Long id){
-        return Result.success(menuService.getById(id));
+        return menuService.getIDMenu(id);
     }
+    /**
+     * 获取菜单树
+     */
+    @GetMapping("/list")
+    @PreAuthorize("hasAuthority('mh:menu:list')")
+    public Result list(){
+        return  menuService.tree();
+    }
+
 
 }
