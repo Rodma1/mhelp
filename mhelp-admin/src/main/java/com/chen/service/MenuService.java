@@ -35,4 +35,8 @@ public interface MenuService extends IService<Menu> {
      * 删除菜单数据
      */
     Result deleteMenu(Long id);
+    /**
+     * 增加菜单数据
+     */
+    Result addMenu(Menu menu);
 }

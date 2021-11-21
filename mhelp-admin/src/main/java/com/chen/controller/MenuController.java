@@ -68,4 +68,12 @@ public class MenuController {
     public Result delete(@PathVariable Long id){
         return menuService.deleteMenu(id);
     }
+    /**
+     * 增加菜单
+     */
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('mh:menu:save')")
+    public Result save(@Validated @RequestBody Menu menu){
+        return menuService.addMenu(menu);
+    }
 }

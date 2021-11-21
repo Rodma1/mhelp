@@ -2,6 +2,7 @@ package com.chen.service.impl;
 
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.chen.common.lang.Const;
 import com.chen.dao.entity.Menu;
 import com.chen.dao.entity.RoleMenu;
 import com.chen.dao.entity.User;
@@ -135,6 +136,22 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         roleMenuMapper.delete(new QueryWrapper<RoleMenu>().eq("menu_id",id));
 
         return Result.success("删除成功");
+    }
+
+    /**
+     * 增加菜单数据
+     *
+     * @param menu
+     */
+    @Override
+    public Result addMenu(Menu menu) {
+        menu.setCreated(LocalDateTime.now());
+//        状态为0
+        menu.setStatu(Const.STATUS_ON);
+//        插入insert
+        menuMapper.insert(menu);
+
+        return Result.success("增加成功");
     }
 
     /**
