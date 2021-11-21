@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-11-18
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/sys/user")
 public class UserController {
     /**
      * 获取对应用户id的角色拥有的权限
