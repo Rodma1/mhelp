@@ -30,4 +30,5 @@ public class UserController {
     public Result getUserAuthorityInfo(@PathVariable("id") Long userId){
         return Result.success(userService.getUserAuthorityInfo(userId));
     }
+
 }

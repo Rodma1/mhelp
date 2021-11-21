@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chen.dao.entity.Menu;
 import com.chen.dao.entity.Role;
 import com.chen.dao.entity.User;
+import com.chen.dao.mapper.MenuMapper;
 import com.chen.dao.mapper.UserMapper;
 import com.chen.service.MenuService;
 import com.chen.service.RoleService;
 import com.chen.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chen.utils.RedisUtil;
+import com.chen.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +43,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //    注入菜单服务
     @Autowired
     private MenuService menuService;
+//    注入菜单mapper
+    private MenuMapper menuMapper;
     //通过用户名查询用户信息返回
     @Override
     public User getByUsername(String username) {
@@ -83,9 +88,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.info("用户ID - {} ---拥有的权限：{}", userId, authority);
             //在存入redis中
             redisUtil.set("GrantedAuthority:"+user.getUsername(),authority);
-
         }
         //返回获取到的权限
         return authority;
     }
+
+
 }

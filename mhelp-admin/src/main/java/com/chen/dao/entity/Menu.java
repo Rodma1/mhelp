@@ -2,8 +2,12 @@ package com.chen.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.chen.vo.MenuVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -55,5 +59,8 @@ public class Menu extends BaseEntity{
     @TableField("orderNum")
     private Integer ordernum;
 
+    //    子菜单
+    @TableField(exist = false)
+    private List<Menu> children=new ArrayList<>();
 
 }
