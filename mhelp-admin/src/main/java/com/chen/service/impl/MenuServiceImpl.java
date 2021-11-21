@@ -3,8 +3,11 @@ package com.chen.service.impl;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chen.dao.entity.Menu;
+import com.chen.dao.entity.RoleMenu;
 import com.chen.dao.entity.User;
 import com.chen.dao.mapper.MenuMapper;
+import com.chen.dao.mapper.RoleMapper;
+import com.chen.dao.mapper.RoleMenuMapper;
 import com.chen.dao.mapper.UserMapper;
 import com.chen.service.MenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +17,7 @@ import com.chen.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -29,6 +33,8 @@ import java.util.List;
  * @since 2021-11-18
  */
 @Service
+//事物出现错误时候就回滚
+@Transactional
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
     @Autowired
     private UserService userService;
@@ -36,6 +42,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private UserMapper userMapper;
     @Autowired(required = false)
     private MenuMapper menuMapper;
+    @Autowired(required = false)
+    private RoleMenuMapper roleMenuMapper;
     /**
      * 获取当前用户的菜单栏以及权限
      */
@@ -106,6 +114,27 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 //        清除所有与该菜单相关的权限缓存
         userService.clearUserAuthorityInfoByMenuId(menu.getId());
         return Result.success(menu);
+    }
+
+    /**
+     * 删除菜单数据
+     *
+     * @param id
+     */
+    @Override
+    public Result deleteMenu(Long id) {
+//        判断是否是父节点，如果是那么就要先删除子节点
+        int count=menuMapper.selectCount(new QueryWrapper<Menu>().eq("parent_id",id));
+        if (count>0){
+            return Result.fail(400,"请先删除子菜单");
+        }
+//        先清除所有与该菜单相关的权限缓存
+        userService.clearUserAuthorityInfoByMenuId(id);
+        menuMapper.deleteById(id);
+//        同步删除角色表
+        roleMenuMapper.delete(new QueryWrapper<RoleMenu>().eq("menu_id",id));
+
+        return Result.success("删除成功");
     }
 
     /**

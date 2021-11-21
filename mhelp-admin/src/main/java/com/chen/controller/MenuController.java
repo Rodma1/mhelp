@@ -6,6 +6,7 @@ import com.chen.service.MenuService;
 import com.chen.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,5 +58,14 @@ public class MenuController {
     public Result update(@Validated @RequestBody Menu menu){
         return menuService.updateMenu(menu);
     }
-
+    /**
+     * 删除菜单
+     */
+//事物出现错误的时候就回滚
+    @Transactional
+    @PostMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('mh:menu:delete')")
+    public Result delete(@PathVariable Long id){
+        return menuService.deleteMenu(id);
+    }
 }

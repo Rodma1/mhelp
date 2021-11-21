@@ -3,6 +3,7 @@ package com.chen.service;
 import com.chen.dao.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.vo.Result;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -30,4 +31,8 @@ public interface MenuService extends IService<Menu> {
      * 更新菜单数据
      */
     Result updateMenu(Menu menu);
+    /**
+     * 删除菜单数据
+     */
+    Result deleteMenu(Long id);
 }
