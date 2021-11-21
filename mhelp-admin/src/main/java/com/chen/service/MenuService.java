@@ -18,7 +18,7 @@ public interface MenuService extends IService<Menu> {
     /** * 获取当前用户的菜单栏以及权限 */
     Result getcurrentUserNav();
     /**
-     *
+     * 通过菜单id获取数据
      */
     Result getIDMenu(Long id);
     /**
@@ -26,4 +26,8 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     Result tree();
+    /**
+     * 更新菜单数据
+     */
+    Result updateMenu(Menu menu);
 }

@@ -7,4 +7,11 @@
         left join mh_role_menu as rm on rm.role_id=ur.role_id
         where ur.user_id=#{userId}
     </select>
+    <!--    查找与菜单id关联的所有用户角色List<User> listByMenuId(Long menuId);-->
+    <select id="listByMenuId" resultType="com.chen.dao.entity.User">
+        select * from mh_user_role as ur
+                          left join mh_role_menu as rm on rm.role_id=ur.role_id
+                          left join mh_user on mh_user.id=ur.user_id
+        where rm.menu_id=#{menuId}
+    </select>
 </mapper>

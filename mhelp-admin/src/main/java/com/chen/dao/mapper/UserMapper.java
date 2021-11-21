@@ -16,4 +16,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 //    获取菜单id
     List<Long> getNavMenuIds(Long userId);
+//    查找与菜单id关联的所有用户角色
+    List<User> listByMenuId(Long menuId);
 }

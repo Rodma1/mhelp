@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,20 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
         //转成树状结构
         return Result.success( buildTreeMenu(menuList));
+    }
+
+    /**
+     * 更新菜单数据
+     *
+     * @param menu
+     */
+    @Override
+    public Result updateMenu(Menu menu) {
+        menu.setUpdated(LocalDateTime.now());
+        menuMapper.updateById(menu);
+//        清除所有与该菜单相关的权限缓存
+        userService.clearUserAuthorityInfoByMenuId(menu.getId());
+        return Result.success(menu);
     }
 
     /**

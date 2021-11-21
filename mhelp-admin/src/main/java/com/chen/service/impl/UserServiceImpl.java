@@ -14,7 +14,6 @@ import com.chen.utils.RedisUtil;
 import com.chen.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -91,6 +90,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         //返回获取到的权限
         return authority;
+    }
+
+    /**
+     * 删除某个用户的权限信息
+     * @param username
+     */
+    @Override
+    public void clearUserAuthorityInfo(String username) {
+        redisUtil.del("GrantedAuthority:" + username);
+    }
+
+    /**
+     * 删除所有与该菜单关联的所有用户的权限信息
+     * @param menuId
+     */
+    @Override
+    public void clearUserAuthorityInfoByMenuId(Long menuId) {
+//        查找与菜单id关联的所有用户角色
+        List<User> users=userMapper.listByMenuId(menuId);
+//        通过for循环逐一删除
+        users.forEach(user -> {
+            this.clearUserAuthorityInfo(user.getUsername());
+        });
     }
 
 

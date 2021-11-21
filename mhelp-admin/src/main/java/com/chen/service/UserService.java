@@ -17,5 +17,8 @@ public interface UserService extends IService<User> {
     User getByUsername(String username);
 //    获取用户的角色和权限信息
     String getUserAuthorityInfo(Long userId);
-
+//    删除某个用户的权限信息
+    void clearUserAuthorityInfo(String username);
+//  删除所有与该菜单关联的所有用户的权限信息
+    void clearUserAuthorityInfoByMenuId(Long menuId);
 }
