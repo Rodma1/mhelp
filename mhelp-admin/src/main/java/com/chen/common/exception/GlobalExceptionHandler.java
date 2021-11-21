@@ -3,6 +3,7 @@ package com.chen.common.exception;
 import com.chen.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +15,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	//
+	//权限不足
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	@ExceptionHandler(value = AccessDeniedException.class)
+	public Result handler(AccessDeniedException e) {
+		log.info("security权限不足：----------------{}", e.getMessage());
+		return Result.fail(400,"权限不足");
+	}
 
 	// 实体校验异常捕获
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

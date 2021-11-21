@@ -28,6 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //  认证失败类
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    //    权限认证失败
+    @Autowired
+    private JwtAccessDeniedHandler jwtAccessDeniedHandler;
     //认证过滤器
     @Bean
     JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception{
@@ -46,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    自定义获取用户信息
     @Autowired
     private  UserDetailsServicelImpl userDetailsServicel;
+
 
 //    白名单,就是访问不会提示登录
     public static final String[] URL_WHITELIST={
@@ -69,19 +73,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutSuccessHandler(jwtLogoutSuccessHandler)
+                //禁用session
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // 配置拦截规则
                 .and()
                 .authorizeRequests()
                 .antMatchers(URL_WHITELIST).permitAll()//白名单
                 .anyRequest().authenticated()
-                //禁用session
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
 //              定义认证失败过滤器
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                //无权限
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                /// 配置自定义的过滤器
                 .and()
                 //在登录前认证一下
                 .addFilter(jwtAuthenticationFilter())
