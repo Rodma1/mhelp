@@ -1,15 +1,13 @@
 package com.chen.controller;
 
 
+import com.chen.dao.entity.Role;
 import com.chen.service.RoleService;
 import com.chen.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -42,8 +40,18 @@ public class RoleController {
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('mh:role:list')")
     public Result list(String name){
-        return roleService.list(name);
+        return roleService.listNameRole(name);
     }
-
+    /**
+     * 添加角色
+     *
+     * @param role
+     */
+    @PostMapping("/save")
+//    授予权限
+    @PreAuthorize("hasAuthority('mh:role:save')")
+    public  Result save(@Validated @RequestBody Role role){
+        return roleService.saveRole(role);
+    }
 
 }

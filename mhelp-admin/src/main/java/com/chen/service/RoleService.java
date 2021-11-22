@@ -22,5 +22,9 @@ public interface RoleService extends IService<Role> {
      * 获取角色列表，也可以通过关键字查询
      * name
      */
-    Result list(String name);
+    Result listNameRole(String name);
+    /**
+     * 添加角色
+     */
+    Result saveRole(Role role);
 }

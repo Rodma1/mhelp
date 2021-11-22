@@ -3,6 +3,7 @@ package com.chen.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chen.common.lang.Const;
 import com.chen.dao.entity.Role;
 import com.chen.dao.entity.RoleMenu;
 import com.chen.dao.mapper.RoleMapper;
@@ -16,7 +17,9 @@ import com.chen.vo.RoleVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
  * @since 2021-11-18
  */
 @Service
+@Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired(required = false)
@@ -60,11 +64,25 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @param name
      */
     @Override
-    public Result list(String name) {
+    public Result listNameRole(String name) {
 //        翻页模糊查询查询
         Page<Role> rolePage=roleMapper.selectPage(pageUtils.getPage(),
                 new QueryWrapper<Role>().like(StrUtil.isNotBlank(name),"name",name));
         return Result.success(rolePage);
+    }
+
+    /**
+     * 添加角色
+     *
+     * @param role
+     */
+    @Override
+    public Result saveRole(Role role) {
+//        设置时间和转态
+        role.setCreated(LocalDateTime.now());
+        role.setStatu(Const.STATUS_ON);
+        roleMapper.insert(role);
+        return Result.success(role);
     }
 
     //    如果是列表就转为列表输出
