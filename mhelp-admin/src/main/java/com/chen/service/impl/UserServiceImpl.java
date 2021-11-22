@@ -14,12 +14,17 @@ import com.chen.utils.RedisUtil;
 import com.chen.vo.Result;
 import com.chen.vo.RoleVo;
 import com.chen.vo.UserVo;
+import com.chen.vo.params.PassParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +39,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
+@Transactional
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 //    缓存
     @Autowired
@@ -49,6 +55,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private MenuService menuService;
 //    注入菜单mapper
     private MenuMapper menuMapper;
+//    密码校验
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     //通过用户名查询用户信息返回
     @Override
     public User getByUsername(String username) {
@@ -154,6 +163,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userVo.setRoleList(roles);
         return Result.success(userVo);
     }
+
+    /**
+     * 用户自己修改密码
+     *
+     * @param passParam
+     */
+    @Override
+    public Result updatePassUser(PassParam passParam) {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        //        通过上下文管理器获取jwt中的用户名
+        String username= (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        通过用户名获取用户信息
+        User user=this.userMapper.selectOne(new QueryWrapper<User>().eq("username",username));
+//       判断旧密码是否正确
+        boolean matches=passwordEncoder.matches(passParam.getCurrentPass(),user.getPassword());
+        if (!matches){
+            return Result.fail(400,"旧密码不正确！");
+        }
+//        密码加密存入
+        user.setPassword(passwordEncoder.encode(passParam.getPassword()));
+        user.setUpdated(LocalDateTime.now());
+//        更新
+        userMapper.updateById(user);
+//        清除缓存密码，让用户再次登录
+        this.clearUserAuthorityInfo(username);
+        return Result.success("更新密码成功,请重新登录");
+    }
+
     //    如果是列表就转为列表输出
     private List<UserVo> copyList(List<User> users){
         List<UserVo> userVoList=new ArrayList<>();

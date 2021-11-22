@@ -3,13 +3,11 @@ package com.chen.controller;
 
 import com.chen.service.UserService;
 import com.chen.vo.Result;
+import com.chen.vo.params.PassParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -39,6 +37,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('mh:user:list')")
     public Result info(@PathVariable Long id){
         return userService.getIDUser(id);
+    }
+    /**
+     * 用户自己修改密码
+     */
+    @PostMapping("/updatePass")
+    public Result updatapassuser(@Validated @RequestBody PassParam passParam){
+        return userService.updatePassUser(passParam);
     }
 
 }

@@ -4,6 +4,7 @@ import com.chen.dao.entity.Role;
 import com.chen.dao.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.vo.Result;
+import com.chen.vo.params.PassParam;
 
 /**
  * <p>
@@ -28,4 +29,8 @@ public interface UserService extends IService<User> {
      * 通过用户id获取数据
      */
     Result getIDUser(Long id);
+    /**
+     * 用户自己修改密码
+     */
+    Result updatePassUser(PassParam passParam);
 }
