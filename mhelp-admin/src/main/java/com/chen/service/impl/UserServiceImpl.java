@@ -235,6 +235,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Result.success(userPage);
     }
 
+    /**
+     * 创建用户
+     *
+     * @param user
+     */
+    @Override
+    public Result insertUser(User user) {
+//        设置时间和状态
+        user.setCreated(LocalDateTime.now());
+        user.setStatu(Const.STATUS_ON);
+//        初始默认密码
+        user.setPassword(Const.DEFAULT_PASSWORD);
+//        如果检测到密码微刊就返回
+        if (StrUtil.isBlank(user.getPassword())){
+            return Result.fail(400,"密码不能为空");
+        }
+//        密码加密
+        String password=passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
+//        默认头像
+        user.setAvatar(Const.DEFULT_AVATAR);
+//        更新
+        userMapper.insert(user);
+        return Result.success(copy(user));
+    }
+
     //    如果是列表就转为列表输出
     private List<UserVo> copyList(List<User> users){
         List<UserVo> userVoList=new ArrayList<>();

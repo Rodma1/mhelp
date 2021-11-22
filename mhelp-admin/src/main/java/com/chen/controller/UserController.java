@@ -1,6 +1,7 @@
 package com.chen.controller;
 
 
+import com.chen.dao.entity.User;
 import com.chen.service.UserService;
 import com.chen.vo.Result;
 import com.chen.vo.params.PassParam;
@@ -63,6 +64,13 @@ public class UserController {
     public  Result page(String username){
         return userService.pageUser(username);
     }
-
+    /**
+     * 增加用户
+     */
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('mh:user:save')")
+    public Result save(@Validated @RequestBody User user){
+        return userService.insertUser(user);
+    }
 
 }

@@ -41,5 +41,9 @@ public interface UserService extends IService<User> {
      * 用户分页模糊查询
      */
     Result pageUser(String username);
+    /**
+     * 创建用户
+     */
+    Result insertUser(User user);
 
 }
