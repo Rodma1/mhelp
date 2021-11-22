@@ -124,7 +124,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        执行sql获取关联的用户信息
         List<User> users=this.list(new QueryWrapper<User>()
                 .inSql("id",
-                        "select user_id from sys_user_role where role_id = "
+                        "select user_id from mh_user_role where role_id = "
                                 + roleId));
 //        遍历清除
         users.forEach(user -> {

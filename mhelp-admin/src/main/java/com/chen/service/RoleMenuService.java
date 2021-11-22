@@ -2,6 +2,7 @@ package com.chen.service;
 
 import com.chen.dao.entity.RoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.chen.vo.Result;
 
 /**
  * <p>
@@ -12,5 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-11-18
  */
 public interface RoleMenuService extends IService<RoleMenu> {
-
+    /**
+     * 给角色分配权限
+     */
+    Result perm(Long roleId,Long[] menuIds);
 }
