@@ -6,11 +6,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.common.lang.Const;
 import com.chen.dao.entity.Role;
 import com.chen.dao.entity.RoleMenu;
+import com.chen.dao.entity.UserRole;
 import com.chen.dao.mapper.RoleMapper;
 import com.chen.dao.mapper.RoleMenuMapper;
+import com.chen.dao.mapper.UserRoleMapper;
 import com.chen.service.RoleMenuService;
 import com.chen.service.RoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.chen.service.UserService;
 import com.chen.utils.PageUtils;
 import com.chen.vo.Result;
 import com.chen.vo.RoleVo;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +46,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private RoleMenuMapper roleMenuMapper;
     @Autowired
     private PageUtils pageUtils;
+//    用户角色映射
+    @Autowired(required = false)
+    private UserRoleMapper userRoleMapper;
     /**
      * 通过角色id获取数据
      *
@@ -94,8 +101,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public Result updateRole(Role role) {
         role.setUpdated(LocalDateTime.now());
         roleMapper.updateById(role);
-
         return Result.success(role);
+    }
+
+    /**
+     * 批量删除角色
+     *
+     * @param ids
+     */
+    @Override
+    public Result deleteRole(Long[] ids) {
+//        删除Arrays.asList(ids)数组转集合
+        roleMapper.deleteBatchIds(Arrays.asList(ids));
+//      同步删除用户角色表和角色菜单表里面的数据
+        userRoleMapper.delete(new QueryWrapper<UserRole>().in("role_id",ids));
+        roleMenuMapper.delete(new QueryWrapper<RoleMenu>().in("role_id",ids));
+        return Result.success("删除成功");
     }
 
     //    如果是列表就转为列表输出

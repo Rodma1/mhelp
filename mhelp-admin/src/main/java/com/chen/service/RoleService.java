@@ -31,4 +31,8 @@ public interface RoleService extends IService<Role> {
      * 更新角色
      */
     Result updateRole(Role role);
+    /**
+     * 删除角色
+     */
+    Result deleteRole(Long[] ids);
 }

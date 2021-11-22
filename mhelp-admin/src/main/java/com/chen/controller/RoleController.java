@@ -6,6 +6,7 @@ import com.chen.service.RoleService;
 import com.chen.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,15 @@ public class RoleController {
     @PreAuthorize("hasAuthority('mh:role:update')")
     public Result update(@Validated @RequestBody Role role){
         return roleService.updateRole(role);
+    }
+    /**
+     * 删除角色
+     */
+    @Transactional
+    @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('mh:role:delete')")
+    public Result delete(@RequestBody Long[] ids){
+        return roleService.deleteRole(ids);
     }
 
 }
