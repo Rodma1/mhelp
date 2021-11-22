@@ -45,5 +45,15 @@ public class UserController {
     public Result updatapassuser(@Validated @RequestBody PassParam passParam){
         return userService.updatePassUser(passParam);
     }
+    /**
+     * 超级管理员重置密码
+     */
+    @PostMapping("/repass")
+//    设置权限
+    @PreAuthorize("hasAuthority('mh:user:repass')")
+    public Result repass(@RequestBody Long userId){
+        return  userService.repass(userId);
+    }
+
 
 }

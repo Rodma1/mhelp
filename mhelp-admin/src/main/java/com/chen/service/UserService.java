@@ -33,4 +33,9 @@ public interface UserService extends IService<User> {
      * 用户自己修改密码
      */
     Result updatePassUser(PassParam passParam);
+    /**
+     * 超级管理员重置密码
+     */
+    Result repass(Long userId);
+
 }

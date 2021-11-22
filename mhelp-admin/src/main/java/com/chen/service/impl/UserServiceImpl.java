@@ -1,6 +1,7 @@
 package com.chen.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.chen.common.lang.Const;
 import com.chen.dao.entity.Menu;
 import com.chen.dao.entity.Role;
 import com.chen.dao.entity.User;
@@ -189,6 +190,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        清除缓存密码，让用户再次登录
         this.clearUserAuthorityInfo(username);
         return Result.success("更新密码成功,请重新登录");
+    }
+
+    /**
+     * 超级管理员重置密码
+     *
+     * @param userId
+     */
+    @Override
+    public Result repass(Long userId) {
+//        获取要重置的用户信息
+        User user=userMapper.selectById(userId);
+//        重置密码
+        user.setPassword(passwordEncoder.encode(Const.DEFAULT_PASSWORD));
+//        更新时间
+        user.setUpdated(LocalDateTime.now());
+        userMapper.updateById(user);
+//        清空缓存
+        this.clearUserAuthorityInfo(user.getUsername());
+        return Result.success(copy(user));
     }
 
     //    如果是列表就转为列表输出
