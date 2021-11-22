@@ -85,6 +85,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return Result.success(role);
     }
 
+    /**
+     * 更新角色
+     *
+     * @param role
+     */
+    @Override
+    public Result updateRole(Role role) {
+        role.setUpdated(LocalDateTime.now());
+        roleMapper.updateById(role);
+
+        return Result.success(role);
+    }
+
     //    如果是列表就转为列表输出
     private List<RoleVo> copyList(List<Role> roles){
         List<RoleVo> roleVoList=new ArrayList<>();

@@ -53,5 +53,13 @@ public class RoleController {
     public  Result save(@Validated @RequestBody Role role){
         return roleService.saveRole(role);
     }
+    /**
+     * 更新角色
+     */
+    @PostMapping("/update")
+    @PreAuthorize("hasAuthority('mh:role:update')")
+    public Result update(@Validated @RequestBody Role role){
+        return roleService.updateRole(role);
+    }
 
 }

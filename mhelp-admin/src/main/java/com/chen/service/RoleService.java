@@ -27,4 +27,8 @@ public interface RoleService extends IService<Role> {
      * 添加角色
      */
     Result saveRole(Role role);
+    /**
+     * 更新角色
+     */
+    Result updateRole(Role role);
 }
