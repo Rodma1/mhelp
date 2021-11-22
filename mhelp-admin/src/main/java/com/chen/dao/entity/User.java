@@ -1,7 +1,9 @@
 package com.chen.dao.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,6 +34,8 @@ public class User  extends BaseEntity{
     private String city;
 
     private LocalDateTime lastLogin;
+    @TableField(exist = false)
+    private List<Role> roleList;
 
 
 }

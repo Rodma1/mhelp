@@ -54,6 +54,15 @@ public class UserController {
     public Result repass(@RequestBody Long userId){
         return  userService.repass(userId);
     }
+    /**
+     * 用户分页模糊查询
+     */
+
+    @GetMapping("/list")
+    @PreAuthorize("hasAuthority('mh:user:list')")
+    public  Result page(String username){
+        return userService.pageUser(username);
+    }
 
 
 }

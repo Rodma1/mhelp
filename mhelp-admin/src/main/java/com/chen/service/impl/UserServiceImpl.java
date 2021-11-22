@@ -1,6 +1,8 @@
 package com.chen.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.common.lang.Const;
 import com.chen.dao.entity.Menu;
 import com.chen.dao.entity.Role;
@@ -11,6 +13,7 @@ import com.chen.service.MenuService;
 import com.chen.service.RoleService;
 import com.chen.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.chen.utils.PageUtils;
 import com.chen.utils.RedisUtil;
 import com.chen.vo.Result;
 import com.chen.vo.RoleVo;
@@ -59,6 +62,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //    密码校验
     @Autowired
     private PasswordEncoder passwordEncoder;
+//    分页
+    @Autowired
+    private PageUtils pageUtils;
     //通过用户名查询用户信息返回
     @Override
     public User getByUsername(String username) {
@@ -209,6 +215,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        清空缓存
         this.clearUserAuthorityInfo(user.getUsername());
         return Result.success(copy(user));
+    }
+
+    /**
+     * 用户分页模糊查询
+     *
+     * @param username
+     */
+    @Override
+    public Result pageUser(String username) {
+//        分页模糊查询
+        Page<User> userPage=userMapper.selectPage(pageUtils.getPage(),
+                new QueryWrapper<User>().like(StrUtil.isNotBlank(username),"username",username));
+//        获取每个用户对应的角色权限
+        userPage.getRecords().forEach(user -> {
+            user.setRoleList(userMapper.listRolesByUserId(user.getId()));
+        });
+
+        return Result.success(userPage);
     }
 
     //    如果是列表就转为列表输出

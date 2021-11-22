@@ -37,5 +37,9 @@ public interface UserService extends IService<User> {
      * 超级管理员重置密码
      */
     Result repass(Long userId);
+    /**
+     * 用户分页模糊查询
+     */
+    Result pageUser(String username);
 
 }
