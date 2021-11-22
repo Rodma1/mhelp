@@ -80,4 +80,12 @@ public class UserController {
     public  Result update(@Validated @RequestBody User user){
         return userService.updateUser(user);
     }
+    /**
+     * 批量删除用户
+     */
+    @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('mh:user:delete')")
+    public Result delete(@RequestBody Long[] ids){
+        return userService.deleteUser(ids);
+    }
 }

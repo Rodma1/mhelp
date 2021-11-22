@@ -50,5 +50,9 @@ public interface UserService extends IService<User> {
      * 更新用户
      */
     Result updateUser(User user);
+    /**
+     * 批量删除用户
+     */
+    Result deleteUser(Long[] ids);
 
 }

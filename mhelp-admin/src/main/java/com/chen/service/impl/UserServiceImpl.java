@@ -7,8 +7,10 @@ import com.chen.common.lang.Const;
 import com.chen.dao.entity.Menu;
 import com.chen.dao.entity.Role;
 import com.chen.dao.entity.User;
+import com.chen.dao.entity.UserRole;
 import com.chen.dao.mapper.MenuMapper;
 import com.chen.dao.mapper.UserMapper;
+import com.chen.dao.mapper.UserRoleMapper;
 import com.chen.service.MenuService;
 import com.chen.service.RoleService;
 import com.chen.service.UserService;
@@ -30,6 +32,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +68,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //    分页
     @Autowired
     private PageUtils pageUtils;
+//    用户角色表映射
+    @Autowired(required = false)
+    private UserRoleMapper userRoleMapper;
     //通过用户名查询用户信息返回
     @Override
     public User getByUsername(String username) {
@@ -279,6 +285,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        更新操作
         userMapper.updateById(user);
         return Result.success(copy(user));
+    }
+
+    /**
+     * 批量删除用户
+     *
+     * @param ids
+     */
+    @Override
+    public Result deleteUser(Long[] ids) {
+//        通过deleteBatchIds可以删除，Arrays.asList()这个方法可以将数组转换为集合
+        userMapper.deleteBatchIds(Arrays.asList(ids));
+//        用户角色表里面的用户也要删除
+        userRoleMapper.delete(new QueryWrapper<UserRole>().in("user_id",ids));
+
+        return Result.success("删除成功");
     }
 
     //    如果是列表就转为列表输出
