@@ -21,4 +21,6 @@ public interface UserService extends IService<User> {
     void clearUserAuthorityInfo(String username);
 //  删除所有与该菜单关联的所有用户的权限信息
     void clearUserAuthorityInfoByMenuId(Long menuId);
+//    删除所有与该角色关联的所有缓存信息
+    void clearUserAuthorityInfoByRoleId(Long roleId);
 }

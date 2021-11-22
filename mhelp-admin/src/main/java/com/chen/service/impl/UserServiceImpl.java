@@ -115,5 +115,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         });
     }
 
+    /**
+     * 删除所有与该角色关联的所有缓存信息
+     * @param roleId
+     */
+    @Override
+    public void clearUserAuthorityInfoByRoleId(Long roleId) {
+//        执行sql获取关联的用户信息
+        List<User> users=this.list(new QueryWrapper<User>()
+                .inSql("id",
+                        "select user_id from sys_user_role where role_id = "
+                                + roleId));
+//        遍历清除
+        users.forEach(user -> {
+            this.clearUserAuthorityInfo(user.getUsername());
+        });
+    }
+
 
 }

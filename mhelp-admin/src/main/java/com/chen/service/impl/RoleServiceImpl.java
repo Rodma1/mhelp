@@ -49,6 +49,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 //    用户角色映射
     @Autowired(required = false)
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private UserService userService;
     /**
      * 通过角色id获取数据
      *
@@ -101,6 +103,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public Result updateRole(Role role) {
         role.setUpdated(LocalDateTime.now());
         roleMapper.updateById(role);
+//        更新缓存
+        userService.clearUserAuthorityInfoByRoleId(role.getId());
         return Result.success(role);
     }
 
@@ -116,6 +120,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 //      同步删除用户角色表和角色菜单表里面的数据
         userRoleMapper.delete(new QueryWrapper<UserRole>().in("role_id",ids));
         roleMenuMapper.delete(new QueryWrapper<RoleMenu>().in("role_id",ids));
+//       缓存同步删除
+        Arrays.stream(ids).forEach(id->{
+//            更新缓存
+            userService.clearUserAuthorityInfoByRoleId(id);
+        });
+
         return Result.success("删除成功");
     }
 
