@@ -18,4 +18,9 @@ public interface RoleService extends IService<Role> {
      * 通过角色id获取数据
      */
     Result getIDRole(Long id);
+    /**
+     * 获取角色列表，也可以通过关键字查询
+     * name
+     */
+    Result list(String name);
 }

@@ -35,4 +35,15 @@ public class RoleController {
     public Result info(@PathVariable Long id){
         return roleService.getIDRole(id);
     }
+    /**
+     * 获取角色列表，也可以通过关键字查询
+     * @param name
+     */
+    @GetMapping("/list")
+    @PreAuthorize("hasAuthority('mh:role:list')")
+    public Result list(String name){
+        return roleService.list(name);
+    }
+
+
 }

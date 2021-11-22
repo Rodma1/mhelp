@@ -1,6 +1,8 @@
 package com.chen.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.dao.entity.Role;
 import com.chen.dao.entity.RoleMenu;
 import com.chen.dao.mapper.RoleMapper;
@@ -8,6 +10,7 @@ import com.chen.dao.mapper.RoleMenuMapper;
 import com.chen.service.RoleMenuService;
 import com.chen.service.RoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.chen.utils.PageUtils;
 import com.chen.vo.Result;
 import com.chen.vo.RoleVo;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +36,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private RoleMapper roleMapper;
     @Autowired(required = false)
     private RoleMenuMapper roleMenuMapper;
+    @Autowired
+    private PageUtils pageUtils;
     /**
      * 通过角色id获取数据
      *
@@ -49,7 +54,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         roleVo.setMenuIds(menuIds);
         return Result.success(roleVo);
     }
-//    如果是列表就转为列表输出
+
+    /**
+     * 获取角色列表，也可以通过关键字查询
+     * @param name
+     */
+    @Override
+    public Result list(String name) {
+//        翻页模糊查询查询
+        Page<Role> rolePage=roleMapper.selectPage(pageUtils.getPage(),
+                new QueryWrapper<Role>().like(StrUtil.isNotBlank(name),"name",name));
+        return Result.success(rolePage);
+    }
+
+    //    如果是列表就转为列表输出
     private List<RoleVo> copyList(List<Role> roles){
         List<RoleVo> roleVoList=new ArrayList<>();
         for (Role role : roles){
