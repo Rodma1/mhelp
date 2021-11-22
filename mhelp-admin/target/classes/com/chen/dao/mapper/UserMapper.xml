@@ -14,4 +14,9 @@
                           left join mh_user on mh_user.id=ur.user_id
         where rm.menu_id=#{menuId}
     </select>
+<!--    List<Role> listRolesByUserId(Long userId);-->
+    <select id="listRolesByUserId" resultType="com.chen.dao.entity.Role">
+        select * from mh_role where id in (select role_id from mh_user_role where user_id=#{userId})
+
+    </select>
 </mapper>

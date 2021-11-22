@@ -12,10 +12,15 @@ import com.chen.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chen.utils.RedisUtil;
 import com.chen.vo.Result;
+import com.chen.vo.RoleVo;
+import com.chen.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -132,5 +137,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         });
     }
 
+    /**
+     * 通过用户id获取数据
+     *
+     * @param id
+     */
+    @Override
+    public Result getIDUser(Long id) {
+//        获取用户信息
+        User user=userMapper.selectById(id);
+//        判断是否存在
+        Assert.notNull(user,"找不到该管理员");
+        UserVo userVo=copy(user);
+//        通过用户id获取用户权限信息
+        List<Role> roles=userMapper.listRolesByUserId(id);
+        userVo.setRoleList(roles);
+        return Result.success(userVo);
+    }
+    //    如果是列表就转为列表输出
+    private List<UserVo> copyList(List<User> users){
+        List<UserVo> userVoList=new ArrayList<>();
+        for (User user : users){
+            userVoList.add(copy(user));
+        }
+        return  userVoList;
+    }
+    private UserVo copy(User user){
+//        new一个RoleVo对象
+        UserVo userVo=new UserVo();
+//        将role里面的属性赋值到roleVo
+        BeanUtils.copyProperties(user,userVo);
+        return userVo;
+    }
 
 }

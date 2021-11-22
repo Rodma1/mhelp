@@ -1,5 +1,6 @@
 package com.chen.service;
 
+import com.chen.dao.entity.Role;
 import com.chen.dao.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.vo.Result;
@@ -23,4 +24,8 @@ public interface UserService extends IService<User> {
     void clearUserAuthorityInfoByMenuId(Long menuId);
 //    删除所有与该角色关联的所有缓存信息
     void clearUserAuthorityInfoByRoleId(Long roleId);
+    /**
+     * 通过用户id获取数据
+     */
+    Result getIDUser(Long id);
 }

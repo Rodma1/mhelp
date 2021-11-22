@@ -4,6 +4,7 @@ package com.chen.controller;
 import com.chen.service.UserService;
 import com.chen.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,15 @@ public class UserController {
     @GetMapping("/authority/{id}")
     public Result getUserAuthorityInfo(@PathVariable("id") Long userId){
         return Result.success(userService.getUserAuthorityInfo(userId));
+    }
+    /**
+     * 通过用户id获取数据
+     */
+    @GetMapping("/info/{id}")
+//    设置权限
+    @PreAuthorize("hasAuthority('mh:user:list')")
+    public Result info(@PathVariable Long id){
+        return userService.getIDUser(id);
     }
 
 }
