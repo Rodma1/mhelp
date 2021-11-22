@@ -72,5 +72,12 @@ public class UserController {
     public Result save(@Validated @RequestBody User user){
         return userService.insertUser(user);
     }
-
+    /**
+     * 更新用户
+     */
+    @PostMapping("/update")
+    @PreAuthorize("hasAuthority('mh:user:update')")
+    public  Result update(@Validated @RequestBody User user){
+        return userService.updateUser(user);
+    }
 }

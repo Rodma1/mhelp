@@ -261,6 +261,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Result.success(copy(user));
     }
 
+    /**
+     * 更新用户
+     *
+     * @param user
+     */
+    @Override
+    public Result updateUser(User user) {
+//        设置更新时间
+        user.setUpdated(LocalDateTime.now());
+//        如果密码不为空
+        if (StrUtil.isNotBlank(user.getPassword())){
+            String password=passwordEncoder.encode(user.getPassword());
+//            设置密码
+            user.setPassword(password);
+        }
+//        更新操作
+        userMapper.updateById(user);
+        return Result.success(copy(user));
+    }
+
     //    如果是列表就转为列表输出
     private List<UserVo> copyList(List<User> users){
         List<UserVo> userVoList=new ArrayList<>();

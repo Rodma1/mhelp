@@ -5,6 +5,7 @@ import com.chen.dao.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.vo.Result;
 import com.chen.vo.params.PassParam;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * <p>
@@ -45,5 +46,9 @@ public interface UserService extends IService<User> {
      * 创建用户
      */
     Result insertUser(User user);
+    /**
+     * 更新用户
+     */
+    Result updateUser(User user);
 
 }
