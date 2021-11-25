@@ -14,7 +14,7 @@ module.exports = {
     // 例如将'localhost:8080/'代理到 http://localhost:8888
     proxyTable: {
       '/': {
-        target: 'http://192.168.0.128:8888',
+        target: 'http://101.35.145.209:8888',
         changeOrigin: true,
         pathRewrite: {
           '^/': ''

@@ -69,7 +69,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     /**
-     * 获取角色列表，也可以通过关键字查询
+     * 分页模糊查询角色
      * @param name
      */
     @Override
