@@ -7,9 +7,9 @@ import store from './store'
 Vue.config.productionTip = false
 import Element from 'element-ui'
 import "element-ui/lib/theme-chalk/index.css"
-import axios from 'axios'
-Vue.prototype.$axios = axios //
+import request from "./axios"
 Vue.prototype.$store=store
+Vue.prototype.$axios=request
 Vue.use(Element);
 Vue.use(router);
 /* eslint-disable no-new */

@@ -92,7 +92,7 @@ export default {
         console.log(qs.stringify(this.loginForm))
         // console.log(this.loginForm)
         if (valid) {
-          this.$axios.post('http://101.35.145.209:8889/login?'+qs.stringify(this.loginForm))
+          this.$axios.post('/login?'+qs.stringify(this.loginForm))
             .then(res=>{
               alert(res.data.msg);
             //  获取请求头的jwt
@@ -117,7 +117,7 @@ export default {
     },
     //获取验证码
     getCaptcha() {
-      this.$axios.get('http://101.35.145.209:8889/captcha').then(res => {
+      this.$axios.get('/captcha').then(res => {
         // console.log(res.data);
         this.loginForm.token = res.data.data.token;
         this.captchaImg = res.data.data.captchaImg
