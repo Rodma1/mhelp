@@ -8,25 +8,25 @@
         <p>扫码关注</p>
       </div>
     </el-col>
-    <el-col span="1">
+    <el-col :span="1">
       <el-divider direction="vertical"></el-divider>
     </el-col>
     <el-col :lg="9" :xl="11">
-      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-loginForm">
+        <el-form-item label="用户名" prop="username">
+          <el-input type="username" v-model="loginForm.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="code">
-          <el-input class="el-input" v-model.number="ruleForm.code" style="width: 150px;float: left"></el-input>
+          <el-input class="el-input" v-model.number="loginForm.code" style="width: 150px;float: left"></el-input>
           <el-image class="captchatImg" :src="captchaImg" @click="getCaptcha"></el-image>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
+          <el-button @click="resetForm('loginForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')">注册</el-button>
 
         </el-form-item>
       </el-form>
@@ -35,10 +35,11 @@
 </template>
 
 <script>
+import qs from 'qs'
 export default {
   name: "login",
   data() {
-    var checkAge = (rule, value, callback) => {
+    var checkCode = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('验证码不能为空'));
       }
@@ -58,38 +59,26 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'));
       } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
+        if (this.loginForm.password !== '') {
+          this.$refs.loginForm.validateField('password');
         }
         callback();
       }
     };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error('两次输入密码不一致!'));
-      } else {
-        callback();
-      }
-    };
     return {
-      ruleForm: {
-        pass: '',
-        checkPass: '',
+      loginForm: {
+        username: '',
+        password: '',
         //验证码
         code: '',
         token: ' '
       },
       rules: {
-        pass: [
+        username: [
           {validator: validatePass, trigger: 'blur'}
         ],
-        checkPass: [
-          {validator: validatePass2, trigger: 'blur'}
-        ],
         code: [
-          {validator: checkAge, trigger: 'blur'}
+          {validator: checkCode, trigger: 'blur'}
         ]
       },
       //验证码图片
@@ -99,9 +88,24 @@ export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
+        // 将一个对象转变成字符串：username=111&password=111&code=111&token=aaaaa
+        console.log(qs.stringify(this.loginForm))
+        // console.log(this.loginForm)
         if (valid) {
-          alert('submit!');
+          this.$axios.post('http://101.35.145.209:8889/login?'+qs.stringify(this.loginForm))
+            .then(res=>{
+              alert(res.data.msg);
+            //  获取请求头的jwt
+              const jwt = res.headers['authorization']
+            //  将jwt存储到应用store中
+              this.$store.commit("SET_TOKEN",jwt)
+            //  跳转路由
+              this.$router.push("/")
+            })
+
         } else {
+          //重新获取验证码
+          this.getCaptcha()
           console.log('error submit!!');
           return false;
         }
@@ -114,9 +118,9 @@ export default {
     //获取验证码
     getCaptcha() {
       this.$axios.get('http://101.35.145.209:8889/captcha').then(res => {
-        console.log(res.data);
-        this.ruleForm.token=res.data.data.token;
-        this.captchaImg=res.data.data.captchaImg
+        // console.log(res.data);
+        this.loginForm.token = res.data.data.token;
+        this.captchaImg = res.data.data.captchaImg
 
       })
     },
@@ -155,7 +159,7 @@ export default {
   /*设置元素的左边距*/
   margin-left: 8px;
   /*添加圆角的边框*/
-  width:90px;
+  width: 90px;
   border-radius: 4px;
 }
 
