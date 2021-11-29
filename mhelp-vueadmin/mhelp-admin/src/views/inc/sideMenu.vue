@@ -5,10 +5,10 @@
         <template slot="title"><i class="el-icon-s-home"></i> <span slot="title">首页</span></template>
       </el-menu-item>
     </router-link>
-    <el-submenu :index="menu.name"  v-for="menu in menuList">
+    <el-submenu :index="menu.name"  v-for="menu in menuList" :key="menu.id">
       <template slot="title"><i :class="menu.icon"></i> <span>{{ menu.title }}</span></template>
       <!-- 子： 响应点击链接-->
-      <router-link :to="item.path" v-for="item in menu.children">
+      <router-link :to="item.path" v-for="item in menu.children" :key="item.id">
         <el-menu-item :index="item.name">
           <template slot="title"><i :class="item.icon"></i> <span slot="title">{{ item.title }}</span></template>
         </el-menu-item>
@@ -33,8 +33,10 @@ export default {
       get() {
         return this.$store.state.menus.menuList
       }
+
     }
   },
+
 
 
 }
