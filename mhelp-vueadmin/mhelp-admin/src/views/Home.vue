@@ -16,7 +16,7 @@
           </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>个人中心</el-dropdown-item>
-              <el-dropdown-item divided>退出</el-dropdown-item>
+              <el-dropdown-item divided @click.native="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -44,7 +44,30 @@ export default {
         avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
       }
     }
+  },
+//  进入页面就刷新
+  created(){
+
+  },
+  methods:{
+    //获取用户信息:目前还没写
+    getUserInfo(){
+      this.$axios.get("/sys/user/info/").then(res=>{
+        this.userInfo=res.data.data;
+      })
+    },
+  //  退出登录
+    logout(){
+      this.$axios.post("/logout").then(res=>{
+        console.log(res.data.data)
+        localStorage.clear();
+        sessionStorage.clear()
+      //  跳转到登录页
+        this.$router.push("/login")
+      })
+    }
   }
+
 
 }
 </script>
