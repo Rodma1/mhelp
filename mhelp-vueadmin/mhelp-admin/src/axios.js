@@ -18,8 +18,8 @@ request.interceptors.request.use(config => {
 //响应请求
 request.interceptors.response.use(response => {
     let res = response.data;
-    console.log("response")
-    console.log(res)
+    // console.log("response")
+    // console.log(res)
     if (res.code == 200) {
       //返回请求到的数据
       return response;

@@ -21,7 +21,7 @@
           </el-dropdown>
         </div>
       </el-header>
-      <!--      所有连接都在home父级里面进行   margin: 0 15px-->
+      <!--      所有连接都在home父级里面进行   margin: 0 15px：上下为零，左右偏移15-->
       <el-main >
 <!--        使用组件-->
         <Tabs></Tabs>
@@ -50,12 +50,12 @@ export default {
   },
 //  进入页面就刷新
   created(){
-
+    this.getUserInfo()
   },
   methods:{
     //获取用户信息:目前还没写
     getUserInfo(){
-      this.$axios.get("/sys/user/info/").then(res=>{
+      this.$axios.get("/sys/user/info/1").then(res=>{
         this.userInfo=res.data.data;
       })
     },

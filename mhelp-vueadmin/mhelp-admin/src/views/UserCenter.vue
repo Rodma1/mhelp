@@ -62,11 +62,7 @@ export default {
   },
   methods: {
     getUserInfo() {
-      this.$axios.get("/sys/user/info/1",{
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      }).then(res => {
+      this.$axios.get("/sys/user/info/1").then(res => {
         // console.log(res)
         this.userInfo = res.data.data;
       })
