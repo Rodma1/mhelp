@@ -8,6 +8,7 @@ Vue.config.productionTip = false
 import Element from 'element-ui'
 import "element-ui/lib/theme-chalk/index.css"
 import request from "./axios"
+import gobal from "./globalFun"
 Vue.prototype.$store=store
 Vue.prototype.$axios=request
 Vue.use(Element);

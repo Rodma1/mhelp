@@ -15,11 +15,11 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="dialogVisible = true">新增</el-button>
+        <el-button type="primary" @click="dialogVisible = true" v-if="hasAuth('mh:user:save')">新增</el-button>
       </el-form-item>
       <el-form-item>
         <el-popconfirm title="这是确定批量删除吗？" @confirm="delHandle(null)">
-          <el-button type="danger" slot="reference" :disabled="delBtlStatu" >批量删除</el-button>
+          <el-button type="danger" slot="reference" :disabled="delBtlStatu" v-if="hasAuth('mh:user:delete')">批量删除</el-button>
         </el-popconfirm>
       </el-form-item>
     </el-form>
@@ -55,7 +55,7 @@
         prop="code"
         label="角色名称">
         <template slot-scope="scope">
-          <el-tag size="small" type="info" v-for="item in scope.row.sysRoles">{{item.name}}</el-tag>
+          <el-tag size="small" type="info" v-for="item in scope.row.roleList">{{item.name}}</el-tag>
         </template>
 
       </el-table-column>
@@ -100,7 +100,7 @@
 
           <template>
             <el-popconfirm title="这是一段内容确定删除吗？" @confirm="delHandle(scope.row.id)">
-              <el-button type="text" slot="reference">删除</el-button>
+              <el-button type="text" slot="reference" >删除</el-button>
             </el-popconfirm>
           </template>
 
@@ -349,9 +349,9 @@ export default {
 
       this.$axios.get('/sys/user/info/' + id).then(res => {
         this.roleForm = res.data.data
-
+        // console.log(res.data.data)
         let roleIds = []
-        res.data.data.sysRoles.forEach(row => {
+        res.data.data.roleList.forEach(row => {
           roleIds.push(row.id)
         })
 
