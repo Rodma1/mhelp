@@ -40,15 +40,6 @@ export default {
     }
   },
   methods: {
-    // addTab(targetName) {
-    //   let newTabName = ++this.tabIndex + '';
-    //   this.editableTabs.push({
-    //     title: 'New Tab',
-    //     name: newTabName,
-    //     content: 'New Tab content'
-    //   });
-    //   this.editableTabsValue = newTabName;
-    // },
     clickTab(target){
       this.$router.push({name:target.name})
     },

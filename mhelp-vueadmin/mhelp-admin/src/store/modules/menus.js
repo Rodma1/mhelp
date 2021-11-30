@@ -34,7 +34,24 @@ export default {
     //  设置权限列表
     setPermList(state, authoritys) {
       state.permList = authoritys
-    }
+    },
+  //  添加标签
+    addTabs(state,tab){
+      // console.log(tab)
+    //  判断是否在栈内
+      let index=state.editableTabs.findIndex(item=>item.name===tab.name)
+      //如果下标是-1,说明没有在栈内
+      if (index===-1){
+      //  添加到tabs中
+        state.editableTabs.push(tab)
+      }
+    //  当前激活的tab
+      state.editableTabsValue=tab.name
+    },
+  //  设置激活的tab
+    setActiveTab(state,tabName){
+      state.editableTabsValue=tabName
+    },
 
   }
 }
