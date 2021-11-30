@@ -231,18 +231,20 @@ export default {
     },
 
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
       this.size = val
       this.getRoleList()
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.current = val
       this.getRoleList()
     },
 
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      if (this.$refs[formName]!==undefined) {
+        this.$refs[formName].resetFields();
+      }
       this.dialogVisible = false
       this.editForm = {}
     },
@@ -278,6 +280,7 @@ export default {
                 onClose:() => {
                   this.getRoleList()
                 }
+
               });
 
               this.dialogVisible = false
@@ -308,7 +311,7 @@ export default {
         })
       }
 
-      console.log(ids)
+      // console.log(ids)
 
       this.$axios.post("/sys/role/delete", ids).then(res => {
         this.$message({
@@ -328,15 +331,16 @@ export default {
 
         this.$refs.permTree.setCheckedKeys(res.data.data.menuIds)
         this.permForm = res.data.data
+        // console.log(this.permForm)
       })
     },
 
     submitPermFormHandle(formName) {
       var menuIds = this.$refs.permTree.getCheckedKeys()
 
-      console.log(menuIds)
+      // console.log(menuIds)
 
-      this.$axios.post('/sys/role/perm/' + this.permForm.id, menuIds).then(res => {
+      this.$axios.post('/sys/role-menu/perm/' + this.permForm.id, menuIds).then(res => {
         this.$message({
           showClose: true,
           message: '恭喜你，操作成功',
@@ -346,6 +350,7 @@ export default {
           }
         });
         this.permDialogVisible = false
+        console.log(formName)
         this.resetForm(formName)
       })
     }

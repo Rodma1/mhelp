@@ -363,7 +363,7 @@ export default {
 
       console.log(roleIds)
 
-      this.$axios.post('/sys/user/role/' + this.roleForm.id, roleIds).then(res => {
+      this.$axios.post('/sys/user-role/role/' + this.roleForm.id, roleIds).then(res => {
         this.$message({
           showClose: true,
           message: '恭喜你，操作成功',
