@@ -65,6 +65,8 @@ export default {
         console.log(res.data.data)
         localStorage.clear();
         sessionStorage.clear()
+      //  清空
+        this.$store.commit("resetState")
       //  跳转到登录页
         this.$router.push("/login")
       })

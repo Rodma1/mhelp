@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" @click="clickTab">
+  <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" @tab-click="clickTab">
     <el-tab-pane
       v-for="(item, index) in editableTabs"
       :key="item.name"

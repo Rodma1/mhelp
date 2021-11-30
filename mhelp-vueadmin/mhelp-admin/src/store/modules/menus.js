@@ -52,6 +52,18 @@ export default {
     setActiveTab(state,tabName){
       state.editableTabsValue=tabName
     },
+  //  响应退出登录清空
+    resetState: (state) => {
+      state.menuList = []
+      state.permList = []
+
+      state.hasRoutes = false
+      state.editableTabsValue = 'Index'
+      state.editableTabs = [{
+        title: '首页',
+        name: 'Index',
+      }]
+    }
 
   }
 }
