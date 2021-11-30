@@ -10,7 +10,14 @@ export default {
     //  权限数据
     permList: [],
     //通过hasRoute来动态判断是否已经加载过菜单
-    hasRoutes: false
+    hasRoutes: false,
+    editableTabsValue:'Index',
+    editableTabs: [{
+      title: '首页',
+      name: 'Index'
+    }]
+
+
   },
   //定义事件
   mutations: {

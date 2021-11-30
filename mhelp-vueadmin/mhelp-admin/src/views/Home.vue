@@ -22,8 +22,10 @@
         </div>
       </el-header>
       <!--      所有连接都在home父级里面进行   margin: 0 15px-->
-      <el-main style="margin: 0 15px">
-        <div>
+      <el-main >
+<!--        使用组件-->
+        <Tabs></Tabs>
+        <div style="margin: 0 15px">
           <router-view></router-view>
         </div>
       </el-main>
@@ -33,9 +35,10 @@
 
 <script>
 import SideMenu from "./inc/sideMenu";
+import Tabs from "./inc/Tabs";
 export default {
   name: "Home.vue",
-  components: {SideMenu},
+  components: {SideMenu,Tabs},
   data() {
     return {
       userInfo: {
@@ -117,10 +120,8 @@ export default {
 }
 
 .el-main {
-  background-color: #E9EEF3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
+   color: #333;
+  padding: 0;
 }
 
 
