@@ -20,6 +20,15 @@ const router = new Router({
             title: "首页"
           },
           component: () => import('@/views/index.vue')
+        },
+        {
+          path:'/usercenter',
+          name:'UserCenter',
+          meta:{
+            title:"个人中心"
+          },
+          component:()=>import('@/views/UserCenter.vue')
+
         }
 
       ]
