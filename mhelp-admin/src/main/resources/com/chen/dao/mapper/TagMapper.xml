@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--MyBatis配置文件-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chen.dao.mapper.TagMapper">
+<!--List<Tag> findTagsByTaskId(Long taskId);-->
+    <select id="findTagsByTaskId" parameterType="long" resultType="com.chen.dao.entity.Tag">
+        select id,avatar,tag_name as tagName from mh_tag where id
+in (select tag_id from mh_task_tag where task_id=#{taskId});
+    </select>
+</mapper>

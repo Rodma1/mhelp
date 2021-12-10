@@ -1,5 +1,8 @@
 package com.chen.dao.entity;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+
+import java.util.List;
 
 //创建任务实体类
 @Data
@@ -48,5 +51,20 @@ public class Task {
      * 任务进行状态
      */
     private Long status;
+    /**
+     * 类别
+     */
+    @TableField(exist = false)
+    private Category category;
+    /**
+     * 标签
+     */
+    @TableField(exist = false)
+    private List<Tag> tasktag;
+    /**
+     * 内容
+     */
+    @TableField(exist = false)
+    private TaskBody taskBody;
 
 }

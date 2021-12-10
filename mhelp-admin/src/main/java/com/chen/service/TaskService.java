@@ -8,4 +8,8 @@ public interface TaskService {
      * @return
      */
     Result listTaskPage(String taskname);
+    /**
+     * 批量删除任务
+     */
+    Result deleteTask(Long[] ids);
 }
