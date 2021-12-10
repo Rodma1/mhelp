@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe4a1abb-9ce2-4205-9dbd-964d37cc876f" name="Default Changelist" comment="管理员端界面先搭建到这，后面在搭建任务管理（管理员端）">
-      <change beforePath="$PROJECT_DIR$/../mhelp-admin/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../mhelp-admin/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mhelp-admin/target/classes/META-INF/spring-configuration-metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/../mhelp-admin/target/classes/META-INF/spring-configuration-metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mhelp-admin/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../mhelp-admin/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,19 +45,6 @@
     <property name="ts.external.directory.path" value="F:\study\软件\IDEAL\idea\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -80,6 +65,8 @@
       <workItem from="1638239246048" duration="7589000" />
       <workItem from="1638250029052" duration="6165000" />
       <workItem from="1638258973122" duration="3180000" />
+      <workItem from="1638265121612" duration="2643000" />
+      <workItem from="1638273500484" duration="656000" />
     </task>
     <task id="LOCAL-00001" summary="登录界面获取验证码显示成功">
       <created>1638089521715</created>

@@ -10,8 +10,7 @@
     {
       "name": "chen.jwt.expire",
       "type": "java.lang.Long",
-      "sourceType": "com.chen.utils.JwtUtils",
-      "defaultValue": 0
+      "sourceType": "com.chen.utils.JwtUtils"
     },
     {
       "name": "chen.jwt.header",
