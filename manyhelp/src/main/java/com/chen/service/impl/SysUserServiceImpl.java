@@ -2,29 +2,45 @@ package com.chen.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.chen.dao.mapper.SysUserMapper;
 import com.chen.dao.pojo.SysUser;
 import com.chen.service.SysUserService;
+import com.chen.utils.GetTokenUrl;
 import com.chen.utils.JWTUtils;
+import com.chen.utils.UserThreadLocal;
 import com.chen.vo.ErrorCode;
 import com.chen.vo.LoginUserVo;
 import com.chen.vo.Result;
 import com.chen.vo.UserVo;
+import com.github.tobato.fastdfs.domain.fdfs.StorePath;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class SysUserServiceImpl implements SysUserService {
     @Autowired(required = false)
     private SysUserMapper sysUserMapper;
     @Autowired
     //    springboot和redis整合
     private RedisTemplate<String,String> redisTemplate;
-
+    @Autowired
+    private FastFileStorageClient storageClient;
+    @Autowired
+    private GetTokenUrl getTokenUrl;
     @Override
     public SysUser findUserById(Long userid) {
         SysUser sysUser=sysUserMapper.selectById(userid);
@@ -113,6 +129,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public UserVo findUserVoById(Long id) {
+
 //        查询任务id对应的信息:select * from mh_task where id=#{id};
         SysUser sysUser=sysUserMapper.selectById(id);
         if (sysUser == null){
@@ -127,6 +144,50 @@ public class SysUserServiceImpl implements SysUserService {
         userVo.setNickname(sysUser.getNickname());
         userVo.setId(String.valueOf(sysUser.getId()));
         return userVo;
+    }
+
+    @Override
+    public Result uploadavatar(MultipartFile file) {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+        List<String> CONTENT_TYPES = Arrays.asList("image/jpeg", "image/gif","image/png");
+        //    获取文件名称
+        String originalFilename=file.getOriginalFilename();
+//        校验文件的类型:image/png
+        String contentType=file.getContentType();
+        if (!CONTENT_TYPES.contains(contentType)){
+            log.info("文件类型不合法:{}",originalFilename);
+            return Result.fail(400,"文件类型不合法");
+        }
+        try{
+//            校验文件内容
+            BufferedImage bufferedImage= ImageIO.read(file.getInputStream());
+            if (bufferedImage==null){
+                log.info("文件内容不和发：{}",originalFilename);
+                return Result.fail(400,"文件内容不和发");
+            }
+//            保存到服务器
+//            System.out.println(originalFilename);
+            String ext = StringUtils.substringAfterLast(originalFilename, ".");
+//            System.out.println(ext);  :这是获取图片后缀png
+            StorePath storePath=this.storageClient.uploadFile(file.getInputStream(),file.getSize(),ext,null);
+//            生成地址返回
+            log.info("上传头像成功");
+            String avatarUrl=getTokenUrl.getTokenUrl(storePath.getFullPath());
+            UpdateWrapper updateWrapper=new UpdateWrapper();
+            updateWrapper.eq("account",sysUser.getAccount());
+            updateWrapper.set("avatar",avatarUrl);
+            sysUserMapper.update(null,updateWrapper);
+            return Result.success(avatarUrl);
+        } catch (IOException e) {
+            log.info("服务器内部错误");
+            e.printStackTrace();
+            return Result.fail(400,"服务器内部错误");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(400,"获取token异常");
     }
 
 

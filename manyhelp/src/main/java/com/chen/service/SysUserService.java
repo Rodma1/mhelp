@@ -3,6 +3,7 @@ package com.chen.service;
 import com.chen.dao.pojo.SysUser;
 import com.chen.vo.Result;
 import com.chen.vo.UserVo;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface SysUserService {
@@ -21,5 +22,7 @@ public interface SysUserService {
 
 //    获取基本的昵称和头像给评论显示
     UserVo findUserVoById(Long id);
+//    上传头像
+    Result uploadavatar(MultipartFile file);
 
 }
