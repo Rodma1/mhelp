@@ -128,14 +128,14 @@ public class LoginServiceImpl implements LoginService {
         if (stringObjectMap==null){
             return null;
         }
-//        获取token
+//        获取redis里面对应token键的用户信息Sysuer
         String userJson=redisTemplate.opsForValue().get("TOKEN_"+token);
         if (StringUtils.isBlank(userJson)){
             return  null;
         }
+//        解析
         SysUser sysUser=JSON.parseObject(userJson,SysUser.class);
         return sysUser;
-
     }
 
 

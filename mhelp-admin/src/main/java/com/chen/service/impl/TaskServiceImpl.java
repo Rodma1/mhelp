@@ -51,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
             task.setTasktag(tagMapper.findTagsByTaskId(task.getId()));
 
         });
-        return Result.success(taskPage.getRecords());
+        return Result.success(taskPage);
     }
 
     /**

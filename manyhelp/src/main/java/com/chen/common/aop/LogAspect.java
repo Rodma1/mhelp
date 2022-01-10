@@ -24,15 +24,16 @@ import java.lang.reflect.Method;
 @Slf4j
 public class LogAspect {
 
-//切点
+//1. 切点： 定义 PointCut
     @Pointcut("@annotation(com.chen.common.aop.LogAnnotation)")
     public void logPointCut() {
     }
-// 环绕通知：对方法前后都可以增强
+// 环绕通知：定义应用于 JoinPoint 中所有满足 PointCut 条件的 advice, 这里我们使用 around advice，在其中织入增强逻辑
     @Around("logPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         long beginTime = System.currentTimeMillis();
-        //执行方法
+        //执行方法,这个point.proceed()前面的执行方法前，后面的是执行方法后
+//         原来的 被注解的controller 逻辑，可视情况决定是否执行
         Object result = point.proceed();
         //执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;
