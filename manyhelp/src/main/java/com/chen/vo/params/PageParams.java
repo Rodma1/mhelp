@@ -22,6 +22,8 @@ public class PageParams {
      */
     private String year;
     private String month;
+//    任务状态
+    private  Long status;
 //    指定以get方法
     public String getMonth(){
         if (this.month != null && this.month.length() == 1){
