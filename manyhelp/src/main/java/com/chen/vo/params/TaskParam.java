@@ -24,5 +24,7 @@ public class TaskParam {
     private String title;
 //    任务状态
     private Long status;
+//    任务图片
+    private String images;
 
 }

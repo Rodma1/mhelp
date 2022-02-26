@@ -45,6 +45,10 @@ public class Task {
      */
     private Long publishSchoolId;
     /**
+     * 图片
+     */
+    private String images;
+    /**
      * 任务进行状态
      */
     private Long status;

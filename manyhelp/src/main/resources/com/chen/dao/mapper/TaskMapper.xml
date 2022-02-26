@@ -24,6 +24,7 @@
         <result column="category_id" property="categoryId"/>
         <result column="accept_user_id" property="acceptUserId"/>
         <result column="publish_school_id" property="publishSchoolId"/>
+        <result column="images" property="images"/>
         <result column="status" property="status"/>
     </resultMap>
 <!--    设置查询sql语句  taskMap是映射的上面的id->

@@ -209,6 +209,7 @@ public class TaskServiceImpl implements TaskService {
         task.setSummary(taskParam.getSummary());
         task.setTitle(taskParam.getTitle());
         task.setViewCounts(0);
+        task.setImages(taskParam.getImages());
         //默认为Task_Common
         task.setWeight(Task.Task_Common);
 //        在任务最后面id加
@@ -325,6 +326,7 @@ public class TaskServiceImpl implements TaskService {
         task.setCategoryId(id);
         task.setSummary(taskParam.getSummary());
         task.setTitle(taskParam.getTitle());
+        task.setImages(taskParam.getImages());
 //        执行插入 ,插入之后 会生成一个任务id
         this.taskMapper.updateById(task);
         /**

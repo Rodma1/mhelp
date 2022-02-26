@@ -9,6 +9,10 @@ public class TaskBody {
     private String content;
 //    内容的html
     private String contentHtml;
+
+    //    图片
+    private String images;
+
 //    任务id，通过这个id来和对应的任务表关联
     private Long taskId;
 }
