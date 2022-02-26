@@ -37,9 +37,9 @@ public class WebSorketServer {
 
     }
 //    启动服务  https://blog.csdn.net/weixin_42112064/article/details/103872520
-//   https://cloud.tencent.com/developer/article/1465705
+//   https://cloud.tencent.com/developer/article/1465705  192.168.1.121 172.17.0.5
     public  void start() throws InterruptedException {
-        this.future=server.bind("172.17.0.5",8089).sync();
+        this.future=server.bind("172.17.0.4",8089).sync();
         if (this.future.isSuccess()){
             log.info("netty websocket server 启动完毕...");
         }else{

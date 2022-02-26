@@ -115,6 +115,7 @@ public class TaskServiceImpl implements TaskService {
         if (isAuthor) {
             SysUser sysUser = sysUserService.findUserById(task.getAuthorId());
             taskVo.setAuthor(sysUser.getNickname());
+            taskVo.setAvatar(sysUser.getAvatar());
         }
 //        内容
         if (isBody){

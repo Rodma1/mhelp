@@ -24,6 +24,7 @@ public class TaskVo {
     private List<TagVo> tags;
 
     private String author;
+    private String avatar;
     //    任务内容
     private TaskBodyVo body;
     //  任务类别
