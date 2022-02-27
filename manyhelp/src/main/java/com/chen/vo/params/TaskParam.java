@@ -27,4 +27,9 @@ public class TaskParam {
 //    任务图片
     private String images;
 
+    /**
+     * 发布学校的名称
+     */
+    private String publishSchoolName;
+
 }

@@ -44,6 +44,12 @@ public class Task {
      * 发布任务的学校id
      */
     private Long publishSchoolId;
+
+    /**
+     * 发布学校的名称
+     */
+    private String publishSchoolName;
+
     /**
      * 图片
      */

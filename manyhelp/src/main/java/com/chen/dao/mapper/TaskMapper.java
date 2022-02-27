@@ -24,14 +24,14 @@ public interface TaskMapper extends BaseMapper<Task>{
      * @param
      * @return
      */
-    IPage<Task> selectTaskByKeys(Page<Task> page, String words,Long schoolid);
+    IPage<Task> selectTaskByKeys(Page<Task> page, String words,Long schoolid,String publishSchoolName);
 
     /**
      * selectTaskByKeysNoState
      * @param
      * @return
      */
-    IPage<Task> selectTaskByKeysNoState(Page<Task> page,String words,Long schoolid);
+    IPage<Task> selectTaskByKeysNoState(Page<Task> page,String words,Long schoolid,String publishSchoolName);
 
 
 }

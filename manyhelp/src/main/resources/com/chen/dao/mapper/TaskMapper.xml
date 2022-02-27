@@ -24,6 +24,7 @@
         <result column="category_id" property="categoryId"/>
         <result column="accept_user_id" property="acceptUserId"/>
         <result column="publish_school_id" property="publishSchoolId"/>
+        <result column="publish_school_name" property="publishSchoolName"/>
         <result column="images" property="images"/>
         <result column="status" property="status"/>
     </resultMap>
@@ -63,6 +64,9 @@
             </if>
             <if test="schoolid!=null and schoolid!='-1'">
                 and publish_school_id=#{schoolid}
+            </if>
+            <if test="publishSchoolName!=null and publishSchoolName!=''">
+                and publish_school_name like concat('%',#{publishSchoolName},'%')
             </if>
         </where>
         order by create_date desc

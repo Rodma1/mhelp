@@ -17,6 +17,10 @@ public class PageParams {
     private String words;
 //    学校id
     private Long schoolid;
+
+//    学校名
+    private String publishSchoolName;
+
     /**
      * 获取年月
      */

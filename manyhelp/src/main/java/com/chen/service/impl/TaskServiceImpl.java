@@ -209,7 +209,11 @@ public class TaskServiceImpl implements TaskService {
         task.setSummary(taskParam.getSummary());
         task.setTitle(taskParam.getTitle());
         task.setViewCounts(0);
+
         task.setImages(taskParam.getImages());
+
+        task.setPublishSchoolName(taskParam.getPublishSchoolName());
+
         //默认为Task_Common
         task.setWeight(Task.Task_Common);
 //        在任务最后面id加
@@ -380,7 +384,7 @@ public class TaskServiceImpl implements TaskService {
     };
     /**
      * selectTaskByKeys
-     * 查询指定词或者学校id的任务
+     * 查询指定词或者学校id或学校名称的任务
      * @param
      * @return
      */
@@ -392,7 +396,8 @@ public class TaskServiceImpl implements TaskService {
         IPage<Task> taskIPage = this.taskMapper.selectTaskByKeys(
                 page,
                 pageParams.getWords(),
-                pageParams.getSchoolid()
+                pageParams.getSchoolid(),
+                pageParams.getPublishSchoolName()
         );
         List<Task> record=taskIPage.getRecords();
         return Result.success(copyList(record,true,true));
@@ -408,10 +413,11 @@ public class TaskServiceImpl implements TaskService {
         //        创建页数对象
         Page<Task> page = new Page<>(pageParams.getPage(),pageParams.getPageSize());
 //        查询对应的关键词和学校id
-        IPage<Task> taskIPage = this.taskMapper.selectTaskByKeys(
+        IPage<Task> taskIPage = this.taskMapper.selectTaskByKeysNoState(
                 page,
                 pageParams.getWords(),
-                pageParams.getSchoolid()
+                pageParams.getSchoolid(),
+                pageParams.getPublishSchoolName()
         );
         List<Task> record=taskIPage.getRecords();
         return Result.success(copyList(record,true,true));
