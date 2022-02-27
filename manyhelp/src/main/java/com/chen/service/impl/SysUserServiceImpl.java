@@ -14,9 +14,11 @@ import com.chen.vo.ErrorCode;
 import com.chen.vo.LoginUserVo;
 import com.chen.vo.Result;
 import com.chen.vo.UserVo;
+import com.chen.vo.params.SysUserParam;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -64,7 +66,7 @@ public class SysUserServiceImpl implements SysUserService {
         queryWrapper.eq(SysUser::getPassword,pwd);
 //        要查询的的字段
         queryWrapper.select(SysUser::getId,SysUser::getAccount,
-                SysUser::getAvatar,SysUser::getNickname);
+                SysUser::getAvatar,SysUser::getNickname,SysUser::getEmail,SysUser::getPassword);
 //        只查询一行
         queryWrapper.last("limit 1");
 //        执行select语句
@@ -88,7 +90,32 @@ public class SysUserServiceImpl implements SysUserService {
         }
 //      解析userJson获取SysUser类型的属性
         SysUser sysUser= JSON.parseObject(userJson,SysUser.class);
+
 //        创建LoginUseVo对象，用户返回前端的数据
+        LoginUserVo loginUserVo=new LoginUserVo();
+
+        //        用户名
+        loginUserVo.setAccount(sysUser.getAccount());
+//        头像
+        loginUserVo.setAvatar(sysUser.getAvatar());
+//        用户id
+        loginUserVo.setId(String.valueOf(sysUser.getId()));
+//        昵称
+        loginUserVo.setNickname(sysUser.getNickname());
+
+//        邮箱
+        loginUserVo.setEmail(sysUser.getEmail());
+        System.out.println(sysUser.getEmail());
+        return Result.success(loginUserVo);
+
+    }
+
+    @Override
+    public Result getUserInfo() {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+
+        //        创建LoginUseVo对象，用户返回前端的数据
         LoginUserVo loginUserVo=new LoginUserVo();
 //        用户名
         loginUserVo.setAccount(sysUser.getAccount());
@@ -98,9 +125,13 @@ public class SysUserServiceImpl implements SysUserService {
         loginUserVo.setId(String.valueOf(sysUser.getId()));
 //        昵称
         loginUserVo.setNickname(sysUser.getNickname());
+
+//        邮箱
+        loginUserVo.setEmail(sysUser.getEmail());
         return Result.success(loginUserVo);
 
     }
+
 
     /*
     查找用户是否存在
@@ -163,6 +194,39 @@ public class SysUserServiceImpl implements SysUserService {
         }else{
             return Result.fail(400,"发生异常，服务器或者图片格式不对");
         }
+    }
+
+    /**
+     * 更新用户信息
+     * @param sysUserParam
+     * @return
+     */
+    @Override
+    public Result updateUser(SysUserParam sysUserParam, String token) {
+        String slat ="adfg!@#";
+
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+
+        sysUser.setAvatar(sysUserParam.getAvatar());
+        sysUser.setEmail(sysUserParam.getEmail());
+        sysUser.setNickname(sysUserParam.getNickname());
+        //如果都为false就是没有空
+        if (!(StringUtils.isBlank(sysUserParam.getBeforePssword())||StringUtils.isBlank(sysUserParam.getPassword()))){
+            //         slat加密盐给死了，也可以自己在数据库设计
+            String pwd= DigestUtils.md5Hex(sysUserParam.getBeforePssword()+slat);
+//            如果原密码相等，说明可以修改
+            if (!pwd.equals(sysUser.getPassword())){
+                return Result.success("原密码不对");
+            }
+            sysUser.setPassword(DigestUtils.md5Hex(sysUserParam.getPassword()+slat));
+
+        }
+
+        sysUserMapper.updateById(sysUser);
+        //        删除缓存中的token
+        redisTemplate.delete("TOKEN_"+token);
+        return Result.success("更新成功，请重新登录");
     }
 
 

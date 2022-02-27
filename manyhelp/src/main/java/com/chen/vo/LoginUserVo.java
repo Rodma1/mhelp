@@ -14,4 +14,7 @@ public class LoginUserVo {
     private String nickname;
 //    用户头像
     private String avatar;
+
+//    用户email
+    private String email;
 }
