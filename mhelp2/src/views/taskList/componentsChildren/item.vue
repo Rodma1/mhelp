@@ -11,16 +11,13 @@
           <div>分类：零食带饭</div>
           <div>标签：食堂</div>
         </div>
+        
         <div class="main">
-          帮我在后稷2食堂带个饭吧，要麻辣的鱼粉，多加香菜谢谢
+          <div class="title">带饭</div>
+          <div> 帮我在后稷2食堂带个饭吧，要麻辣的鱼粉，多加香菜谢谢</div>
         </div>
         <div class="image">
-          <img src="@/assets/img/example/图片1.jpg" alt="">
-          <img src="@/assets/img/example/图片2.jpg" alt="">
-          <img src="@/assets/img/example/图片1.jpg" alt="">
-          <img src="@/assets/img/example/图片2.jpg" alt="">
-          <img src="@/assets/img/example/图片1.jpg" alt="">
-          <img src="@/assets/img/example/图片2.jpg" alt="">
+          <img src="@/assets/img/example/图片1.jpg" alt="" v-for="item in count" :key="item">
         </div>
       </div>
       <div class="others">
@@ -34,6 +31,17 @@
   </div>
 </template>
 <script>
+export default{
+  data(){
+    return{
+      count:5
+    }
+    
+  },
+  mounted(){
+    
+  }
+}
 </script>
 <style scoped>
 .item {
@@ -114,8 +122,12 @@
   /* height: 20px; */
   /* background: red; */
   margin-top: 10px;
-  font-size: 15px;
+  font-size: 12px;
   color: #585757;
+}
+.title{
+   font-size: 14px;
+   font-weight: 500;
 }
 .image{
   margin-top: 5px;

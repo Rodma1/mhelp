@@ -1,56 +1,63 @@
 <template>
-  <div class="item">
+  <div class="item" >
     <div class="me common" v-if="isMe">
+      <img
+        src="@/assets/img/message/未发送成功.png"
+        title="未发送成功"
+        id="notSend"
+        v-if="noSend"
+         @load="itemImageLoad"
+      />
       <div class="content">
-        <div class="text text1">{{item.text}}</div>
+        <div class="text text1"  @load="itemImageLoad">{{ item.msg }}</div>
       </div>
-      <img src="@/assets/img/example/头像.jpg" alt="" />
+      <img src="@/assets/img/example/头像.jpg" alt=""  @load="itemImageLoad"/>
     </div>
     <div class="you common" v-else>
-      <img src="@/assets/img/example/头像.jpg" alt="" />
+      <img src="@/assets/img/example/头像.jpg" alt=""  @load="itemImageLoad"/>
       <div class="content">
-        <div class="text text2">{{item.text}}</div>
+        <div class="text text2"  @load="itemImageLoad">{{ item.msg }}</div>
       </div>
     </div>
-    
   </div>
-</template>
-<script> 
-export default{
-    props:{
-        item:{
-            type:Object,
-            default(){
-                return {}
-            }
-        }
+</template> 
+<script>
+export default {
+  props: {
+    item: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
-    data(){
-        return{
-           isMe:false
-        }
-    },
-    mounted(){
-      this.differentiate()
-    },
-    methods:{
-      differentiate(){
-        if(this.item.nickname==this.$store.state.nikname){
-          // console.log(this.$store.state.nickname)
-          this.isMe=true
-        }
-        else{
-          this.isMe=false
-        }
+  },
+  data() {
+    return {
+      isMe: false,
+      noSend: false,
+    };
+  },
+  mounted() {
+    this.differentiate();
+  },
+  methods: {
+    differentiate() {
+      if (this.item.flag == 1) {
+        this.isMe = true;
+      } else {
+        this.isMe = false;
       }
-    }
-}
+    },
+    itemImageLoad() {
+      this.$bus.$emit("itemImageLoad");
+    },
+  },
+}; 
 </script>
 <style scoped>
 .common {
   display: flex;
   margin-bottom: 10px;
-
 }
 .common img {
   width: 40px;
@@ -59,8 +66,8 @@ export default{
 }
 .me {
   /* -webkit-text-align: right; */
-  justify-content:flex-end;
-     /* -webkit-justify-content: right;
+  justify-content: flex-end;
+  /* -webkit-justify-content: right;
      -moz-justify-content: right;
      -o-justify-content: right; */
 }
@@ -116,5 +123,10 @@ export default{
 .text2::before {
   left: -6px;
 }
-
+#notSend {
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
+  margin-right: 5px;
+}
 </style>

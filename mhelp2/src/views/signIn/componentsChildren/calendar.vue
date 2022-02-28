@@ -16,8 +16,15 @@
         <li>六</li>
       </ul>
       <ul class="day">
-        <li v-for="count in currentWeek" :key="count"></li>
-        <li v-for="(item, index) in days" :key="index" class="days" >{{ item }}</li>
+        <li v-for="item in currentWeek" :key="item"></li>
+        <li
+          v-for="(item, index) in days"
+          :key="index + item"
+          class="days"
+          :class="{signed:isSigned(item)}"
+        >
+          {{ item }}
+        </li>
       </ul>
     </div>
   </div>
@@ -30,22 +37,34 @@ export default {
       currentWeek: 1, //当前月份1号是星期几
       currentYear: 1970,
       currentMonth: 1,
-      isActive:false,
-      currentIndex:0
+      isActive: false,
+      currentIndex: 0,
+      // currentDay: 0,
     };
   },
-  created() {
+  props: {
+    listSign: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
+  mounted() {
     this.init();
     this.mgetDate();
+    // console.log(this.currentDay);
+   
   },
-  computed:{
-     
+  computed: {
+    
   },
   methods: {
     init() {
       var date = new Date();
       this.currentYear = date.getFullYear(); //获取当前年份
       this.currentMonth = date.getMonth(); //获取当前月份
+      // this.currentDay = date.getDate(); //获取当前天
     },
     mgetDate() {
       //由于JavaScript中day的范围为1~31中的值，所以当设为0时，会向前 一天，也即表示上个月的最后一天。
@@ -55,7 +74,7 @@ export default {
       var dates = d.getDate(); //获取当前月份的天数
       this.currentWeek = e.getDay();
       for (var i = 1; i <= dates; i++) {
-        this.days[i - 1] = i;
+        this.days[i - 1] = i + "";
       }
     },
     lastMonth() {
@@ -73,10 +92,17 @@ export default {
         this.currentYear++;
         this.currentMonth = 0;
       }
-      console.log(this.currentMonth);
       this.mgetDate();
     },
-    
+    isSigned(item) {
+      var signed = false;
+      for (var i=0;i<this.listSign.length;i++) {
+        if (item == this.listSign[i]) {
+          signed = true;
+        }
+      }
+      return signed;
+    },
   },
 };
 </script>
@@ -108,14 +134,19 @@ export default {
   list-style-type: none;
   display: flex;
   margin-top: 8px;
+  align-items: center;
+  margin-left: 5px;
 }
 .week li {
-  flex: 1;
+  width: 48.5px;
   text-align: center;
 }
 .day {
   display: flex;
   flex-wrap: wrap;
+  /* justify-content: center; */
+  align-items: center;
+  margin-left: 5px;
 }
 .day li {
   width: 48.5px;
@@ -123,11 +154,11 @@ export default {
   height: 35px;
   line-height: 35px;
 }
-.signed{
+.signed {
   background-image: url(../../../assets/img/signIn/签到.png);
+  /* background-color: red; */
   background-size: 30px 30px;
   background-repeat: no-repeat;
   background-position: center;
 }
-
 </style>

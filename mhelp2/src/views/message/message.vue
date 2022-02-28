@@ -13,6 +13,9 @@ export default{
 }
 </script>
 <style scoped>
+.message{
+    height: 100vh;
+}
 .navBar {
   /* font-size: px; */
   background: rgb(154, 171, 248);

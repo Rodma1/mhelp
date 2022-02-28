@@ -44,6 +44,7 @@
   </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
@@ -85,8 +86,8 @@ export default {
         alert('用户名密码不能为空且长度不大于11位')
       }
       this.$store.dispatch("login", this.userForm).then(() => {
-        this.$router.push('/home')
-      });
+        this.$router.push('/home');
+      })
     }, 
     toRegist(){
       if(this.userForm2.account.length==0||this.userForm2.password.length==0||this.userForm2.account.length>11||this.userForm2.password.length>11){

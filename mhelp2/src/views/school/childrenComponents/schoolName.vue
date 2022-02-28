@@ -34,7 +34,6 @@ export default {
 }
 .schoolItem > div {
   height: 50px;
-  /* background: red; */
   margin: 0px 20px;
   line-height: 50px;
   border-bottom: 1px solid gray;

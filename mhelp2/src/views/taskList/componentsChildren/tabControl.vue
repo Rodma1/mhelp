@@ -31,6 +31,7 @@ export default{
         },
         change(index){
             this.currentIndex=index;
+            this.$emit('tabClick',index)
             switch(index){
                 case 0:this.$router.push('/taskList/0');
                     break

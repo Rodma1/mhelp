@@ -3,7 +3,7 @@
     <div class="left" @click="goBack">
       <img src="@/assets/img/taskList/返回.png" alt="" />
     </div>
-    <div class="center">
+    <div class="center" @click="goTaskListSearch">
       <img src="@/assets/img/my/搜索.png" alt="" />
       <div>搜索我接的任务</div>
     </div>
@@ -13,10 +13,37 @@
 <script>
 export default {
   components: {},
+  props:{
+    index:{
+      type:Number,
+      default(){
+        return 0
+      }
+    }
+  },
   methods: {
     goBack() {
       this.$router.push('/my');
     },
+    goTaskListSearch(){
+      switch (this.index) {
+        case 0:
+          this.$router.push('/taskList/0/taskListSearch');
+          break;
+        case 1:
+          this.$router.push('/taskList/1/taskListSearch');
+          break;
+        case 2:
+          this.$router.push('/taskList/2/taskListSearch');
+          break;
+        case 3:
+          this.$router.push('/taskList/3/taskListSearch');
+          break;
+        default:
+          break;
+      }
+       
+    }
   },
 };
 </script>

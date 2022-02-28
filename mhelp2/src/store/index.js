@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getToken, setToken ,removeToken} from "network/token.js"
-import { loging, regist, getUserInfo, logout } from "network/loging.js"
+import { loging, regist, getUserInfo, logout,updateUserInfo } from "network/loging.js"
 import { SET_TOKEN, SET_NAME, SET_AVATAR, SET_ACCOUNT, SET_ID } from "./mutation-types.js"
+import { getChatList,setChatList} from '../network/chatList.js'
+// import {uploadAvatar} from "../network/upload.js"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -11,10 +13,11 @@ export default new Vuex.Store({
     nickname: '',
     id: '',
     avatar: '',
+    // chatKey:"chat-"+this.state.id+"-"+this.state.currentUser.id,
     token: getToken(),
-    chatMsg:{
-      
-    }
+    chatList:getChatList(),
+    msgContent:"",
+    currentUser:{}
   },
   mutations: {
     SET_TOKEN(state, data) {
@@ -31,6 +34,13 @@ export default new Vuex.Store({
     },
     SET_AVATAR(state, avatar) {
       return state.avatar = avatar
+    },
+    pushChatList(state,data){
+      setChatList(data);
+      return state.chatList
+    },
+    saveCurrentUser(state,data){
+        return state.currentUser=data;
     }
   },
   actions: {
@@ -45,6 +55,7 @@ export default new Vuex.Store({
           }
           else {
             reject(res.msg)
+            console.log(res.msg)
 
           }
         }).catch(err =>{
@@ -81,7 +92,7 @@ export default new Vuex.Store({
           console.log(res)
         }
       }).catch(()=>{
-        commit('SET_TOKEN', '')
+        commit('SET_TOKEN', '') 
         commit('SET_ACCOUNT', '')
         commit('SET_NAME', '')
         commit('SET_AVATAR', '')
@@ -111,6 +122,20 @@ export default new Vuex.Store({
         commit('SET_ID', '')
         removeToken()
         resolve()
+      })
+    },
+    updateUserInfo({commit},data){
+      console.log(data)
+      updateUserInfo(this.state.token,data).then((res)=>{
+        if (res.success) {
+          commit(SET_NAME, data.nickname)
+          console.log(res)
+        }
+        else {
+         console.log(res)
+        }
+      }).catch((err)=>{
+        console.log(err)
       })
     },
   },

@@ -23,6 +23,10 @@ const publishHistory=()=>import('../views/publish/publishView/publishHistory.vue
 const detail=()=>import ('../views/detail/detail.vue')
 const chat=()=>import('../views/message/chat.vue')
 const bills=()=>import('../views/bills/bills.vue')
+const changePassword=()=>import('../views/more/componentsChildren/changePassword.vue')
+const changeNickname=()=>import('../views/more/componentsChildren/changeNickname.vue')
+const homeSearch=()=>import('../views/home/componentsChildren/homeSearchView.vue')
+const taskListSearch=()=>import("../views/taskList/componentsChildren/taskListSearchView.vue")
 import {getToken} from "network/token.js";
 import store from '@/store';
 import {Message} from 'element-ui';
@@ -36,6 +40,13 @@ const routes = [
     name: 'Home',
     //切记此处是component，而不是components
     component: home,
+    children:[
+      {
+        path:"homeSearch",
+        name:"homeSearch",
+        component:homeSearch
+      }
+    ],
     meta: {
       login_require: false
     }
@@ -118,6 +129,13 @@ const routes = [
     path:'/taskList/:id',
     name:'taskList',
     component:taskList,
+    children:[
+      {
+        path:'taskListSearch',
+        name:'taskListSearch',
+        component:taskListSearch
+      }
+    ],
     meta: {
       login_require: true
     }
@@ -142,6 +160,18 @@ const routes = [
     path:'/more',
     name:'more',
     component:more,
+    children:[
+      {
+        path:'changePassword',
+        name:'changePassword',
+        component:changePassword,
+      },
+      {
+        path:'changeNickname',
+        name:'changeNickname',
+        component:changeNickname,
+      },
+    ],
     meta:{
       login_require: true
     }
@@ -183,13 +213,14 @@ const routes = [
     }
   },
   {
-    path:'/chat',
+    path:'/chat/:id',
     name:'chat',
     component:chat,
     meta:{
       login_require:true
     }
   },
+  
 ]
 const router = new VueRouter({
   routes

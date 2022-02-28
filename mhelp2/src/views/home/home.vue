@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <router-view class="routerView"></router-view>
     <home-nav-bar @isShowClick="isShow()"></home-nav-bar>
     <div :class="{ mask: isActive }" @click="isShow"></div>
     <home-category v-if="isActive" class="category"></home-category>
@@ -18,7 +19,7 @@ import scroll from "components/common/scroll/scroll.vue";
 import homeTask from "views/home/componentsChildren/homeTask.vue";
 import backTop from "components/content/backTop/backTop.vue"
 import { getTask, getCategory, getTags } from "network/task.js";
-
+import {itemListenerMixin,backTopMixins}from "mixins/mixins.js"
 // import {getuaccepttasks} from "network/task.js"
 export default {
   components: {
@@ -29,6 +30,7 @@ export default {
     homeTask,
     backTop,
   },
+  mixins:[itemListenerMixin,backTopMixins],
   data() {
     return {
       isActive: false,
@@ -49,6 +51,9 @@ export default {
     this.getCategory();
     this.getTags();
     // this.getuaccepttasks();
+  },
+  mounted(){
+    // localStorage.setItem('chatList',JSON.stringify([]))
   },
   computed: {},
   methods: {
@@ -86,9 +91,9 @@ export default {
     //     console.log(res);
     //   });
     // },
-    backTop(){
-      this.$refs.scroll.scroller(0,0,500);
-    },
+    // backTop(){
+    //   this.$refs.scroll.scroller(0,0,500);
+    // },
     contentScroll(position){
       // console.log(position)
       this.isShowBackTop=(-position.y)>1000
@@ -122,5 +127,13 @@ export default {
 .category {
   position: absolute;
   top: 44px;
+}
+.routerView{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  
 }
 </style>

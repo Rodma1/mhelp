@@ -33,6 +33,21 @@ export function logout(token){
     return request({
         headers: {'Authorization': token},
         url: '/logout',
-        method: 'get'
+        method: 'get' 
+    })
+}
+export function updateUserInfo(token,data){
+    return request({
+        headers: {'Authorization': token},
+        url: '/users/update/userInfo',
+        method:'post',
+        data:{
+            nickname:data.nickname,
+            avatar:data.avatar,
+            email:data.email,
+            beforePssword:data.oldPassword,
+            password:data.newPassword
+           
+        }
     })
 }
