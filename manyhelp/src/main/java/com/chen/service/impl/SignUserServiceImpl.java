@@ -68,6 +68,7 @@ public class SignUserServiceImpl implements SignUserService {
         signUser.setUpdateTime(new Date());
 
         BeanUtils.copyProperties(signUser,signUserHistory);
+        signUserHistory.setId(null);
         signUserHistoryMapper.insert(signUserHistory);
         signUserMapper.updateById(signUser);
         return Result.success("签到成功");
