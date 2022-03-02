@@ -7,7 +7,7 @@
 <script>
 import schoolNavBar from "views/school/childrenComponents/schoolNavBar.vue"
 import schoolName from "views/school/childrenComponents/schoolName.vue"
-import {schools} from "network/task.js"
+
 export default {
   components: {
     schoolNavBar,
@@ -15,15 +15,11 @@ export default {
   },
   data(){
     return{
-      schools:[]
+      
     }
   },
   mounted(){
-    schools().then((res)=>{
-      console.log(res)
-      this.schools=res.data
-      console.log(this.schools)
-    })
+   
   },
   
 };

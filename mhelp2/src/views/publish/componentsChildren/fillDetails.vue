@@ -52,12 +52,13 @@ export default {
     afterRead(file) {
       file.status = "uploading";
       file.message = "上传中...";
-
+      var formData = new FormData();
+      console.log(file)
+      formData.append('file', file.file);
       setTimeout(() => {
         file.status = "done";
         file.message = "";
-        console.log(this.$store.state.token);
-        uploadImage(this.$store.state.token, file).then((res) => {
+        uploadImage(this.$store.state.token, formData).then((res) => {
           console.log(res);
         });
       }, 200);

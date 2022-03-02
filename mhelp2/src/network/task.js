@@ -106,7 +106,8 @@ export function searchNoTask(data) {
         }
     })
 }
-export function noSendMsg(token, acceptUserId) {
+//
+export function noReadMsg(token, acceptUserId) {
     return request({
         headers: { 'Authorization': token },
         url: "/chat/nread",

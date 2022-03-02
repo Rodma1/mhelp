@@ -1,7 +1,7 @@
 <template>
   <div class="myMessage">
     <div class="noLoging" @click="goLoging" v-if="show">
-      <img src="@/assets/img/my/头像.png" alt="" class="profile" />
+      <img :src="this.$store.state.avatar" alt="" class="profile" />
       <div class="name">未登录</div>
       <div class="school">运城学院</div>
       <img src="@/assets/img/my/右箭头.png" alt="" class="arrow" />

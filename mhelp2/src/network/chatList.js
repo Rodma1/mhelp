@@ -62,8 +62,8 @@ export function setChatSnapShot(myId, friendId, msg, isRead) {
         for (var i=0; i < chatSnapShotList.length; i++) {
             if (chatSnapShotList[i].friendId == friendId) {
                 chatSnapShotList.splice(i, 1);
-                console.log( chatSnapShotList)
-                break
+                console.log( chatSnapShotList);
+                break;
             }
         }
     }
@@ -74,8 +74,16 @@ export function setChatSnapShot(myId, friendId, msg, isRead) {
     chatSnapShotList.unshift(singleMsg);
     localStorage.setItem(chatKey,JSON.stringify(chatSnapShotList));
 }
-//保存未发送消息模型
-export function setNoSendMsg(myId,friendId){
-    var chatKey = "noSend-" + myId + "-" + friendId;
-    console.log(chatKey)
-}
+//保存未接受消息模型
+// export function setNoReadMsg(myId,friendId){
+//     var chatKey = "noSend-" + myId + "-" + friendId;
+//     console.log(chatKey)
+//     var data = localStorage.getItem(chatKey);
+//     var noReadMsgList;
+//     if (data !== null) {
+//         noReadMsgList .push(chatKey,JSON.parse(data));
+//     }                                                                                                                    
+//     else {
+//         noReadMsgList = [];
+//     }
+// }

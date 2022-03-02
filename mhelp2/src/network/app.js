@@ -63,7 +63,7 @@ export class ChatSnapShot{
     }
 }
 //未发送消息模型
-export class noSendMsg{
+export class noReadMsg{
     constructor(myId,friendId,msg,isRead){
         this.msgId=myId,
         this.friendId=friendId,

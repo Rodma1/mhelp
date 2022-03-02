@@ -7,7 +7,7 @@
     </div>
     <div class="item" @click="changeNickname">
       <div>昵称</div>
-      <div>吼吼哈嘿</div>
+      <div>{{this.$store.state.nickname}}</div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
     <div class="item" @click="chooseSchool">
@@ -20,7 +20,7 @@
       <div>......</div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
-    <div class="mask" v-if="isShow" @click="cancle">
+    <!-- <div class="mask" v-if="isShow" @click="cancle">
       <div class="upLoad">
         <div>
           <img src="@/assets/img/example/相机.png" alt="">
@@ -42,7 +42,7 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="exist" @click="exist">退出登录</div>
     
   </div>
@@ -52,7 +52,8 @@
 export default {
   data(){
     return{
-      isShow:false
+      // isShow:false
+
     }
   },
   methods: {
@@ -63,11 +64,12 @@ export default {
       });
     },
     uploadAvatar(){
-      this.isShow=true
+      // this.isShow=true
+      this.$router.push('/more/changeAvatar')
     },
-    cancle(){
-      this.isShow=false
-    },
+    // cancle(){
+    //   this.isShow=false
+    // },
     chooseSchool(){
       this.$router.push("/school")
     },

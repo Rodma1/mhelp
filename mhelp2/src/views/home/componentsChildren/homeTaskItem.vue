@@ -53,7 +53,7 @@ export default{
     data(){
         return { 
             isActive:true,
-            count:2,
+            count:1,
             isFinish:false
         }
     },

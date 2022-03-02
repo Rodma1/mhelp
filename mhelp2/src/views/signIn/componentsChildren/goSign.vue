@@ -1,6 +1,6 @@
 <template>
   <div class="goSign">
-    <div class="signBtn" @click="sign" v-if="{isSign}">点击签到</div>
+    <div class="signBtn" @click="sign" v-if="!isSign">点击签到</div>
     <div class="signBtn" v-else>已签到</div>
     <span>你已经签到10天了！</span>
   </div>
@@ -17,19 +17,16 @@ export default {
   mounted(){
     todaysign(this.$store.state.token).then((res)=>{
         this.isSign=res.data
-        console.log(res.data)
       })
   },
   methods: {
     sign() {
-      if (this.isSign==0) {
         sign(this.$store.state.token).then((res) => {
           console.log(res);
           var date = new Date();
           this.currentDay = date.getDate();
           this.$bus.$emit('sign',this.currentDay) 
         });
-      }
     },
   },
 };

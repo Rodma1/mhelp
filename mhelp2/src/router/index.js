@@ -27,6 +27,7 @@ const changePassword=()=>import('../views/more/componentsChildren/changePassword
 const changeNickname=()=>import('../views/more/componentsChildren/changeNickname.vue')
 const homeSearch=()=>import('../views/home/componentsChildren/homeSearchView.vue')
 const taskListSearch=()=>import("../views/taskList/componentsChildren/taskListSearchView.vue")
+const changeAvatar=()=>import("../views/more/componentsChildren/changeAvatar.vue")
 import {getToken} from "network/token.js";
 import store from '@/store';
 import {Message} from 'element-ui';
@@ -170,6 +171,11 @@ const routes = [
         path:'changeNickname',
         name:'changeNickname',
         component:changeNickname,
+      },
+      {
+        path:'changeAvatar',
+        name:'changeAvatar',
+        component:changeAvatar,
       },
     ],
     meta:{
