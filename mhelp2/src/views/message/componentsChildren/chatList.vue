@@ -16,7 +16,7 @@ export default {
   },
   data() {
     return {
-      maxScrollY: null,
+     
     };
   },
   props: {
@@ -28,14 +28,27 @@ export default {
     },
   },
   mounted() {
-    this.chatListItemLoad();
+    // this.chatListItemLoad();
   },
-  updated() {},
+  updated() {
+    // this.itemImageLoad();
+  },
   methods: {
-    chatListItemLoad() {
-      this.maxScrollY =document.getElementsByClassName("chatList")[0].clientHeight;
-      console.log(document.getElementsByClassName("chatList")[0].clientHeight);
-      console.log(this.maxScrollY);
+    // chatListItemLoad() {
+    //   this.maxScrollY =
+    //     document.getElementsByClassName("chatList")[0].clientHeight;
+    //   console.log(document.getElementsByClassName("chatList")[0].clientHeight);
+    //   console.log(this.maxScrollY);
+    // },
+    itemImageLoad() {
+       this.maxScrollY =
+          document.getElementsByClassName("chatList")[0].clientHeight;
+      this.$bus.$on("itemImageLoad", () => {
+        console.log(
+          document.getElementsByClassName("chatList")[0].clientHeight
+        );
+        console.log(this.maxScrollY);
+      });
     },
   },
 };

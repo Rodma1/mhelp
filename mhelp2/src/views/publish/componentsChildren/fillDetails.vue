@@ -32,7 +32,7 @@ export default {
         content: "",
       },
       fileList: [
-        { url: "https://img01.yzcdn.cn/vant/leaf.jpg"},
+        { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
         // Uploader 根据文件后缀来判断是否为图片文件
         // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
         // { url: "https://cloud-image", isImage: true },
@@ -42,19 +42,25 @@ export default {
   created() {},
   methods: {
     publish() {
-      if (this.params.title && this.params.content) {
-        this.$emit("isShow");
-      } else {
-        this.$toast("标题和内容均不能为空");
-        // Toast('内容和文字均不能为空')
+      if (this.$store.state.id) {
+        if (this.params.title && this.params.content) {
+          this.$emit("isShow");
+        } else {
+          this.$toast("标题和内容均不能为空");
+          // Toast('内容和文字均不能为空')
+        }
+      }
+      else{
+        this.$router.push("/loging")
       }
     },
     afterRead(file) {
       file.status = "uploading";
       file.message = "上传中...";
       var formData = new FormData();
-      console.log(file)
-      formData.append('file', file.file);
+      console.log(file);
+      console.log(file.file);
+      formData.append("file", file.file);
       setTimeout(() => {
         file.status = "done";
         file.message = "";

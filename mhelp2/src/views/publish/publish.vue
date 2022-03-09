@@ -2,32 +2,24 @@
   <div class="publish">
     <publish-nav-bar></publish-nav-bar>
     <keep-alive>
-      <router-view ></router-view>
+      <router-view class="routerView"></router-view>
     </keep-alive>
-    
-    <!-- <fill-details></fill-details>
-    <publish-btn  @click.native="change"></publish-btn>
-    <publish-toast v-if="isActive" @change="change"></publish-toast> -->
+  
   </div>
 </template>
 <script>
 import publishNavBar from "views/publish/componentsChildren/publishNavBar.vue";
-// import fillDetails from "views/publish/componentsChildren/fillDetails.vue"
-// import publishToast from "views/publish/componentsChildren/publishToast.vue"
-// import publishBtn from "views/publish/componentsChildren/publishBtn.vue"
 export default {
   components: {
     publishNavBar,
-    // fillDetails,
-    // publishToast,
-    // publishBtn
+
   },
-  data() {
+  data() { 
     return {
       isActive:false
     };
   },
-  methods:{
+  methods:{ 
     change(){
       this.isActive=!this.isActive
     }
@@ -43,6 +35,12 @@ export default {
   background-color: #f3f3f3;
  
 }
-
+.routerView{
+  position: absolute;
+  top: 44px;
+  left: 0px;
+  right: 0px;
+  bottom: 49px;
+}
 </style>
 

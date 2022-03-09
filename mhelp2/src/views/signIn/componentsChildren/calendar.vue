@@ -85,6 +85,7 @@ export default {
       }
       console.log(this.currentMonth);
       this.mgetDate();
+      this.$emit("lastMonth",this.currentMonth,this.currentYear)
     },
     nextMonth() {
       this.currentMonth++;
@@ -93,6 +94,7 @@ export default {
         this.currentMonth = 0;
       }
       this.mgetDate();
+      this.$emit("nextMonth",this.currentMonth,this.currentYear)
     },
     isSigned(item) {
       var signed = false;

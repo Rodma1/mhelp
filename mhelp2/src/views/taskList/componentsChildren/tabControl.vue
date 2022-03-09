@@ -21,13 +21,12 @@ export default{
     computed:{
     },
     activated(){
-        // this.$bus.$on('')
+
         this.getParams()
     },
     methods:{
         getParams(){
             this.currentIndex=this.$route.params.id
-            console.log(this.currentIndex,this.$route.params.id)
         },
         change(index){
             this.currentIndex=index;

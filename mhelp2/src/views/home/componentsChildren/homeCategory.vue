@@ -1,31 +1,48 @@
 <template>
   <div class="homeCategory">
-      <span>任务类型</span>
+    <span>任务类型</span>
     <ul class="task">
-      <li>全部任务</li>
-      <li>拿取快递</li>
-      <li>求借东西</li>
-      <li>食堂打包</li>
-      <li>技术顾问</li>
-      <li>学习帮助</li>
-      <li>活动组队</li>
-      <li>二手闲置</li>
-      <li>寻找树洞</li>
+      <li
+        v-for="(item, index) in category"
+        :key="index"
+        @click="categoryTasks(index)"
+      >
+        {{ item.categoryName }}
+      </li>
     </ul>
     <span>标签</span>
     <ul class="tag">
-        <li>陪吃</li>
-        <li>陪聊</li>
-        <li>玩耍</li>
+      <li>陪吃</li>
+      <li>陪聊</li>
+      <li>玩耍</li>
     </ul>
     <!-- <div class="mask"></div> -->
   </div>
 </template>
+<script>
+export default {
+  props: {
+    category: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
+  methods: {
+    categoryTasks(index) {
+      console.log(index);
+    },
+  },
+};
+</script>
+
 <style scoped>
-.homeCategory{
-    background: #ffffff;
-    color: #b8b5b5;
-    z-index: 99;
+.homeCategory {
+  background: #ffffff;
+  color: #b8b5b5;
+  z-index: 99;
+  padding: 5px 10px;
 }
 .homeCategory ul {
   display: flex;
@@ -33,20 +50,21 @@
   flex-wrap: wrap;
   /* background: pink; */
   align-items: center;
+
+  margin-top: 10px;
 }
 .homeCategory ul li {
-  width: 80px;
+  width: 23.5%;
   height: 30px;
   background: #f2f2f2;
   color: black;
-  margin: 5px;
+  margin: 0px 2% 5px 0px;
   border-radius: 5px;
   text-align: center;
   line-height: 30px;
   font-size: 13px;
 }
-/* .homeCategory .mask{
-  height: 300px;
-  background-color: rgba(0, 0, 0, 0.1);
-} */
+.homeCategory ul li:nth-child(4n) {
+  margin: 0px 0px 5px 0px;
+}
 </style>

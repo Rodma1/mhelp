@@ -39,6 +39,7 @@ export default {
 .publishNavBar{
   background: rgb(154, 171, 248);
   color: white;
+  font-size: 14px;
 }
 .center {
   display: flex;
@@ -54,7 +55,8 @@ export default {
   text-align: left;
   padding-left: 10px;
 }
-.active {
-  font-size: 23px;
+.center .active {
+  font-size: 19px;
+  font-weight: 600;
 }
 </style>

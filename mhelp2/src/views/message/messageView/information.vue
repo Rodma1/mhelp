@@ -1,25 +1,29 @@
 <template>
   <div class="information">
-    <scroll class="contents">
+    <scroll class="contents" v-if="logingShow">
       <items
         v-for="(item, index) in this.chatList"
         :key="index"
         :item="item"
         @click.native="goChat(index)"
       ></items>
-      <!-- <items @click.native="goChat"></items> -->
     </scroll>
+    <no-loging class="noLoging" v-else></no-loging>
   </div> 
-</template>
+</template> 
 <script>
 import Items from "views/message/componentsChildren/informationItem.vue";
 import scroll from "components/common/scroll/scroll.vue";
-// import { getChatList } from "network/chatList.js";
+import noLoging from "components/content/noLoging/nologing.vue";
+import { isLoging } from "mixins/mixins.js";
+
 export default {
   components: {
     Items,
     scroll, 
+    noLoging
   },
+    mixins: [isLoging],
   data() {
     return {
       chatList: this.$store.state.chatList,
@@ -37,13 +41,6 @@ export default {
 </script>
 
 <style scoped>
-.information {
-  position: absolute;
-  top: 44px;
-  bottom: 49px;
-  left: 0px;
-  right: 0px;
-}
 .contents {
   height: 100%;
   overflow: hidden;

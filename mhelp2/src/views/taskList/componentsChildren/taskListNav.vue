@@ -24,6 +24,7 @@ export default {
   methods: {
     goBack() {
       this.$router.push('/my');
+      this.$emit("goback")
     },
     goTaskListSearch(){
       switch (this.index) {

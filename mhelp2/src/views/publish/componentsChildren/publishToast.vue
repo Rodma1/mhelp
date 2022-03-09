@@ -34,6 +34,12 @@
           <input type="text" v-model="params.price" /><span>金币</span>
         </section>
       </div>
+      <div class="item">
+        <div>人数:</div>
+        <section>
+          <input type="text" v-model="params.people" /><span>人</span>
+        </section>
+      </div>
       <div class="publish" @click="publish">发布</div>
     </div>
   </div>
@@ -47,6 +53,7 @@ export default {
         tags: "",
         category: "",
         price: "",
+        people:1
       },
       category: [
         "拿取快递",
@@ -103,14 +110,13 @@ export default {
 
 <style scoped>
 .publishTost {
-  /* width: 100%; */
+  width: 100%;
   position: absolute;
   left: 0px;
   top: 0px;
   bottom: 0px;
   right: 0px;
   background-color: rgba(0, 0, 0, 0.6);
-  height: 100vh;
   /* display: none; */
 }
 .content {
@@ -118,7 +124,7 @@ export default {
   position: absolute;
   margin: 0px 3%;
   padding: 2%;
-  height: 350px;
+  /* height: 350px; */
   background: white;
   top: 50%;
   transform: translateY(-50%);
@@ -187,7 +193,7 @@ section {
   text-align: center;
 }
 .publish {
-  margin-top: 10px;
+  margin-top: 53px;
   width: 200px;
   height: 35px;
   background-color: #1facf8;

@@ -6,19 +6,9 @@
       @scroll="contentScroll"
       :probeType="3"
     >
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
+      <item v-for="(item, index) in types" :key="index" :item="item"></item>
     </scroll>
+    
     <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -33,22 +23,23 @@ export default {
     scroll,
     backTop,
   },
+
   data() {
     return {
       isShowBackTop: false,
+      count: 5,
+      isTask: false,
     };
   },
-  props:{
-    type:{
-      type:Array,
-      default(){
-        return []
-      }
-    }
+  props: {
+    types: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
-  mounted(){
-    console.log(this.type)
-  },
+
   mixins: [backTopMixins],
   methods: {
     contentScroll(position) {
@@ -74,4 +65,5 @@ export default {
   height: 100%;
   overflow: hidden;
 }
+
 </style>

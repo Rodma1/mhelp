@@ -15,9 +15,7 @@ export default {
     };
   },
   mounted(){
-    todaysign(this.$store.state.token).then((res)=>{
-        this.isSign=res.data
-      })
+    this.todaysign()
   },
   methods: {
     sign() {
@@ -28,6 +26,13 @@ export default {
           this.$bus.$emit('sign',this.currentDay) 
         });
     },
+    todaysign(){
+      todaysign(this.$store.state.token).then((res)=>{
+        // console.log(res)
+        this.isSign=res.data
+        // console.log(this.isSign)
+      })
+    }
   },
 };
 </script>

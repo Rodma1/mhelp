@@ -9,7 +9,6 @@
     <scroll
       class="contents"
       ref="scroll"
-      @scroll="contentScroll"
       :probeType="3"
     >
       <chat-list
@@ -86,7 +85,8 @@ export default {
       isShow: false,
       msgContent: {},
       isRead: false,
-      nosendMsg:[]
+      nosendMsg:[],
+       maxScrollY: null,
     };
   },
   mounted() {
@@ -96,9 +96,11 @@ export default {
     // })
     this.messageList = getmsgContent(this.my.id, this.user.id);
     this.init();
+   
   },
   activated() {
     this.isRead = true;
+     this.itemImageLoad()
   },
   disactivated() {
     this.isRead = false;
@@ -108,9 +110,9 @@ export default {
     goback() {
       this.$router.back();
     },
-    contentScroll(position) {
-      console.log(position);
-    },
+    // contentScroll(position) {
+    //   // console.log(position);
+    // },
 
     send(value) {
       if (
@@ -246,7 +248,7 @@ export default {
     },
     chats: function (msg) {
       //如果当前WebSocket 状态已经连接，无需重复初始化WebSocket
-      if (
+      if ( 
         this.websock != null &&
         this.websock != undefined &&
         this.websock.readyState == WebSocket.OPEN
@@ -257,7 +259,15 @@ export default {
         this.init();
       }
     },
-    
+    itemImageLoad() {
+      this.$bus.$on("itemImageLoad",()=>{
+        this.maxScrollY =
+          document.getElementsByClassName("chatList")[0].clientHeight;
+        console.log(this.maxScrollY)
+        var contentsHeight= document.getElementsByClassName("contents")[0].clientHeight;
+        this.$refs.scroll.scroller(0,-this.maxScrollY+contentsHeight)
+      })
+    },
   },
 };
 </script>

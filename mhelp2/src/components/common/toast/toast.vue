@@ -1,5 +1,5 @@
 <template>
-    <div class="toast" v-show="show">
+    <div class="toast" v-show="logingShow">
         {{message}}
     </div>
 </template>
@@ -12,7 +12,7 @@
                     return ''
                 }
             },
-            show:{
+            logingShow:{
                 type:Boolean,
                 default(){
                     return false
@@ -37,12 +37,8 @@
 </script>
 <style scoped>
 .toast{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
     color: #fff;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.6);
     padding: 8px 10px;
 }
 </style>

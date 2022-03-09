@@ -1,27 +1,24 @@
 import { request } from "network/request";
-export function uploadAvatar(token, avatar) {
-    console.log(token, avatar)
+export function uploadAvatar(token, file) {
+    console.log(token, file)
     return request({
-        headers: { 'Authorization': token },
+        headers: { 
+            'Authorization': token,
+            'Content-Type':'multipart/form-data'
+         },
         url: "/users/upload/image",
         method: 'post',
-        data: {
-            "file": avatar
-        }
+        data: file
     })
 }
 export function uploadImage(token, images) {
     return request({
-        headers: {
+        headers: { 
             'Authorization': token,
-            'processData': false,
-            // 'contentType': false,
-        },
+            'Content-Type':'multipart/form-data'
+         },
         url: '/upload',
         method: 'post',
-        // contentType:false,
-        data: {
-            images: images
-        }
+        data:images
     })
 }

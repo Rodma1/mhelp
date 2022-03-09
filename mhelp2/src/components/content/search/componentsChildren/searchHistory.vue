@@ -5,7 +5,7 @@
       <img src="@/assets/img/message/删除.png" alt="" @click="delHistory"/>
     </div>
     <ul>
-      <li v-for="(item, index) in searchHistoryList" :key="index" @click="goSearch">
+      <li v-for="(item, index) in searchHistoryList" :key="index" @click="goSearch(item)">
         {{ item }}
       </li>
     </ul>
@@ -24,29 +24,34 @@
 export default {
   data() {
     return {
-      searchHistoryList: [
-        "取快递",
-        "带饭",
-        "组队",
-        "dddddddddddddddddddddddddddddddddddddddddddddddd",
-      ],
       isShow:false,
-      isShowHis:false
     };
   },
   props:{
     value:{
       type:String,
       default:""
+    },
+    searchHistoryList: {
+      type:Array,
+      default(){
+        return []
+      }
+    },
+    isShowHis:{
+      type:Boolean,
+      default(){
+        return false
+      }
     }
   },
   mounted(){
-    if(this.searchHistoryList){
-      this.isShowHis=true;
-    }
-    else{
-      this.isShowHis=false
-    }
+    // if(this.searchHistoryList){
+    //   this.isShowHis=true;
+    // }
+    // else{
+    //   this.isShowHis=false
+    // }
   },
   methods: {
     delHistory() {
@@ -57,11 +62,12 @@ export default {
     },
     del(){
       this.isShow=false;
-      this.searchHistoryList=[],
-      this.isShowHis=false
+      // this.isShowHis=false;
+      this.$emit("del")
     },
-    goSearch(){
-      
+    goSearch(item){
+      console.log(item);
+      this.$bus.$emit("historySearch",item)
     }
   },
 };

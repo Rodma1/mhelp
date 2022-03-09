@@ -1,28 +1,40 @@
 <template>
   <div class="changeAvatar" @click="goback">
-    <form action="">
-      <div class="upLoad"  enctype="multipart/form-data">
+    <form action="" enctype="multipart/form-data">
+      <div class="upLoad">
         <div>
           <img src="@/assets/img/example/相机.png" alt="" />
           <div>拍照</div>
           <input
             type="file"
-            name="images"
             accept="image/*"
             capture="camera"
             class="upLoadImage first"
-            @change="changeAvatar"
-            action="/insertImage"
+            enctype="multipart/form-data"
           />
         </div>
         <div>
           <img src="@/assets/img/example/图片.png" alt="" />
           <div>从相册中选择</div>
-          <input type="file" accept="image/*" class="upLoadImage second" />
+          <input
+            type="file"
+            accept="image/*"
+            class="upLoadImage second"
+            @change="changeAvatar"
+            name="images"
+          />
         </div>
       </div>
     </form>
-    
+    <!-- <form enctype="multipart/form-data" method="POST" action="http://101.35.145.209:8888/upload">
+    <div class="form-group">
+        <label>文件上传</label>
+        <input type="file" name="images" @change="changeAvatar">
+    </div>
+    <button type="submit" class="btn btn-primary" >上传</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button type="reset" class="btn btn-secondary" >重置</button>
+</form> -->
   </div>
 </template>
 <script>
@@ -34,6 +46,7 @@ export default {
       updateMsg: {
         avatar: [],
       },
+      formData: null,
     };
   },
   methods: {
@@ -41,19 +54,30 @@ export default {
       this.$router.back();
     },
     changeAvatar(e) {
-      console.log("aa");
-      console.log(e);
-      var file = e.target.files;
-      console.log(e.target.value)
-      console.log(file);
-      this.avatar = file;
-      console.log(this.avatar);
-      var formData = new FormData();
-      formData.append("avatar", formData);
+      let file = e.target.files[0];
+      console.log(file)
+      let formdata = new FormData();
+      formdata.append("file", file);
+      // var file = e.target.files;
+      // console.log(e.target.value);
+      // console.log(file);
+      // this.avatar = file;
+      // console.log(this.avatar);
+
+      // formData.append("avatar", formData);
+      // this.formData = formData;
       // formData.append("name",e.target.value)
-      console.log(e.target.files[0]);
-      console.log(formData.get("avatar"));
-      uploadAvatar(this.$store.state.token, e).then((res) => {
+      // console.log(e.target.files[0]);
+      // console.log(formData.get("avatar"));
+      uploadAvatar(this.$store.state.token, formdata).then((res) => {
+        this.updateMsg.avatar=res.data
+        this.$store.dispatch("updateUserInfo", this.updateMsg).then(() => {
+          console.log(11);
+        });
+      });
+    },
+    go() {
+      uploadAvatar(this.$store.state.token).then((res) => {
         console.log(res);
       });
     },

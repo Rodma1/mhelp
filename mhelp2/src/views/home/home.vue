@@ -1,14 +1,15 @@
 <template>
   <div class="home">
     <router-view class="routerView"></router-view>
-    <home-nav-bar @isShowClick="isShow()"></home-nav-bar>
-    <div :class="{ mask: isActive }" @click="isShow"></div>
-    <home-category v-if="isActive" class="category"></home-category>
+    <home-nav-bar @isShowClick="isShow()" ref="navBar"></home-nav-bar>
+    <div :class="{ mask: isActive }" @click="isShow" ></div>
+    <home-category v-if="isActive" class="category" :category="category"></home-category>
     <scroll class="contents" ref="scroll" @scroll="contentScroll" :probeType="3">
       <home-search></home-search>
       <home-task :task="task"></home-task>
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop" ></back-top>
+    <toast :message="toast" :logingShow="!logingShow" class="toast"></toast>
   </div>
 </template>
 <script>
@@ -18,8 +19,9 @@ import homeSearch from "views/home/componentsChildren/homeSearch.vue";
 import scroll from "components/common/scroll/scroll.vue";
 import homeTask from "views/home/componentsChildren/homeTask.vue";
 import backTop from "components/content/backTop/backTop.vue"
-import { getTask, getCategory, getTags } from "network/task.js";
-import {itemListenerMixin,backTopMixins}from "mixins/mixins.js"
+import toast from "components/common/toast/toast.vue" 
+import { getTask, getCategory, getTags } from "network/task.js"; 
+import {itemListenerMixin,backTopMixins,isLoging}from "mixins/mixins.js"
 // import {getuaccepttasks} from "network/task.js"
 export default {
   components: {
@@ -29,8 +31,9 @@ export default {
     scroll,
     homeTask,
     backTop,
+    toast
   },
-  mixins:[itemListenerMixin,backTopMixins],
+  mixins:[itemListenerMixin,backTopMixins,isLoging],
   data() {
     return {
       isActive: false,
@@ -44,6 +47,8 @@ export default {
       isShowBackTop:false,
       isFixed:false,
       offsetTop:0,
+      toast:"您当前未登录，请先登录！",
+      logingShow:false
     };
   },
   created() {
@@ -52,13 +57,12 @@ export default {
     this.getTags();
     // this.getuaccepttasks();
   },
-  mounted(){
-    // localStorage.setItem('chatList',JSON.stringify([]))
-  },
+  
   computed: {},
   methods: {
     isShow() {
       this.isActive = !this.isActive;
+      this.$refs.navBar.isActive=!this.$refs.navBar.isActive
     },
     getTasks() {
       this.page.pageNumber = this.page.pageNumber + 1;
@@ -117,16 +121,20 @@ export default {
 }
 .mask {
   position: absolute;
-  bottom: 49px;
+  bottom: 0px;
   top: 44px;
+  left: 0px;
+  right: 0px;
   width: 100%;
   background-color: rgba(77, 74, 74, 0.2);
-  z-index: 9;
+  z-index: 10;
 }
 
 .category {
   position: absolute;
   top: 44px;
+  left: 0px; 
+  right: 0px;
 }
 .routerView{
   position: absolute;
@@ -134,6 +142,16 @@ export default {
   left: 0px;
   right: 0px;
   bottom: 0px;
+  z-index: 11;
   
 }
-</style>
+.toast{
+  height: 35px;
+  position: absolute;
+  bottom: 49px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  line-height: 35px;
+}
+</style> 

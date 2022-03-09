@@ -8,10 +8,7 @@
       </div>
     </div>
     <ul v-if="isShow">
-      <li>取快递</li>
-      <li>带饭</li>
-      <li>组队</li>
-      <li>蜜雪冰城</li>
+      <li v-for="(item,index) in guess" :key="index" @click="goSearch(item)">{{item}}</li>
     </ul>
   </div>
 </template>
@@ -21,12 +18,22 @@ export default {
   data() {
     return {
       isShow: true,
+      guess:[
+        "取快递",
+        "蜜雪冰城",
+        "带饭",
+        "后稷一"
+      ]
     };
   },
   methods: {
     change() {
       this.isShow = !this.isShow;
     },
+     goSearch(item){
+      console.log(item);
+      this.$bus.$emit("historySearch",item)
+    }
   },
 };
 </script>

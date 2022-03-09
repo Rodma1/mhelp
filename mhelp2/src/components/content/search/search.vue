@@ -1,7 +1,7 @@
 <template>
     <div class="search">
         <search-nav-bar @search="search"></search-nav-bar>
-        <search-history :value="value" ref="searchHistory"></search-history>
+        <search-history :value="value" ref="searchHistory" ></search-history>
         <search-guess></search-guess>
     </div>
 </template>
@@ -22,11 +22,13 @@ export default{
             value:""
         }
     },
+    props:{
+    },
     methods:{
         search(value){
             this.value=value;
             this.$refs.searchHistory.searchHistoryList.push(this.value)
-        }
+        },
     }
 }
 </script>

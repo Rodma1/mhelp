@@ -31,7 +31,7 @@ export default {
   methods:{
       isShow(){
           this.$emit('isShowClick');
-        this.isActive=!this.isActive
+        // this.isActive=!this.isActive
       },
       toSchool(){
         this.$router.push('/school');

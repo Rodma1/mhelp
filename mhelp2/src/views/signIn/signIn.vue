@@ -2,7 +2,12 @@
   <div class="signIn">
     <sign-in-nav></sign-in-nav>
     <go-sign></go-sign>
-    <calendar class="calendar" :listSign="listSign"></calendar>
+    <calendar
+      class="calendar"
+      :listSign="listSign"
+      @lastMonth="lastMonth"
+      @nextMonth="lastMonth"
+    ></calendar>
     <sign-in-rules class="signInRules"></sign-in-rules>
   </div>
 </template>
@@ -23,6 +28,7 @@ export default {
     return {
       listSign: [],
       currentDay: 0,
+      allListSign: [],
     };
   },
   mounted() {
@@ -37,22 +43,41 @@ export default {
   methods: {
     getListsign() {
       listsign(this.$store.state.token).then((res) => {
-        console.log(res);
+        this.allListSign = res.data;
+        console.log(this.allListSign);
         for (var i = 0; i < res.data.length; i++) {
           var time = res.data[i].signInDate;
           var ymd = time.substr(0, 10);
-          var year=ymd.substr(0,4)
-          var mounth=ymd.substr(5,2)
+          var year = ymd.substr(0, 4);
+          var mounth = ymd.substr(5, 2);
           var day = ymd.substr(8, 2);
           var date = new Date();
           var y = date.getFullYear();
-          var m = date.getMonth() + 1
-          if(year==y&&m==mounth){
+          var m = date.getMonth() + 1;
+          if (year == y && m == mounth) {
             this.listSign.push(parseInt(day));
           }
         }
         // console.log(this.listSign);
       });
+    },
+    lastMonth(currentMonth, currentYear) {
+      this.listSign = [];
+      console.log(currentMonth, currentYear);
+      for (var i = 0; i < this.allListSign.length; i++) {
+        var time = this.allListSign[i].signInDate;
+        var ymd = time.substr(0, 10);
+        var year = ymd.substr(0, 4);
+        var mounth = ymd.substr(5, 2);
+        var day = ymd.substr(8, 2);
+        year = parseInt(year);
+        mounth = parseInt(mounth);
+        day=parseInt(day)
+        if (year == currentYear && currentMonth+1 == mounth) {
+          
+          this.listSign.push(parseInt(day));
+        }
+      }
     },
   },
 };

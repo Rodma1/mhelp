@@ -14,7 +14,7 @@
         
         <div class="main">
           <div class="title">带饭</div>
-          <div> 帮我在后稷2食堂带个饭吧，要麻辣的鱼粉，多加香菜谢谢</div>
+          <div> {{item.content}}</div>
         </div>
         <div class="image">
           <img src="@/assets/img/example/图片1.jpg" alt="" v-for="item in count" :key="item">
@@ -37,6 +37,14 @@ export default{
       count:5
     }
     
+  },
+  props:{
+    item:{
+      type:Object,
+      default(){
+        return {}
+      }
+    }
   },
   mounted(){
     

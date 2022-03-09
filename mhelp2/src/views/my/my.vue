@@ -1,6 +1,5 @@
 <template>
   <div class="my">
-    <!-- <my-nav class="myNav"></my-nav> -->
     <my-message ref="myMessage" :show="isShow"></my-message>
     <my-task class="myTask" @click.native="goTaskList"></my-task>
     <my-wallet class="myWallet"></my-wallet>

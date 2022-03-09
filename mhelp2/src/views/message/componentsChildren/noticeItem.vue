@@ -6,7 +6,8 @@
         <div class="times">
             2022年2月3日
         </div>
-    </div>
+        <div class="tip"></div>
+    </div> 
 </template>
 <script>
 
@@ -19,6 +20,9 @@
         line-height: 50px;
         border-bottom: 1px solid #dfdfdf;
         display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
     .contents{
         flex: 3;
@@ -30,5 +34,14 @@
         flex: 1;
         font-size: 8px;
         color: #b1afaf;
+    }
+    .tip{
+        width: 10px;
+        height: 10px;
+        background-color: red;
+        border-radius: 50%;
+        position: absolute;
+        right: 10px;
+        bottom: 30px;
     }
 </style>

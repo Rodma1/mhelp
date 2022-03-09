@@ -1,5 +1,5 @@
 <template>
-  <div class="taskListSearchView">
+  <div class="schoolSearchView">
     <search-nav-bar @search="search"></search-nav-bar>
     <search-history
       ref="searchHistory"
@@ -14,9 +14,9 @@
 import searchNavBar from "components/content/search/componentsChildren/searchNavBar.vue";
 import searchHistory from "components/content/search/componentsChildren/searchHistory.vue";
 import {
-  setTaskListSearchHistory,
-  getTaskListSearchHistory,
-  removeTaskListSearchHistory,
+  setSchoolSearchHistory,
+  getSchoolSearchHistory,
+  removeSchoolSearchHistory,
 } from "network/searchHistory.js";
 export default {
   components: {
@@ -25,26 +25,32 @@ export default {
   },
   data() {
     return {
-      isShowHis: false,
       searchHistory: [],
-      value:''
+      value: "",
+      isShowHis: false,
     };
+  },
+  mounted() {
+    this.getHistory()
   },
   methods: {
     search(value) {
       this.value = value;
-      setTaskListSearchHistory(value);
-      this.searchHistory = getTaskListSearchHistory();
+      //   this.searchHistory.push(value);
+      setSchoolSearchHistory(value);
+      this.searchHistory = getSchoolSearchHistory();
       this.isShowHis = true;
       console.log(this.searchHistory);
+      this.$router.push("/school");
+      this.$bus.$emit("scroolToSchool", value);
     },
     del() {
       this.searchHistory = [];
       this.isShowHis = false;
-      removeTaskListSearchHistory();
+      removeSchoolSearchHistory();
     },
     getHistory() {
-      this.searchHistory = getTaskListSearchHistory();
+      this.searchHistory = getSchoolSearchHistory();
       if (this.searchHistory.length !== 0) {
         this.isShowHis = true;
       }
@@ -52,9 +58,8 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.taskListSearchView {
+.schoolSearchView {
   background: white;
   height: 100vh;
 }

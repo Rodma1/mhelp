@@ -2,7 +2,7 @@
   <div class="moreList">
     <div class="item" >
       <div>头像</div>
-      <div><img src="@/assets/img/example/头像.jpg" alt="" /></div>
+      <div><img :src="this.$store.state.avatar" alt="" /></div>
       <div @click="uploadAvatar"><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
     <div class="item" @click="changeNickname">

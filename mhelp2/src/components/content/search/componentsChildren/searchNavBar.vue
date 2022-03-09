@@ -10,6 +10,7 @@
           placeholder="任务类型/任务标签"
           v-model="value"
           @input="judge"
+          ref="inputBox"
         />
       </div>
     </div>
@@ -27,6 +28,11 @@ export default {
     };
   },
   mounted() {
+    this.$bus.$on('historySearch',(item)=>{
+      // console.log(item);
+      this.value=item;
+      this.msg="搜索"
+    })
     //  this.judge()
   },
   methods: {
