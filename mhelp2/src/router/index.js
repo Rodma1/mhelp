@@ -7,6 +7,7 @@ const writeTask = () => import('../views/writeTask/writeTask.vue');
 const message = () => import('../views/message/message.vue');
 const my = () => import('../views/my/my.vue');
 const loging = () => import('../views/loging/loging.vue');
+const regist =()=>import("../views/loging/regist.vue")
 const school = () => import('../views/school/school.vue');
 const signIn = () => import('../views/signIn/signIn.vue');
 const notice = () => import('../views/message/messageView/notice.vue');
@@ -29,6 +30,9 @@ const homeSearch = () => import('../views/home/componentsChildren/homeSearchView
 const taskListSearch = () => import("../views/taskList/componentsChildren/taskListSearchView.vue")
 const changeAvatar = () => import("../views/more/componentsChildren/changeAvatar.vue")
 const schoolSearchView = () => import("../views/school/childrenComponents/schoolSearchView.vue")
+const homeSearchTasks = () => import("../views/home/componentsChildren/homeSearchTasks.vue")
+const payment = () => import("../views/pakege/componentsChildren/payment.vue")
+const textCombat=()=>import("../views/my/componentsChildren/textCombatView.vue")
 import { getToken } from "network/token.js";
 import store from '@/store';
 import { Message } from 'element-ui';
@@ -46,8 +50,16 @@ const routes = [
       {
         path: "homeSearch",
         name: "homeSearch",
-        component: homeSearch
-      }
+        component: homeSearch,
+        children: [
+          {
+            path: 'homeSearchTasks',
+            name: 'homeSearchTasks',
+            component: homeSearchTasks
+          }
+        ]
+      },
+
     ],
     meta: {
       login_require: false
@@ -78,7 +90,10 @@ const routes = [
     name: 'Message',
     component: message,
     children: [
-
+      // {
+      //   path: '/',
+      //   redirect: 'information'
+      // },
       {
         path: 'information',
         name: 'information',
@@ -107,6 +122,11 @@ const routes = [
     path: '/loging',
     name: 'Loging',
     component: loging
+  },
+  {
+    path: '/regist',
+    name: 'regist',
+    component: regist
   },
   {
     path: '/school',
@@ -150,6 +170,13 @@ const routes = [
     path: '/pakege',
     name: 'pakege',
     component: pakege,
+    children: [
+      {
+        path: 'payment',
+        name:'payment',
+        component:payment
+      },
+    ],
     meta: {
       login_require: true
     }
@@ -228,10 +255,17 @@ const routes = [
     name: 'chat',
     component: chat,
     meta: {
-      login_require: true
+      login_require: true,
     }
   },
-
+  {
+    path: '/textCombat',
+    name: 'textCombat',
+    component:textCombat,
+    meta: {
+      login_require: false
+    }
+  },
 ]
 const router = new VueRouter({
   routes
@@ -248,14 +282,14 @@ router.beforeEach((to, from, next) => {
         next()
         // console.log(store.state.account)
       }).catch(() => {
-          // next('/loging');
-          Message({
-            type: 'warning',
-            showClose: true,
-            message: '登录已过期'
-          })
-          next('/loging');
+        // next('/loging');
+        Message({
+          type: 'warning',
+          showClose: true,
+          message: '登录已过期'
         })
+        next('/loging');
+      })
     }
     else {
       next()

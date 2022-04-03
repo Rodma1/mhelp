@@ -7,7 +7,7 @@
     </div>
     <div class="time">
       <div class="timeTime">16:42</div>
-      <div class="new">1</div>
+      <div class="new">3</div>
     </div>
   </div>
 </template>
@@ -28,6 +28,12 @@ export default {
         return {};
       },
     },
+    noReadMsg:{
+      type:Object,
+      default(){
+        return {}
+    }
+    }
   },
   created() {
     this.findchatSnapShot();

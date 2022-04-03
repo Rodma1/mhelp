@@ -95,9 +95,9 @@ export default {
     //     console.log(res);
     //   });
     // },
-    // backTop(){
-    //   this.$refs.scroll.scroller(0,0,500);
-    // },
+    backTop(){
+      this.$refs.scroll.scroller(0,0,500);
+    },
     contentScroll(position){
       // console.log(position)
       this.isShowBackTop=(-position.y)>1000

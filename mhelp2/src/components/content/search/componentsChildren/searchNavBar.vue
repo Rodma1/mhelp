@@ -29,11 +29,9 @@ export default {
   },
   mounted() {
     this.$bus.$on('historySearch',(item)=>{
-      // console.log(item);
       this.value=item;
       this.msg="搜索"
     })
-    //  this.judge()
   },
   methods: {
     judge() {

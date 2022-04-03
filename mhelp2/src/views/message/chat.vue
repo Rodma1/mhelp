@@ -6,11 +6,7 @@
       </div>
       <div slot="center">{{ user.userNickname }}</div>
     </chat-nav-bar>
-    <scroll
-      class="contents"
-      ref="scroll"
-      :probeType="3"
-    >
+    <scroll class="contents" ref="scroll" :probeType="3">
       <chat-list
         class="chatList"
         ref="chatList"
@@ -85,27 +81,29 @@ export default {
       isShow: false,
       msgContent: {},
       isRead: false,
-      nosendMsg:[],
-       maxScrollY: null,
+      nosendMsg: [],
+      maxScrollY: null,
+      contentsHeight:null
     };
   },
   mounted() {
-    // this.$bus.$on("currentUserId",(userId)=>{
-    //   this.user.id=userId
-    //   // console.log(this.user.id)
-    // })
     this.messageList = getmsgContent(this.my.id, this.user.id);
     this.init();
-   
   },
   activated() {
     this.isRead = true;
-     this.itemImageLoad()
+    this.itemImageLoad();
+    setTimeout(()=>{
+      this.$refs.scroll.scroller(0, -this.maxScrollY + this.contentsHeight);
+    },100)
   },
-  disactivated() {
+  deactivated() {
     this.isRead = false;
     this.websock.onclose = this.close;
   },
+  // destroyed() {
+  //   console.log(33);
+  // },
   methods: {
     goback() {
       this.$router.back();
@@ -113,7 +111,6 @@ export default {
     // contentScroll(position) {
     //   // console.log(position);
     // },
-
     send(value) {
       if (
         this.websock != null &&
@@ -141,7 +138,6 @@ export default {
       } else {
         // this.init();
         // console.log(22);
-        
       }
       // let params = {
       //   sendId: this.my.id,
@@ -229,9 +225,14 @@ export default {
         dataConetent.chatMsgParam.msgId
       );
       //构建chatMsg聊天消息
-      var chatMsgParam = new ChatMsgParam(this.my.id, this.user.id, dataConetent.chatMsgParam.msg, 2);
+      var chatMsgParam = new ChatMsgParam(
+        this.my.id,
+        this.user.id,
+        dataConetent.chatMsgParam.msg,
+        2
+      );
       setmsgContent(chatMsgParam);
-      this.messageList = getmsgContent(this.my.id, this.user.id)
+      this.messageList = getmsgContent(this.my.id, this.user.id);
       this.chats(JSON.stringify(dataContentSign));
       setChatSnapShot(
         this.my.id,
@@ -248,7 +249,7 @@ export default {
     },
     chats: function (msg) {
       //如果当前WebSocket 状态已经连接，无需重复初始化WebSocket
-      if ( 
+      if (
         this.websock != null &&
         this.websock != undefined &&
         this.websock.readyState == WebSocket.OPEN
@@ -260,13 +261,13 @@ export default {
       }
     },
     itemImageLoad() {
-      this.$bus.$on("itemImageLoad",()=>{
+      this.$bus.$on("itemImageLoad", () => {
         this.maxScrollY =
           document.getElementsByClassName("chatList")[0].clientHeight;
-        console.log(this.maxScrollY)
-        var contentsHeight= document.getElementsByClassName("contents")[0].clientHeight;
-        this.$refs.scroll.scroller(0,-this.maxScrollY+contentsHeight)
-      })
+        this.contentsHeight =
+          document.getElementsByClassName("contents")[0].clientHeight;
+        this.$refs.scroll.scroller(0, -this.maxScrollY + this.contentsHeight);
+      });
     },
   },
 };

@@ -1,13 +1,15 @@
 <template>
   <div class="moreList">
-    <div class="item" >
+    <div class="item">
       <div>头像</div>
       <div><img :src="this.$store.state.avatar" alt="" /></div>
-      <div @click="uploadAvatar"><img src="@/assets/img/my/右箭头.png" alt="" /></div>
+      <div @click="uploadAvatar">
+        <img src="@/assets/img/my/右箭头.png" alt="" />
+      </div>
     </div>
     <div class="item" @click="changeNickname">
       <div>昵称</div>
-      <div>{{this.$store.state.nickname}}</div>
+      <div>{{ this.$store.state.nickname }}</div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
     <div class="item" @click="chooseSchool">
@@ -15,70 +17,44 @@
       <div>运城学院</div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
-    <div class="item" @click="changePassword" > 
+    <div class="item" @click="changePassword">
       <div>修改密码</div>
       <div>......</div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
-    <!-- <div class="mask" v-if="isShow" @click="cancle">
-      <div class="upLoad">
-        <div>
-          <img src="@/assets/img/example/相机.png" alt="">
-          <div>拍照</div>
-          <input
-            type="file"
-            accept="image/*"
-            capture="camera"
-            class="upLoadImage"
-          />
-        </div>
-        <div>
-          <img src="@/assets/img/example/图片.png" alt="">
-          <div>从相册中选择</div>
-          <input
-            type="file"
-            accept="image/*"
-            class="upLoadImage"
-          />
-        </div>
-      </div>
-    </div> -->
     <div class="exist" @click="exist">退出登录</div>
-    
   </div>
 </template>
 <script>
-
 export default {
-  data(){
-    return{
+  data() {
+    return {
       // isShow:false
-
-    }
+    };
   },
   methods: {
     exist() {
-      this.$store.dispatch("logout").then((res) => {
-        console.log(res);
+      this.$store.dispatch("logout");
+      setTimeout(() => {
         this.$router.push("/home");
-      });
+      }, 200);
     },
-    uploadAvatar(){
+    uploadAvatar() {
       // this.isShow=true
-      this.$router.push('/more/changeAvatar')
+      this.$router.push("/more/changeAvatar");
     },
     // cancle(){
     //   this.isShow=false
     // },
-    chooseSchool(){
-      this.$router.push("/school")
+    chooseSchool() {
+      this.$router.push("/school");
     },
-    changePassword(){
-      this.$router.push("/more/changePassword")
+    changePassword() {
+      this.$router.push("/more/changePassword");
     },
-    changeNickname(){
-      this.$router.push("/more/changeNickname")
-    }
+    changeNickname() {
+      this.$router.push("/more/changeNickname");
+    },
   },
 };
 </script>
@@ -152,7 +128,7 @@ export default {
   align-items: center;
   /* line-height: 45px; */
 }
-.upLoad > div >img{
+.upLoad > div > img {
   width: 30px;
   height: 30px;
   margin: 0px 10px;
@@ -182,5 +158,4 @@ export default {
   top: 0;
   cursor: pointer;
 }
-
 </style>

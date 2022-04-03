@@ -36,24 +36,27 @@ export const backTopMixins = {
 export const isLoging = {
     data() {
         return {
-            logingShow: false,
+            logingShow: true,
         }
     },
     activated() {
-        if (this.$store.state.id) {
-            this.logingShow = true
-        }
-        else {
-            this.logingShow = false
-        }
+        this.judgeLoging()
     },
-    mounted() {
-        console.log(this.$store.state.id)
-        if (this.$store.state.id) {
-            this.logingShow = true
-        }
-        else {
-            this.logingShow = false
+    created() {
+        this.$store.dispatch('getUserInfo').then(() => {
+            setTimeout(() => {
+               this.judgeLoging()
+            }, 200);
+        })
+    },
+    methods:{
+        judgeLoging(){
+            if (this.$store.state.id) {
+                this.logingShow = true
+            } 
+            else {
+                this.logingShow = false
+            }
         }
     }
 }

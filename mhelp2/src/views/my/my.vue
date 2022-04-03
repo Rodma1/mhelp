@@ -5,6 +5,7 @@
     <my-wallet class="myWallet"></my-wallet>
     <my-shop class="myShop"></my-shop>
     <my-bill class="myBills"></my-bill>
+    <text-combat class="textCombat"></text-combat>
   </div>
 </template>
 <script>
@@ -14,10 +15,13 @@ import myTask from "views/my/componentsChildren/myTask.vue";
 import myWallet from "views/my/componentsChildren/mywallet.vue";
 import myShop from "views/my/componentsChildren/myShop.vue";
 import myBill from "views/my/componentsChildren/mybills.vue";
+import textCombat from "views/my/componentsChildren/textCombat.vue"
+
 export default {
   data() {
     return {
       isShow: true,
+      
     };
   },
   components: {
@@ -26,9 +30,10 @@ export default {
     myTask,
     myWallet,
     myShop,
-    myBill
+    myBill,
+    textCombat
   },
-  created() {},
+  created(){},
   activated() {
       this.show()
   },
@@ -37,7 +42,7 @@ export default {
       this.$router.push("./taskList/0");
     },
     show() {
-      localStorage.token ? this.isShow=false : this.isShow=true;
+      localStorage.token? this.isShow=false : this.isShow=true;
     },
   },
 };
@@ -55,17 +60,22 @@ export default {
 }
 .myWallet {
   position: absolute;
-  top: 280px;
+  top: 265px;
   left: 0px;
 }
 .myShop {
   position: absolute;
-  top: 370px;
+  top: 350px;
   left: 0px;
 }
 .myBills{
   position: absolute;
-  top: 460px;
+  top: 435px;
+  left: 0px;
+}
+.textCombat{
+   position: absolute;
+  top: 520px;
   left: 0px;
 }
 </style>

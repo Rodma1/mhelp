@@ -40,6 +40,9 @@ export default {
   mounted() {
     this.differentiate();
   },
+  destroyed(){
+    // console.log(22)
+  },
   methods: {
     differentiate() {
       if (this.item.flag == 1) {
@@ -65,11 +68,7 @@ export default {
   border-radius: 50%;
 }
 .me {
-  /* -webkit-text-align: right; */
   justify-content: flex-end;
-  /* -webkit-justify-content: right;
-     -moz-justify-content: right;
-     -o-justify-content: right; */
 }
 
 .you {

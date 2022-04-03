@@ -1,6 +1,6 @@
 import { request } from "network/request.js"
 export function getTask(page) {
-    console.log(page)
+    // console.log(page)
     return request({
         url: "/tasks",
         method: 'post',
@@ -18,7 +18,7 @@ export function getTask(page) {
 }
 export function getCategory() {
     return request({
-        url: '/categorys',
+        url: '/categorys', 
         method: 'get',
     })
 }
@@ -80,6 +80,7 @@ export function schools() {
         method: 'get'
     })
 }
+//查找任务
 export function searchTask(data) {
     return request({
         url: "/tasks/taskbykeys",
@@ -88,16 +89,17 @@ export function searchTask(data) {
             page: data.page,
             pageSize: data.pageSize,
             words: data.words,
-            schoolid: data.schoolid,
+            school: data.schoolid,
 
         }
     })
 }
+
 export function searchNoTask(data) {
     return request({
         url: 'tasks/taskbynostatus',
         method: 'post',
-        data: {
+        data: { 
             page: data.page,
             pageSize: data.pageSize,
             words: data.words,
@@ -105,14 +107,14 @@ export function searchNoTask(data) {
         }
     })
 }
-//
-export function noReadMsg(token, acceptUserId) {
+//用户未读消息
+export function noReadMsg(acceptUserId) {
+    console.log(acceptUserId)
     return request({
-        headers: { 'Authorization': token },
         url: "/chat/nread",
         method: 'post',
-        data: {
-            acceptUserId
+        params: {
+            acceptUserId:acceptUserId
         }
     })
 }

@@ -1,9 +1,9 @@
 <template>
-    <div class="myWallet" @click="topakege">
+    <div class="textCombat" @click="toTextCombat">
         <my-item>
-            <div slot="left">
-                <img src="@/assets/img/my/钱包.png" alt="">
-                <span>我的钱包</span>
+             <div slot="left">
+                <img src="@/assets/img/my/文本.png" alt="">
+                <span>文本对抗</span>
             </div>
             <div slot="right" class="right">
                 <img src="@/assets/img/my/右箭头.png" alt="">
@@ -13,32 +13,33 @@
 </template>
 <script>
 import myItem from "components/content/myItem/myItem.vue"
+
 export default{
     components:{
         myItem
     },
     methods:{
-        topakege(){
-            this.$router.push('./pakege')
+        toTextCombat(){
+            this.$router.push("/textCombat")
         }
     }
 }
 </script>
 <style scoped>
-.myWallet{
+.textCombat{
     width: 100%;
 }
-.myWallet img{
+.textCombat img{
     width: 28px;
     height: 28px;
     padding-left: 20px;
 }
-.myWallet span{
+.textCombat span{
     padding-left: 10px;
     font-size: 18px;
     /* line-height: 90px; */
 }
-.myWallet .right img{
+.textCombat .right img{
     width: 15px;
     height: 15px;
 }

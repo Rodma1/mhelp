@@ -19,6 +19,5 @@ Vue.use(pinyin)
 new Vue({
   router,
   store,
-
   render: h => h(App)
 }).$mount('#app')

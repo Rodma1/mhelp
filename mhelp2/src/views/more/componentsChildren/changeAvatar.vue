@@ -71,6 +71,7 @@ export default {
       // console.log(formData.get("avatar"));
       uploadAvatar(this.$store.state.token, formdata).then((res) => {
         this.updateMsg.avatar=res.data
+        console.log(res)
         this.$store.dispatch("updateUserInfo", this.updateMsg).then(() => {
           console.log(11);
         });

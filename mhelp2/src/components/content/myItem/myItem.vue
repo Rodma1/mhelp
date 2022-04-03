@@ -8,7 +8,7 @@
 .myItem{
     width: 100%;
     display: flex;
-    height: 80px;
+    height: 70px;
     background-color: #ffffff;
     align-items: center;
 }

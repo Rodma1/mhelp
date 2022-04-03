@@ -16,9 +16,9 @@ import Items from "views/message/componentsChildren/informationItem.vue";
 import scroll from "components/common/scroll/scroll.vue";
 import noLoging from "components/content/noLoging/nologing.vue";
 import { isLoging } from "mixins/mixins.js";
-
+import {noReadMsg} from "network/task.js"
 export default {
-  components: {
+  components: { 
     Items,
     scroll, 
     noLoging
@@ -27,8 +27,14 @@ export default {
   data() {
     return {
       chatList: this.$store.state.chatList,
-      userId:""
+      userId:"",
+      noReadMsg:[]
     };
+  },
+  activated(){
+    noReadMsg(this.$store.state.id).then((res)=>{
+      console.log(res)
+    })
   },
   methods: {
     goChat(index) {

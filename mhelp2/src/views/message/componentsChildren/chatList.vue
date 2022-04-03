@@ -15,9 +15,7 @@ export default {
     chatItem,
   },
   data() {
-    return {
-     
-    };
+    return {};
   },
   props: {
     messageList: {
@@ -28,28 +26,12 @@ export default {
     },
   },
   mounted() {
-    // this.chatListItemLoad();
+
   },
   updated() {
-    // this.itemImageLoad();
+
   },
   methods: {
-    // chatListItemLoad() {
-    //   this.maxScrollY =
-    //     document.getElementsByClassName("chatList")[0].clientHeight;
-    //   console.log(document.getElementsByClassName("chatList")[0].clientHeight);
-    //   console.log(this.maxScrollY);
-    // },
-    itemImageLoad() {
-       this.maxScrollY =
-          document.getElementsByClassName("chatList")[0].clientHeight;
-      this.$bus.$on("itemImageLoad", () => {
-        console.log(
-          document.getElementsByClassName("chatList")[0].clientHeight
-        );
-        console.log(this.maxScrollY);
-      });
-    },
   },
 };
 </script>
@@ -57,5 +39,8 @@ export default {
 .chatList {
   height: 100%;
   padding: 10px 10px;
+  /* position: fixed; */
+  /* bottom: 0px; */
+  /* right: 0px; */
 }
 </style>

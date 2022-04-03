@@ -54,7 +54,11 @@ export default {
   activated() {
     this.archive();
     this.isTaskShow()
-    console.log(this.archiveList[this.currentType].list);
+    // console.log(this.archiveList[this.currentType].list);
+  },
+  deactivated(){
+  },
+  destroyed(){
   },
   mounted() {
     // console.log(this.currentType)
@@ -70,9 +74,7 @@ export default {
     archive() {
       archive(this.$store.state.token, 2).then((res) => {
         console.log(res);
-        // this.archiveList.incomplete.push(...res.data);
-        // this.archiveList.all.push(...res.data)
-        // console.log(this.archiveList.incomplete);
+
       });
     },
     tabClick(index) {
@@ -101,10 +103,8 @@ export default {
     },
     isTaskShow() {
       if (this.archiveList[this.currentType].list==0) {
-        console.log("a");
         this.isTask = false;
       } else {
-        console.log("b");
         this.isTask = true;
       }
     },

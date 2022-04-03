@@ -45,7 +45,7 @@ export default {
   props: {
     listSign: {
       type: Array,
-      default() {
+      default() { 
         return [];
       },
     },
@@ -55,9 +55,6 @@ export default {
     this.mgetDate();
     // console.log(this.currentDay);
    
-  },
-  computed: {
-    
   },
   methods: {
     init() {
@@ -83,7 +80,7 @@ export default {
         this.currentYear--;
         this.currentMonth = 11;
       }
-      console.log(this.currentMonth);
+      // console.log(this.currentMonth);
       this.mgetDate();
       this.$emit("lastMonth",this.currentMonth,this.currentYear)
     },

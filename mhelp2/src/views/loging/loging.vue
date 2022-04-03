@@ -1,19 +1,59 @@
 <template>
   <div class="loging">
-    <div class="back" @click="back">
+    <loging-nav-bar></loging-nav-bar>
+    <div class="content">
+      <div class="logo">
+        <img src="@/assets/img/loging/握手.png" alt="" />
+      </div>
+      <div class="box">
+        <div class="item" :class="{isActive:isTips}">
+          <img src="@/assets/img/loging/名字.png" alt="" />
+          <input type="text" name="" id="" v-model="userForm.account" @blur="rule"/>
+        </div>
+        <div class="tips" v-if="isTips">
+          <img src="@/assets/img/loging/tips.png" alt="" />
+          字符要大于0小于10
+        </div>
+        <div class="item" :class="{isActive:isTips}">
+          <img src="@/assets/img/loging/密码.png" alt="" />
+          <input type="password" name="" id="" v-model="userForm.password" @blur="rule"/>
+        </div>
+        <div class="tips" v-if="isTips2">
+          <img src="@/assets/img/loging/tips.png" alt="" />
+          字符要大于0小于10
+        </div>
+      </div>
+      <div class="logingBtn" :class="{isActive2:isTips2}" @click="toLogin">登录</div>
+      <div class="toRegist">注册</div>
+    </div>
+    <!-- <div class="back" @click="back">
       <img src="@/assets/img/loging/返回.png" alt="" />
     </div>
+    
     <div class="box">
       <ul class="title">
         <li :class="{ current: isActive }" @click="change1">登录</li>
         <li @click="change2" :class="{ current: !isActive }">注册</li>
       </ul>
-      <form action="" class="content1" v-if="isActive" :model="userForm" :rules="rules" ref="userForm">
+      <form
+        action=""
+        class="content1"
+        v-if="isActive"
+        :model="userForm"
+        :rules="rules"
+        ref="userForm"
+      >
         <table>
           <tr>
             <td>用户名:</td>
             <td>
-              <input type="text" name="" id="" v-model="userForm.account" @blur="rules"/>
+              <input
+                type="text"
+                name=""
+                id=""
+                v-model="userForm.account"
+                @blur="rules"
+              />
             </td>
           </tr>
           <tr>
@@ -23,32 +63,45 @@
         </table>
         <input type="button" value="登录" class="btn" @click="toLogin()" />
       </form>
-      <form action="" class="content2" v-else :modle="userForm2" ref="registForm">
+      <form
+        action=""
+        class="content2"
+        v-else
+        :modle="userForm2"
+        ref="registForm"
+      >
         <table>
           <tr>
             <td>用户名:</td>
-            <td><input type="text" name="" id="" v-model="userForm2.account"/></td>
+            <td>
+              <input type="text" name="" id="" v-model="userForm2.account" />
+            </td>
           </tr>
           <tr>
             <td>校园名:</td>
-            <td><input type="text" v-model="userForm2.nickname"/> </td>
+            <td><input type="text" v-model="userForm2.nickname" /></td>
           </tr>
           <tr>
             <td>密码:</td>
-            <td><input type="password" v-model="userForm2.password"/></td>
+            <td><input type="password" v-model="userForm2.password" /></td>
           </tr>
         </table>
-        <input type="button" value="注册" class="btn" @click="toRegist()"/>
+        <input type="button" value="注册" class="btn" @click="toRegist()" />
       </form>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
-
+import logingNavBar from "views/loging/componentsChildren/logingNavBar.vue";
 export default {
+  components: {
+    logingNavBar,
+  },
   data() {
     return {
       isActive: true,
+      isTips:false,
+      isTips2:false,
       userForm: {
         account: "ad",
         password: "admins",
@@ -60,14 +113,14 @@ export default {
       },
       rules: {
         account: [
-          {required: true, message: '请输入用户名', trigger: 'blur'},
-          {max: 10, message: '不能大于10个字符', trigger: 'blur'}
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { max: 10, message: "不能大于10个字符", trigger: "blur" },
         ],
         password: [
-          {required: true, message: '请输入密码', trigger: 'blur'},
-          {max: 10, message: '不能大于10个字符', trigger: 'blur'}
-        ]
-      }
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { max: 10, message: "不能大于10个字符", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
@@ -81,23 +134,48 @@ export default {
       this.isActive = false;
     },
     toLogin() {
-      // alert('aaaa')
-      if(this.userForm.account.length==0||this.userForm.password.length==0||this.userForm.account.length>11||this.userForm.password.length>11){
-        alert('用户名密码不能为空且长度不大于11位')
-      }
+      this.rule()
       this.$store.dispatch("login", this.userForm).then(() => {
-        this.$router.push('/home');
-      })
-    }, 
-    toRegist(){
-      if(this.userForm2.account.length==0||this.userForm2.password.length==0||this.userForm2.account.length>11||this.userForm2.password.length>11){
-        alert('用户名密码不能为空且长度不大于11位')
-      }
-      this.$store.dispatch("regist", this.userForm2).then(() => {
-        this.isActive=true
+        console.log(this.$store.state.token);
+        this.$store.dispatch("getUserInfo").then(() => {
+          setTimeout(() => {
+            console.log(this.$store.state.token);
+            this.$router.push("/home");
+          }, 200);
+        });
       });
     },
-   
+    toRegist() {
+      if (
+        this.userForm2.account.length == 0 ||
+        this.userForm2.password.length == 0 ||
+        this.userForm2.account.length > 11 ||
+        this.userForm2.password.length > 11
+      ) {
+        alert("用户名密码不能为空且长度不大于11位");
+      }
+      this.$store.dispatch("regist", this.userForm2).then(() => {
+        this.isActive = true;
+      });
+    },
+    rule() {
+      if (
+        this.userForm.account.length == 0 ||
+        this.userForm.password.length > 11
+      ) {
+        this.isTips=true
+      }else{
+        this.isTips=false
+      }
+      if (
+        this.userForm.password.length == 0 ||
+        this.userForm.password.length > 11
+      ) {
+        this.isTips2=true
+      }else{
+        this.isTips2=false
+      }
+    },
   },
 };
 </script>
@@ -105,18 +183,86 @@ export default {
 .loging {
   position: relative;
   height: 100vh;
-  background: rgba(197, 196, 196, 10);
-  z-index: 100;
+  z-index: 15;
+  background-color: white;
 }
-.box {
+.logo {
+  height: 150px;
+  line-height: 50px;
+  text-align: center;
+}
+.logo img {
+  width: 176px;
+  height: 120px;
+}
+.content {
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  right: 0px;
+  transform: translate(0, -60%);
+}
+.item {
+  height: 50px;
+  display: flex;
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+.box .item:nth-child(2){
+   margin-bottom: 0px;
+}
+.item img {
+  width: 30px;
+  height: 30px;
+  /* background-color: red; */
+  margin-right: 5px;
+  margin-top: 10px;
+}
+.item input {
+  flex: 1;
+  border: 1px solid gray;
+  outline: 1px solid #1296db;
+}
+.logingBtn {
+  height: 40px;
+  background-color: #1296db;
+  text-align: center;
+  line-height: 40px;
+  margin: 30px 0px 8px 10px;
+  color: white;
+  font-size: 18px;
+}
+.toRegist {
+  text-align: right;
+  padding: 10px;
+  color: #86ccf1;
+}
+.tips img {
+  width: 15px;
+  height: 15px;
+}
+.tips {
+  height: 20px;
+  margin-left: 40px;
+  color: red;
+  font-size: 13px;
+}
+.box .isActive{
+  margin-bottom: 0px;
+}
+.content .isActive2{
+  margin-top: 10px;
+}
+/* .box {
   width: 300px;
   height: 250px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-.title {
+} */
+/* .title {
   width: 300px;
   height: 40px;
   display: flex;
@@ -189,5 +335,5 @@ ul .current {
   width: 150px;
   height: 40px;
   border: 0px;
-}
+} */
 </style>

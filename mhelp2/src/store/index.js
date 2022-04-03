@@ -30,7 +30,7 @@ export default new Vuex.Store({
       return state.nickname = nickname
     },
     SET_ID(state, id) {
-      return state.id = id
+      return state.id = id 
     },
     SET_AVATAR(state, avatar) {
       return state.avatar = avatar
@@ -60,10 +60,8 @@ export default new Vuex.Store({
           }
         }).catch(err =>{
           console.log(err)
-          alert(err)}
-          
+        }
         )
-          
       })
     },
     regist({ commit }, user) {
@@ -110,7 +108,7 @@ export default new Vuex.Store({
           commit('SET_ID', '')
           removeToken()
         }
-
+        
       })
     },
     fedLogOut({commit}) {

@@ -9,7 +9,6 @@
 </script>
 <style scoped>
 .wallet{
-
     height: 140px;
     margin: 10px;
     background-color: #7bc8f1;

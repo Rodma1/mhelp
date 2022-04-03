@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       isActive: true,
-      count: 1,
+      count: 2,
       isFinish: false,
     };
   },
@@ -69,7 +69,7 @@ export default {
             id: res.data.id,
             avatar: res.data.avatar,
           });
-        });
+        }); 
       }else{
           this.$router.push("/loging")
       }
@@ -142,7 +142,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-
+  width: 100%;
   /* margin: 0px 10px; */
   /* justify-content: center; */
 }

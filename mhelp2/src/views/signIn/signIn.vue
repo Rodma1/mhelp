@@ -1,7 +1,7 @@
 <template>
   <div class="signIn">
     <sign-in-nav></sign-in-nav>
-    <go-sign></go-sign>
+    <go-sign :isSign="isSign"></go-sign>
     <calendar
       class="calendar"
       :listSign="listSign"
@@ -16,7 +16,8 @@ import calendar from "views/signIn/componentsChildren/calendar.vue";
 import signInNav from "views/signIn/componentsChildren/signInNav.vue";
 import goSign from "views/signIn/componentsChildren/goSign.vue";
 import signInRules from "views/signIn/componentsChildren/signInRules.vue";
-import { listsign } from "network/sign.js";
+import { listsign,todaysign } from "network/sign.js";
+// import { sign, todaysign } from "network/sign.js";
 export default {
   components: {
     calendar,
@@ -29,22 +30,25 @@ export default {
       listSign: [],
       currentDay: 0,
       allListSign: [],
+      isSign:0
     };
   },
   mounted() {
+    this.todaysign()
     this.getListsign();
     this.$bus.$on("sign", (item) => {
-      // this.listSign.push(item);
       console.log(item);
-      // console.log(this.listSign)
       this.getListsign();
     });
+  },
+  updated(){
+    // console.log(this.isSign)
   },
   methods: {
     getListsign() {
       listsign(this.$store.state.token).then((res) => {
         this.allListSign = res.data;
-        console.log(this.allListSign);
+        // console.log(this.allListSign);
         for (var i = 0; i < res.data.length; i++) {
           var time = res.data[i].signInDate;
           var ymd = time.substr(0, 10);
@@ -63,8 +67,8 @@ export default {
     },
     lastMonth(currentMonth, currentYear) {
       this.listSign = [];
-      console.log(currentMonth, currentYear);
-      for (var i = 0; i < this.allListSign.length; i++) {
+      // console.log(currentMonth, currentYear);
+      for (var i = 0; i < this.allListSign.length; i++) { 
         var time = this.allListSign[i].signInDate;
         var ymd = time.substr(0, 10);
         var year = ymd.substr(0, 4);
@@ -79,6 +83,13 @@ export default {
         }
       }
     },
+    todaysign(){
+      todaysign(this.$store.state.token).then((res)=>{
+        // console.log(res) 
+        this.isSign=res.data
+        // console.log(this.isSign)
+      })
+    } 
   },
 };
 </script>

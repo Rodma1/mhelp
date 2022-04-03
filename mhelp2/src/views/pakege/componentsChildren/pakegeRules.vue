@@ -9,7 +9,7 @@
 
 <style scoped>
 .pakegeRules{
-    height: 100px;
+    /* height: 100px; */
     background-color: aquamarine;
     margin: 10px;
 }

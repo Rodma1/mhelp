@@ -6,16 +6,25 @@
   </div>
 </template>
 <script>
-import { sign, todaysign } from "network/sign.js";
+import { sign } from "network/sign.js";
 export default {
   data() {
     return {
-      isSign: 0,
+      // isSign: 0,
       currentDay:0
     };
   },
+  props:{
+    isSign:{
+      type:Number,
+      default(){
+        return 0
+      }
+    }
+  },
   mounted(){
-    this.todaysign()
+    // this.todaysign()
+    // console.log(this.isSign)
   },
   methods: {
     sign() {
@@ -25,14 +34,15 @@ export default {
           this.currentDay = date.getDate();
           this.$bus.$emit('sign',this.currentDay) 
         });
+         
     },
-    todaysign(){
-      todaysign(this.$store.state.token).then((res)=>{
-        // console.log(res)
-        this.isSign=res.data
-        // console.log(this.isSign)
-      })
-    }
+    // todaysign(){
+    //   todaysign(this.$store.state.token).then((res)=>{
+    //     // console.log(res) 
+    //     this.isSign=res.data
+    //     // console.log(this.isSign)
+    //   })
+    // } 
   },
 };
 </script>
