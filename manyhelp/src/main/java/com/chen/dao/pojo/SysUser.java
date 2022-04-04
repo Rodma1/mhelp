@@ -27,4 +27,6 @@ public class SysUser {
     private Integer admin;
 //  是否删除
     private Integer deleted;
+//    学校
+    private String school;
 }

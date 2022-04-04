@@ -14,6 +14,10 @@ public class GetTokenUrl {
     private String fastDfsUrl;
     @Value("${fdfs.http.http_secret_key}")
     private String fastDfsKey;
+    @Value("${fdfs.http.anti_steal_token}")
+    private boolean antiStealToken;
+
+
     /**
      * 获取带有token的访问地址
      *
@@ -22,6 +26,9 @@ public class GetTokenUrl {
      */
     public String getTokenUrl(String fileUrl) throws Exception {
         String path = StorePath.parseFromUrl(fileUrl).getPath();
+        if (!antiStealToken) {
+            return "http://"+fastDfsUrl + "/"+fileUrl;
+        }
         //时间戳 单位为秒
         int ts = (int) (System.currentTimeMillis() / 1000);
         String token;

@@ -66,7 +66,7 @@ public class SysUserServiceImpl implements SysUserService {
         queryWrapper.eq(SysUser::getPassword,pwd);
 //        要查询的的字段
         queryWrapper.select(SysUser::getId,SysUser::getAccount,
-                SysUser::getAvatar,SysUser::getNickname,SysUser::getEmail,SysUser::getPassword);
+                SysUser::getAvatar,SysUser::getNickname,SysUser::getEmail,SysUser::getPassword,SysUser::getSchool);
 //        只查询一行
         queryWrapper.last("limit 1");
 //        执行select语句
@@ -128,6 +128,8 @@ public class SysUserServiceImpl implements SysUserService {
 
 //        邮箱
         loginUserVo.setEmail(sysUser.getEmail());
+//        学校
+        loginUserVo.setSchool(sysUser.getSchool());
         return Result.success(loginUserVo);
 
     }
@@ -211,6 +213,7 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setAvatar(sysUserParam.getAvatar());
         sysUser.setEmail(sysUserParam.getEmail());
         sysUser.setNickname(sysUserParam.getNickname());
+        sysUser.setSchool(sysUserParam.getSchool());
         //如果都为false就是没有空
         if (!(StringUtils.isBlank(sysUserParam.getBeforePssword())||StringUtils.isBlank(sysUserParam.getPassword()))){
             //         slat加密盐给死了，也可以自己在数据库设计

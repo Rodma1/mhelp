@@ -20,4 +20,7 @@ public class SysUserParam {
 
     //密码
     private String password;
+
+    // private
+    private String school;
 }

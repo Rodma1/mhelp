@@ -17,4 +17,7 @@ public class LoginUserVo {
 
 //    用户email
     private String email;
+
+//    学校
+    private String school;
 }

@@ -28,7 +28,7 @@ public class TaskController {
     @PostMapping//post请求
 //    加上注解，代表要对此接口记录日志，module是模块名称，operation是操作名称
     @LogAnnotation(module = "任务",operation = "获取任务列表")
-    @Cache(expire = 2 * 60 * 1000,name = "listTask")//2分钟清空缓存
+    @Cache(expire = 1 * 60 * 1000,name = "listTask")//2分钟清空缓存
     public Result listTask(@RequestBody PageParams pageParams){
 ////        TaskVo页面接收数据
 //        Result Tasks=taskService.listTasksPage(pageParams);
