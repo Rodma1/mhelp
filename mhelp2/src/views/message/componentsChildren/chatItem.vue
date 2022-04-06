@@ -11,10 +11,10 @@
       <div class="content">
         <div class="text text1" >{{ item.msg }}</div>
       </div>
-      <img src="@/assets/img/example/头像.jpg" alt=""  @load="itemImageLoad"/>
+      <img :src="this.$store.state.avatar" alt=""  @load="itemImageLoad"/>
     </div>
     <div class="you common" v-else>
-      <img src="@/assets/img/example/头像.jpg" alt=""  @load="itemImageLoad"/>
+      <img :src="item.avatar" alt=""  @load="itemImageLoad"/>
       <div class="content">
         <div class="text text2" >{{ item.msg }}</div>
       </div>

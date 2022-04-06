@@ -1,11 +1,11 @@
 <template>
     <div class="publishItem">
        <div class="title">
-            <img src="@/assets/img/example/头像.jpg" alt="" @load="itemImageLoad">
+            <img :src="item.avatar" alt="" @load="itemImageLoad">
             <div class="center">
-                <div class="name">吼吼哈嘿</div>
+                <div class="name">{{item.author}}</div>
                 <!-- <div class="tags">{{item.tags[0].tagsName}}</div> -->
-                <div class="time">2021年12月23日</div>
+                <div class="time">{{item.createDate}}</div>
             </div>
             <div class="remarks">
                 <img src="@/assets/img/home/更多.png" alt="">
@@ -13,25 +13,20 @@
         </div>
         <div class="content">
             <div class="type">
-                组队
+                {{item.title}}
             </div>
             <div class="description">
-                几天下午帮我开个会
+                {{item.summary}}
             </div>
             <ul class="picture">
-                <li >
-                    <img src="@/assets/img/example/图片1.jpg" alt="" @load="itemImageLoad">
-                </li>
-                <li >
-                    <img src="@/assets/img/example/图片1.jpg" alt="" @load="itemImageLoad">
-                </li>
-                <li >
-                    <img src="@/assets/img/example/图片1.jpg" alt="" @load="itemImageLoad">
+                <li v-for="(i,index) in item.images" :key="index">
+                    <img :src="i" alt="" @load="itemImageLoad">
                 </li>
             </ul>
         </div>
         <div class="isFinish">
-            <img src="@/assets/img/publish/未完成.png" alt="">
+            <img src="@/assets/img/publish/已完成.png" alt="" v-if="item.status==2">
+            <img src="@/assets/img/publish/未完成.png" alt="" v-else>
         </div>
     </div>
 </template>
@@ -43,7 +38,14 @@ export default{
             this.$bus.$emit("itemImageLoad");
         }
     },
-
+    props:{
+        item:{
+            type:Object,
+            default(){
+                return {}
+            }
+        }
+    }
 }
 </script>
 <style scoped>

@@ -1,8 +1,6 @@
 <template>
   <div class="publishList">
-      <publish-item></publish-item>
-      <publish-item></publish-item>
-      <publish-item></publish-item>
+      <publish-item v-for="(item,index) in list" :key="index" :item=item></publish-item>
   </div>
 </template>
 <script>
@@ -11,6 +9,14 @@ export default {
   components: {
     publishItem,
   },
+  props:{
+    list:{
+      type:Array,
+      default(){
+        return []
+      }
+    }
+  }
 };
 </script>
 <style scoped>

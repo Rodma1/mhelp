@@ -31,6 +31,7 @@ export function formatDate(date, fmt) {
 export function padLeftZero(str) {
   return ('00' + str).substr(str.length);
 }
+//去重
 export function unique(origin) {
   const result = [];
   const set = new Set();

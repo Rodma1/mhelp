@@ -11,7 +11,7 @@
     <back-top @click.native="backTop" v-show="isShowBackTop" ></back-top>
     <toast :message="toast" :logingShow="!logingShow" class="toast"></toast>
   </div>
-</template>
+</template> 
 <script>
 import homeNavBar from "views/home/componentsChildren/homeNavBar.vue";
 import homeCategory from "views/home/componentsChildren/homeCategory.vue";
@@ -38,8 +38,8 @@ export default {
     return {
       isActive: false,
       page: {
-        pageNumber: 0,
-        pageSize: 9,
+        pageNumber: 1,
+        pageSize: 30,
       },
       task: [],
       category: [],
@@ -71,6 +71,11 @@ export default {
           console.log(res);
           this.task.push(...res.data);
           console.log(this.task);
+          for(var i=0;i<this.task.length;i++){
+            if(this.task[i].images){
+               this.task[i].images=this.task[i].images.split(",")
+            }
+          }
         })
         .catch((res) => {
           console.log(res);
@@ -78,23 +83,16 @@ export default {
     },
     getCategory() {
       getCategory().then((res) => {
-        console.log(res);
         this.category.push(...res.data);
-        console.log(this.category);
       });
     },
     getTags() {
       getTags().then((res) => {
-        console.log(res);
+        // console.log(res);
         this.tags.push(...res.data);
-        console.log(this.tags);
+        // console.log(this.tags);
       });
     },
-    // getuaccepttasks() {
-    //   getuaccepttasks(this.page).then((res) => {
-    //     console.log(res);
-    //   });
-    // },
     backTop(){
       this.$refs.scroll.scroller(0,0,500);
     },

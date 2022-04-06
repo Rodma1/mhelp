@@ -18,7 +18,7 @@ export function getTask(page) {
 }
 export function getCategory() {
     return request({
-        url: '/categorys', 
+        url: '/categorys',
         method: 'get',
     })
 }
@@ -29,8 +29,9 @@ export function getTags() {
     })
 }
 
-export function getuaccepttasks(page) {
+export function getuaccepttasks(token,page) {
     return request({
+        headers: { 'Authorization': token },
         url: '/tasks/uaccepttasks',
         method: 'post',
         data: {
@@ -47,12 +48,25 @@ export function publishTask(token, params) {
         data: {
             title: params.title,
             body: {
-                content: params.content,
-                contetnHtml: ''
+                content: "ww",
+                contentHtml: "<p>ww</p >↵"
             },
-            category: { id: 2, avtar: '', categoryName: params.category },
-            summary: params.remark,
-            tags: [{ id: 2 }]
+            category: {
+                id: 2,
+                avatar: "",
+                categoryName: params.category
+            },
+            summary: params.summary,
+            tags: [
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                }
+            ],
+            images: params.images,
+            publishSchoolName: "运城学院"
         }
     })
 }
@@ -67,10 +81,11 @@ export function archive(token, status) {
         }
     })
 }
-export function acceptTask(token) {
+//接任务
+export function acceptTask(token,id) {
     return request({
         headers: { 'Authorization': token },
-        url: 'tasks/accepttask/1',
+        url: 'tasks/accepttask/'+id,
         method: 'post',
     })
 }
@@ -99,7 +114,7 @@ export function searchNoTask(data) {
     return request({
         url: 'tasks/taskbynostatus',
         method: 'post',
-        data: { 
+        data: {
             page: data.page,
             pageSize: data.pageSize,
             words: data.words,
@@ -109,12 +124,24 @@ export function searchNoTask(data) {
 }
 //用户未读消息
 export function noReadMsg(acceptUserId) {
-    console.log(acceptUserId)
+    // console.log(acceptUserId)
     return request({
         url: "/chat/nread",
         method: 'post',
         params: {
-            acceptUserId:acceptUserId
+            acceptUserId: acceptUserId
+        }
+    })
+}
+//我发的任务
+export function getPublishList(token,page){
+    return request({
+        headers: { 'Authorization': token },
+        url:"/tasks/usertasks",
+        method:"post",
+        data: {
+            page: page.pageNumber,
+            pageSize: page.pageSize
         }
     })
 }

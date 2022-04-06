@@ -1,23 +1,23 @@
 <template>
   <div class="item">
     <div class="top">
-      <img src="@/assets/img/example/头像.jpg" alt="" />
-      <div class="name">吼吼哈嘿</div>
+      <img :src="item.avatar" alt="" />
+      <div class="name">{{item.author}}</div>
       <div class="status">已完成</div>
     </div>
     <div class="center">
       <div class="content">
         <div class="categoryAndTags">
-          <div>分类：零食带饭</div>
-          <div>标签：食堂</div>
+          <div>分类：{{item.category}}</div>
+          <div>标签：</div>
         </div>
         
         <div class="main">
-          <div class="title">带饭</div>
+          <div class="title">{{item.title}}</div>
           <div> {{item.content}}</div>
         </div>
-        <div class="image">
-          <img src="@/assets/img/example/图片1.jpg" alt="" v-for="item in count" :key="item">
+        <div class="image" >
+          <img :src="i" alt="" v-for="(i,index) in item.images " :key="index">
         </div>
       </div>
       <div class="others">
@@ -54,14 +54,12 @@ export default{
 <style scoped>
 .item {
   background-color: white;
-  height: 170px;
   border-radius: 10px;
   margin-bottom: 10px;
   padding: 10px 10px;
 }
 .top {
   height: 30px;
-  /* background-color: red; */
   display: flex;
   align-items: center;
   border-bottom: 1px solid #f2f2f2;
@@ -81,13 +79,6 @@ export default{
   color: #616161;
   font-size: 13px;
   text-align: right;
-}
-.center {
-  height: 140px;
-  /* background-color: green; */
-}
-.center .content {
-  height: 120px;
 }
 .others {
   height: 20px;
@@ -140,7 +131,7 @@ export default{
 .image{
   margin-top: 5px;
   width: 100%;
-  height: 50px;
+  /* height: 50px; */
   display: flex;
 }
 .image img{

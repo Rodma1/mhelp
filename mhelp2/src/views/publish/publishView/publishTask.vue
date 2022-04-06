@@ -23,11 +23,12 @@ export default {
       isActive: false,
       params: {
         title: "",
-        content: "",
+        summary: "",
         remark: "",
         tags: "",
         category: "",
         price: "",
+        images: "",
       },
     };
   },
@@ -39,20 +40,22 @@ export default {
     isShow() {
       this.isActive = !this.isActive;
       this.params.title = this.$refs.fillDetails.params.title;
-      this.params.content = this.$refs.fillDetails.params.content;
+      this.params.summary = this.$refs.fillDetails.params.summary;
+      this.params.images=this.$refs.fillDetails.params.images
     },
     publish() {
       this.params.remark = this.$refs.publishToast.params.remark;
       this.params.tags = this.$refs.publishToast.params.tags;
       this.params.category = this.$refs.publishToast.params.category;
       this.params.price = this.$refs.publishToast.params.price;
-
+      console.log(this.$refs.publishToast.params.category)
+      console.log(this.params)
       publishTask(this.$store.state.token, this.params).then((res) => {
         console.log(res);
         this.$refs.fillDetails.params.title = "";
-        this.$refs.fillDetails.params.content = "";
+        this.$refs.fillDetails.params.summary = "";
+        this.$refs.fillDetails.fileList=[]
       });
-
       this.isActive = !this.isActive;
       this.$router.push('/')
     },

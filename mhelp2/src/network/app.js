@@ -14,7 +14,7 @@
 //         this.senderId = senderId;
 //         this.receiverId = receiverId;
 //         this.msg = msg;
-//         this.msgId = msgId;
+//         this.msgId = msgId; 
 //     },
 //     /**构建消息DataContent模型对象
 //      * @param {Object} action

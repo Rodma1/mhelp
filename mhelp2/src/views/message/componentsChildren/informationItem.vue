@@ -1,8 +1,8 @@
 <template>
   <div class="informationItem">
-    <img src="@/assets/img/message/头像.png" alt="" />
+    <img :src="item.avatar" alt="" />
     <div class="content">
-      <div class="netName">吼吼哈嘿</div>
+      <div class="netName">{{item.nickname}}</div>
       <div class="newMessage">{{ chatSnapShotMsg }}</div>
     </div>
     <div class="time">

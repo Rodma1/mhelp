@@ -5,7 +5,7 @@
       <input type="text" v-model="params.title" />
     </div>
     <div class="summary">
-      <textarea placeholder="输入正文..." v-model="params.content"></textarea>
+      <textarea placeholder="输入正文..." v-model="params.summary"></textarea>
       <div>
         <van-uploader
           v-model="fileList"
@@ -29,10 +29,11 @@ export default {
     return {
       params: {
         title: "",
-        content: "",
+        summary: "",
+        images:""
       },
       fileList: [
-        { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
+        // { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
         // Uploader 根据文件后缀来判断是否为图片文件
         // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
         // { url: "https://cloud-image", isImage: true },
@@ -43,31 +44,51 @@ export default {
   methods: {
     publish() {
       if (this.$store.state.id) {
-        if (this.params.title && this.params.content) {
+        if (this.params.title && this.params.summary) {
           this.$emit("isShow");
         } else {
           this.$toast("标题和内容均不能为空");
           // Toast('内容和文字均不能为空')
         }
-      }
-      else{
-        this.$router.push("/loging")
+      } else {
+        this.$router.push("/loging");
       }
     },
     afterRead(file) {
       file.status = "uploading";
       file.message = "上传中...";
-      var formData = new FormData();
-      console.log(file);
-      console.log(file.file);
-      formData.append("file", file.file);
-      setTimeout(() => {
-        file.status = "done";
-        file.message = "";
-        uploadImage(this.$store.state.token, formData).then((res) => {
-          console.log(res);
-        });
-      }, 200);
+      if (file.length) {
+        for (var i = 0; i < file.length; i++) {
+          var formData = new FormData();
+          formData.append("images", file[i].file);
+          console.log(file[i].file)
+          setTimeout(() => {
+            file.status = "done";
+            file.message = "";
+            uploadImage(this.$store.state.token, formData).then((res) => {
+              console.log(res);
+              this.params.images=res.data+","+this.params.images;
+              console.log(this.params.images)
+          });
+          }, 200);
+        }
+      } else {
+        var formData2 = new FormData();
+        formData2.append("images", file.file);
+        setTimeout(() => {
+          file.status = "done";
+          file.message = "";
+          uploadImage(this.$store.state.token, formData2).then((res) => {
+            console.log(res);
+            if(!this.params.images){
+              this.params.images=res.data;
+            }else{
+              this.params.images=this.params.images+","+res.data
+            }
+            console.log(this.params.images)
+          });
+        }, 200);
+      }
     },
   },
 };

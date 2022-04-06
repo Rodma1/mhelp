@@ -70,8 +70,8 @@ export default {
         nickname: this.$store.state.nikname,
         avatar: "",
       },
-      user: {
-        userNickname: "吼吼哈嘿",
+      user: { 
+        userNickname: "",
         id: this.$store.state.currentUser.id,
         avatar: "",
       },

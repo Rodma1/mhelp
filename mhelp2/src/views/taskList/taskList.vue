@@ -14,7 +14,7 @@
 import taskListNav from "views/taskList/componentsChildren/taskListNav.vue";
 import tabControl from "views/taskList/componentsChildren/tabControl.vue";
 import list from "views/taskList/componentsChildren/list.vue";
-import { archive } from "network/task.js";
+import { getuaccepttasks } from "network/task.js";
 
 export default {
   components: {
@@ -26,15 +26,15 @@ export default {
     return {
       page: {
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 20,
       },
       archiveList: {
         all: {
-          list: [{ content: "取快递" }, { content: "带饭" }],
+          list: [],
           page: 0,
         },
         incomplete: {
-          list: [{ content: "开会" }],
+          list: [],
           page: 0,
         },
         complete: {
@@ -52,17 +52,11 @@ export default {
     };
   },
   activated() {
-    this.archive();
+    this.getuaccepttasks();
     this.isTaskShow()
-    // console.log(this.archiveList[this.currentType].list);
-  },
-  deactivated(){
-  },
-  destroyed(){
   },
   mounted() {
-    // console.log(this.currentType)
-    // this.currentType="all"
+    // this.getuaccepttasks();
     this.isTaskShow()
   },
   computed: {
@@ -71,10 +65,21 @@ export default {
     },
   },
   methods: {
-    archive() {
-      archive(this.$store.state.token, 2).then((res) => {
+    getuaccepttasks() {
+      getuaccepttasks(this.$store.state.token, this.page).then((res) => {
         console.log(res);
-
+        this.archiveList.all.list=res.data
+        for(var i=0;i<res.data.length;i++){
+          if(this.archiveList.all.list[i].images){
+            this.archiveList.all.list[i].images=this.archiveList.all.list[i].images.split(",")
+          }
+          if(this.archiveList.all.list[i].status==1|| this.archiveList.all.list[i].status==0){
+            this.archiveList.incomplete.list.push( this.archiveList.all.list[i])
+          }
+          else{
+            this.archiveList.complete.list.push( this.archiveList.all.list[i])
+          }
+        }
       });
     },
     tabClick(index) {

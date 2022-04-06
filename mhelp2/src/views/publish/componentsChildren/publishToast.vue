@@ -15,16 +15,16 @@
       <div class="item">
         <div>分类:</div>
         <select v-model="params.category">
-          <option v-for="(item, index) in category" :key="index" >
-            {{ item }}
+          <option v-for="(item, index) in category" :key="index" @change="choose(index)">
+            {{ item.categoryName }}
           </option>
         </select>
       </div>
       <div class="item">
         <div>标签:</div>
-        <select v-model="params.tags">
-          <option v-for="(item, index) in tags" :key="index" :currentTags="item" >
-            {{ item }}
+        <select v-model="params.tags" >
+          <option v-for="(item, index) in tags" :key="index"  >
+            {{ item.tagName }}
           </option>
         </select>
       </div>
@@ -45,6 +45,7 @@
   </div>
 </template>
 <script>
+import {  getCategory, getTags } from "network/task.js"; 
 export default {
   data() {
     return {
@@ -81,20 +82,14 @@ export default {
   },
   created() {
   },
-  // updated(){
-  //   console.log(this.params)
-  // },
-
+  mounted(){
+    this.getCategory();
+    this.getTags()
+  },
   methods: {
     cancle() {
       this.$emit("change");
     },
-
-    // judge() {
-    //   if (this.remark.length >= 50) {
-    //     console.log("此处内容不得大于50个字符");
-    //   }
-    // },
     publish(){
       console.log(this.params.category,this.params.tags)
       if(this.params.category&&this.params.tags&&this.params.price){
@@ -103,6 +98,21 @@ export default {
       else{
         this.$toast('分类标签和价格不可为空，必选')
       }
+    },
+     getCategory() {
+      getCategory().then((res) => {
+        this.category=res.data;
+      });
+    },
+    getTags() {
+      getTags().then((res) => {
+        // console.log(res);
+        this.tags=res.data;
+        // console.log(this.tags);
+      });
+    },
+    choose(index){
+      console.log(index)
     }
   },
 };

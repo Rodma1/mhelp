@@ -1,7 +1,7 @@
 <template>
   <div class="homeTaskItem">
     <div class="title">
-      <img src="@/assets/img/example/头像.jpg" alt="" @load="itemImageLoad" />
+      <img :src="item.avatar" alt="" @load="itemImageLoad" />
       <div class="center">
         <div class="name">{{ item.author }}</div>
         <!-- <div class="tags">{{item.tags[0].tagsName}}</div> -->
@@ -16,13 +16,12 @@
         {{ item.title }}
       </div>
       <div class="description">
-        今天你下午帮我开个会
-        {{ item.content }}
+        {{ item.summary }}
       </div>
       <ul class="picture">
-        <li v-for="item in count" :key="item">
+        <li v-for="(i,index) in item.images" :key="index">
           <img
-            src="@/assets/img/example/图片1.jpg"
+            :src="i"
             alt=""
             @load="itemImageLoad"
           />
@@ -63,12 +62,8 @@ export default {
   methods: {
     acceptTask() {
       if (this.$store.state.id) {
-        acceptTask(this.$store.state.token).then((res) => {
+        acceptTask(this.$store.state.token,this.item.id).then((res) => {
           console.log(res);
-          this.$store.commit("pushChatList", {
-            id: res.data.id,
-            avatar: res.data.avatar,
-          });
         }); 
       }else{
           this.$router.push("/loging")

@@ -42,7 +42,7 @@ export default new Vuex.Store({
     saveCurrentUser(state,data){
         return state.currentUser=data;
     }
-  },
+  }, 
   actions: {
     //此处的{commit}绝不可省略
     login({ commit }, user) {
