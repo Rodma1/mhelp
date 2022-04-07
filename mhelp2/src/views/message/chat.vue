@@ -87,23 +87,27 @@ export default {
     };
   },
   mounted() {
+    console.log(this.user.id)
     this.messageList = getmsgContent(this.my.id, this.user.id);
-    this.init();
+    
   },
   activated() {
+    //  this.messageList = getmsgContent(this.my.id, this.user.id);
     this.isRead = true;
     this.itemImageLoad();
     setTimeout(()=>{
       this.$refs.scroll.scroller(0, -this.maxScrollY + this.contentsHeight);
     },100)
+    // console.log(this.user.id)
+    this.init();
   },
   deactivated() {
     this.isRead = false;
     this.websock.onclose = this.close;
   },
-  // destroyed() {
-  //   console.log(33);
-  // },
+  destroyed(){
+    
+  },
   methods: {
     goback() {
       this.$router.back();
@@ -125,12 +129,13 @@ export default {
         //构建chatMsg聊天消息
         var chatMsgParam = new ChatMsgParam(myId, youId, value, null);
         //    第一次(或重连)初始化连接
-        var dataContent = new DataContent(1, chatMsgParam, null);
+        var dataContent = new DataContent(2, chatMsgParam, null);
         // 1是我 2是朋友
         setmsgContent(myId, youId, value, 1);
         this.messageList = getmsgContent(this.my.id, this.user.id);
         console.log(this.messageList);
         //将客户输入的消息进行发送
+        console.log(dataContent)
         this.websock.send(JSON.stringify(dataContent));
 
         //保存聊天快照到本地缓存
@@ -139,26 +144,6 @@ export default {
         // this.init();
         // console.log(22);
       }
-      // let params = {
-      //   sendId: this.my.id,
-      //   reciveId: this.user.id,
-      //   text: value,
-      //   textId: 2,
-      // };
-      // let saveParams = {
-      //   myId: this.my.id,
-      //   userId: this.user.id,
-      //   text: value,
-      //   flag: 1,
-      // };
-      // this.messageList.push(params);
-      // this.websock.send(JSON.stringify(params));
-      // setmsgContent(params);
-      // this.messageList = getmsgContent(
-      //   "chat-" + this.my.id + "-" + this.user.id
-      // );
-      // console.log(getmsgContent("chat-" + this.my.id + "-" + this.user.id));
-      // console.log(this.messageList)
     },
     showEmojis() {
       this.isActive = !this.isActive;
@@ -194,6 +179,7 @@ export default {
           this.websock.onopen = this.open;
           this.websock.onmessage = this.message;
           this.websock.onerror = this.error;
+          this.websock.onclose=this.close;
         }
       } else {
         console.log("您的版本太低暂不支持webSoket协议");
@@ -233,6 +219,7 @@ export default {
       );
       setmsgContent(chatMsgParam);
       this.messageList = getmsgContent(this.my.id, this.user.id);
+      console.log(this.messageList)
       this.chats(JSON.stringify(dataContentSign));
       setChatSnapShot(
         this.my.id,

@@ -38,7 +38,7 @@ export default {
     return {
       isActive: false,
       page: {
-        pageNumber: 1,
+        pageNumber: 0,
         pageSize: 30,
       },
       task: [],

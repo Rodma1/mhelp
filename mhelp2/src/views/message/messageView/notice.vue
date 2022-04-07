@@ -42,6 +42,7 @@ export default {
     getPublishList(){
       this.friendList=[]
       getPublishList(this.$store.state.token,this.page).then((res)=>{
+        // console.log(res)
         for(var i=0;i<res.data.length;i++){
           if(res.data[i].acceptUserId&&res.data[i].status==1){
             this.friendList.push({id:res.data[i].acceptUserId,avatar:res.data[i].avatar,nickname:res.data[i].author})
