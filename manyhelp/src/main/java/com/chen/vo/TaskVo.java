@@ -1,5 +1,7 @@
 package com.chen.vo;
 //设置返回给前端的参数
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.util.List;
@@ -32,7 +34,10 @@ public class TaskVo {
     /**
      * 接受任务的用户id
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long acceptUserId;
+    @JsonSerialize(using= ToStringSerializer.class)
+    private Long authorId;
     /**
      * 发布任务的学校id
      */

@@ -42,4 +42,5 @@ public interface SysUserService {
     @Transactional
     Result updateUser(SysUserParam sysUserParam,String token);
 
+    Result getUserIdInfo(Long id);
 }

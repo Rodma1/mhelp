@@ -232,5 +232,10 @@ public class SysUserServiceImpl implements SysUserService {
         return Result.success("更新成功，请重新登录");
     }
 
+    @Override
+    public Result getUserIdInfo(Long id) {
+        return Result.success(sysUserMapper.selectById(id));
+    }
+
 
 }

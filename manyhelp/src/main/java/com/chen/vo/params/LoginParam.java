@@ -10,4 +10,6 @@ public class LoginParam {
     private String password;
 //    昵称
     private String nickname;
+    // 学校
+    private String schoolname;
 }

@@ -38,6 +38,13 @@ public class UserController {
         return sysUserService.getUserInfo();
     }
 
+    /**
+     * 通过id获取用户消息
+     */
+    @GetMapping("/userInfo/{id}")
+    public Result userIdInfo(@PathVariable("id") Long id) {
+        return sysUserService.getUserIdInfo(id);
+    }
 
     /**
      * 上传用户头像

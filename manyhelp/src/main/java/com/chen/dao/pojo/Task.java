@@ -1,4 +1,6 @@
 package com.chen.dao.pojo;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 //创建任务实体类
@@ -27,6 +29,7 @@ public class Task {
     /**
      * 作者id
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long authorId;
     /**
      * 内容id
@@ -39,10 +42,12 @@ public class Task {
     /**
      * 接受任务的用户id
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long acceptUserId;
     /**
      * 发布任务的学校id
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long publishSchoolId;
 
     /**

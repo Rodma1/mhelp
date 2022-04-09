@@ -108,6 +108,7 @@ public class LoginServiceImpl implements LoginService {
         sysUser.setSalt("");
         sysUser.setStatus("");
         sysUser.setEmail("");
+        sysUser.setSchool(loginParam.getSchoolname());
 //        保存用户到数据库
         this.sysUserService.save(sysUser);
 //        生成token
