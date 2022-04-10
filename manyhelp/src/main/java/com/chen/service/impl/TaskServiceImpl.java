@@ -1,16 +1,12 @@
 package com.chen.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.dao.dos.Archives;
-import com.chen.dao.mapper.TaskBodyMapper;
-import com.chen.dao.mapper.TaskMapper;
-import com.chen.dao.mapper.TaskTagMapper;
-import com.chen.dao.pojo.Task;
-import com.chen.dao.pojo.TaskBody;
-import com.chen.dao.pojo.TaskTag;
-import com.chen.dao.pojo.SysUser;
+import com.chen.dao.mapper.*;
+import com.chen.dao.pojo.*;
 import com.chen.service.*;
 import com.chen.utils.UserThreadLocal;
 import com.chen.vo.*;
@@ -25,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 //实现任务服务层的接口
 
@@ -55,6 +52,10 @@ public class TaskServiceImpl implements TaskService {
     //        循环遍历到列表中，这里的copyList使用到了重载
     /*使用mybatis映射文件写得任务列表查询
      */
+    @Autowired(required = false)
+    private StartMapper startMapper;
+    @Autowired(required = false)
+    private SignUserMapper signUserMapper;
     @Override
     public Result listTasksPage(PageParams pageParams) {
 //        创建页数对象
@@ -105,6 +106,7 @@ public class TaskServiceImpl implements TaskService {
         taskVo.setId(String.valueOf(task.getId()));
         BeanUtils.copyProperties(task, taskVo);
         taskVo.setCreateDate(new DateTime(task.getCreateDate()).toString("yyyy-MM-dd HH:mm"));
+        taskVo.setMoney(task.getMoney());
         //并不是所有的接口 都需要标签 ，作者信息
         if (isTags){//如果需要显示标签
 //            List<TagVo> tags=tagsService.findTagsByTaskId
@@ -201,6 +203,14 @@ public class TaskServiceImpl implements TaskService {
          * 4. body 内容存储 task bodyId
          */
 //        将所需数据表所需字段都存入到数据表中
+        LambdaQueryWrapper<SignUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SignUser::getUserId,sysUser.getId());
+        SignUser signUser = signUserMapper.selectOne(queryWrapper);
+        if (signUser.getRewardMoney()<taskParam.getMoney()){
+            return Result.success("你的金币不够,无法发布任务");
+        }else{
+            updateMoney(sysUser.getId(), -taskParam.getMoney());
+        }
         Task task = new Task();
         task.setAuthorId(sysUser.getId());
         Long id=Long.parseLong(taskParam.getCategory().getId());
@@ -210,9 +220,9 @@ public class TaskServiceImpl implements TaskService {
         task.setSummary(taskParam.getSummary());
         task.setTitle(taskParam.getTitle());
         task.setViewCounts(0);
-
+        task.setMoney(taskParam.getMoney());
         task.setImages(taskParam.getImages());
-
+        task.setStatus(0);
         task.setPublishSchoolName(taskParam.getPublishSchoolName());
 
         //默认为Task_Common
@@ -442,7 +452,7 @@ public class TaskServiceImpl implements TaskService {
         Task task=new Task();
         task.setId(taskId);
         task.setAcceptUserId(sysUser.getId());
-        task.setStatus((long)1);
+        task.setStatus(1);
         taskMapper.updateById(task);
         /**
          * 数据已经更新完毕了，接下来就是将任务id返回给前端了，前端就可以通过id在请求任务路由进行任务展示
@@ -473,6 +483,8 @@ public class TaskServiceImpl implements TaskService {
 
         if (!sysUser.getId().equals(task.getAuthorId())){
             return Result.success("你不是发布用户");
+        }else if (task.getStatus() == 2) {
+            return Result.success("之前已经完成过了,请发布新任务");
         }
 //        更新状态
         Task task1=new Task();
@@ -482,7 +494,85 @@ public class TaskServiceImpl implements TaskService {
         TaskVo taskVo = new TaskVo();
 //        这里直接调用TaskVo对象，你也可以单独设置一个只返回id的对象
         taskVo.setId(String.valueOf(task.getId()));
+
+        if (taskParam.getStatus()==2){
+
+            Long acceptUserId = task.getAcceptUserId();
+            if (acceptUserId==null){
+                return Result.success("无人接受任务,修改状态失败");
+            }
+            updateMoney(acceptUserId, task.getMoney());
+//            Long authorId = task.getAuthorId();
+//
+//            updateMoney(authorId, -task.getMoney());
+            return Result.success("任务完成");
+        }
+
         return Result.success(taskVo);
     }
+    //更新金币
+    private void  updateMoney(Long userId,Integer money) {
+        LambdaQueryWrapper<SignUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SignUser::getUserId,userId);
+        SignUser signUser = signUserMapper.selectOne(queryWrapper);
 
+        // 更新金币
+        UpdateWrapper updateWrapper=new UpdateWrapper();
+        updateWrapper.eq("user_id",userId);
+        updateWrapper.set("reward_money",signUser.getRewardMoney()+money);
+        signUserMapper.update(null,updateWrapper);
+
+    }
+    // 获取用户详细详细
+    private TaskVo taskInfo(Long id) {
+        Task task = taskMapper.selectById(id);
+        return copy(task,true,true,false,true);
+    }
+
+    // 获取指定用户收藏的任务
+    @Override
+    public Result getStartTask() {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+        LambdaQueryWrapper<Start> queryWrapper = new LambdaQueryWrapper<>();
+//        System.out.println(sysUser.getId());
+        queryWrapper.eq(Start::getUserId,sysUser.getId());
+        List<Start> starts = startMapper.selectList(queryWrapper);
+        List<TaskVo> taskVoList = new ArrayList<>();
+        for (Start start : starts) {
+
+            taskVoList.add(taskInfo(start.getTaskId()));
+
+        }
+        return Result.success(taskVoList);
+    }
+
+    // 取消收藏
+    // 获取指定用户收藏的任务
+    @Override
+    public Result delStartTask(Long id) {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser = UserThreadLocal.get();
+        LambdaQueryWrapper<Start> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Start::getUserId,sysUser.getId());
+        queryWrapper.eq(Start::getTaskId,id);
+        startMapper.delete(queryWrapper);
+        return Result.success("删除成功");
+    }
+
+    @Override
+    public Object delTask(Long id) {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser = UserThreadLocal.get();
+        Task task = taskMapper.selectById(id);
+        if (!sysUser.getId().equals(task.getAuthorId())){
+            return Result.success("你不是发布的作者");
+        }
+        LambdaQueryWrapper<TaskTag> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TaskTag::getTaskId,id);
+        taskTagMapper.delete(queryWrapper);
+        taskMapper.deleteById(id);
+
+        return Result.success("删除成功");
+    }
 }

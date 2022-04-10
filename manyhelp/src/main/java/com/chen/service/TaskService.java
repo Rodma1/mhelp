@@ -4,6 +4,7 @@ import com.chen.vo.TaskVo;
 import com.chen.vo.Result;
 import com.chen.vo.params.TaskParam;
 import com.chen.vo.params.PageParams;
+import org.springframework.transaction.annotation.Transactional;
 
 //设置获取任务列表数据接口
 public interface TaskService {
@@ -62,6 +63,20 @@ public interface TaskService {
    /**
     * 修改任务状态
     */
+   @Transactional
    Result  alterTask(TaskParam taskParam);
 
+   /**
+    *  获取收藏的任务
+    */
+   Result getStartTask();
+
+   /**
+    * 删除任务
+    * @param id
+    * @return
+    */
+   Result delStartTask(Long id);
+
+   Object delTask(Long id);
 }

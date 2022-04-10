@@ -57,4 +57,6 @@ public class TaskVo {
      * 任务进行状态
      */
     private Long status;
+
+    private Integer money;
 }

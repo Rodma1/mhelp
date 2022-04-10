@@ -20,4 +20,6 @@ public class LoginUserVo {
 
 //    学校
     private String school;
+    //金币
+    private Integer money;
 }

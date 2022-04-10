@@ -41,7 +41,7 @@ public class UserController {
     /**
      * 通过id获取用户消息
      */
-    @GetMapping("/userInfo/{id}")
+    @PostMapping("/userInfo/{id}")
     public Result userIdInfo(@PathVariable("id") Long id) {
         return sysUserService.getUserIdInfo(id);
     }
@@ -69,6 +69,15 @@ public class UserController {
         return sysUserService.updateUser(sysUserParam ,token);
 
     }
+
+    /**
+     * 指定任务收藏
+     */
+    @PostMapping("/start/{id}")
+    public Result startTask(@PathVariable("id") Long id) {
+        return sysUserService.startTask(id);
+    }
+
 
 
 }

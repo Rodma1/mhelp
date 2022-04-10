@@ -23,7 +23,7 @@ public class TaskParam {
 //    标题
     private String title;
 //    任务状态
-    private Long status;
+    private Integer status;
 //    任务图片
     private String images;
 
@@ -31,5 +31,7 @@ public class TaskParam {
      * 发布学校的名称
      */
     private String publishSchoolName;
+
+    private Integer money;
 
 }

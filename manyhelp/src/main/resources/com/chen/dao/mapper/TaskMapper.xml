@@ -27,6 +27,7 @@
         <result column="publish_school_name" property="publishSchoolName"/>
         <result column="images" property="images"/>
         <result column="status" property="status"/>
+        <result column="money" property="money"/>
     </resultMap>
 <!--    设置查询sql语句  taskMap是映射的上面的id->
 <!-    IPage<Task> listTask(Page<Task> page, Long categoryId, Long tagId, String year, String month);-->

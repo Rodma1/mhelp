@@ -1,9 +1,15 @@
 package com.chen.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.chen.dao.mapper.SignUserMapper;
+import com.chen.dao.mapper.StartMapper;
 import com.chen.dao.mapper.SysUserMapper;
+import com.chen.dao.pojo.Comment;
+import com.chen.dao.pojo.SignUser;
+import com.chen.dao.pojo.Start;
 import com.chen.dao.pojo.SysUser;
 import com.chen.service.SysUserService;
 import com.chen.utils.GetTokenUrl;
@@ -46,6 +52,10 @@ public class SysUserServiceImpl implements SysUserService {
     private GetTokenUrl getTokenUrl;
     @Autowired
     private UploadImage uploadImage;
+    @Autowired(required = false)
+    private StartMapper startMapper;
+    @Autowired(required = false)
+    private SignUserMapper signUserMapper;
     @Override
     public SysUser findUserById(Long userid) {
         SysUser sysUser=sysUserMapper.selectById(userid);
@@ -130,6 +140,13 @@ public class SysUserServiceImpl implements SysUserService {
         loginUserVo.setEmail(sysUser.getEmail());
 //        学校
         loginUserVo.setSchool(sysUser.getSchool());
+        // 获取金币
+//        初始化映射mapper语句
+        LambdaQueryWrapper<SignUser> queryWrapper=new LambdaQueryWrapper<>();
+//        获取数据库用户数据和account作比较:account=#{account}
+        queryWrapper.eq(SignUser::getUserId,sysUser.getId());
+        SignUser signUser = signUserMapper.selectOne(queryWrapper);
+        loginUserVo.setMoney(signUser.getRewardMoney());
         return Result.success(loginUserVo);
 
     }
@@ -236,6 +253,23 @@ public class SysUserServiceImpl implements SysUserService {
     public Result getUserIdInfo(Long id) {
         return Result.success(sysUserMapper.selectById(id));
     }
+
+    /**
+     * 任务收藏
+     * @param id
+     * @return  用户点击收藏将用户id和任务id存入数据库
+     */
+    @Override
+    public Result startTask(Long id) {
+        //        获取用户信息,由于我们使用UserThreadLocal获取信息，所以这个任务输入接口要加入到登录拦截器中，因为你登录了才能有用户信息编辑任务
+        SysUser sysUser= UserThreadLocal.get();
+        Start start = new Start();
+        start.setUserId(sysUser.getId());
+        start.setTaskId(id);
+        startMapper.insert(start);
+        return Result.success("收藏成功");
+    }
+
 
 
 }

@@ -39,7 +39,8 @@ public class WebConfig  implements WebMvcConfigurer {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/test").addPathPatterns("/comments/create/change").addPathPatterns("/tasks/publish").addPathPatterns("/tasks/accepttask/{id}")
                 .addPathPatterns("/tasks/altertask").addPathPatterns("/tasks/usertasks").addPathPatterns("/tasks/uaccepttasks")
-                .addPathPatterns("/users/**").addPathPatterns("/sign/**").addPathPatterns("/upload");
+                .addPathPatterns("/users/**").addPathPatterns("/sign/**").addPathPatterns("/upload").addPathPatterns("/tasks/getStart")
+                .addPathPatterns("/tasks/delStart/{id}").addPathPatterns("/tasks/delTask/{id}");
 
     }
 }

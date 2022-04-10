@@ -43,4 +43,10 @@ public interface SysUserService {
     Result updateUser(SysUserParam sysUserParam,String token);
 
     Result getUserIdInfo(Long id);
+
+    /**
+     * 收藏任务
+     */
+    Result startTask(Long id);
+
 }

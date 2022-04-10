@@ -62,6 +62,9 @@ public class Task {
     /**
      * 任务进行状态
      */
-    private Long status;
-
+    private Integer status;
+    /**
+     * 金币
+     */
+    private Integer money;
 }

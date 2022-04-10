@@ -141,4 +141,27 @@ public class TaskController {
     public Result altertask(@RequestBody TaskParam taskParam){
         return  taskService.alterTask(taskParam);
     }
+
+    /**
+     * 删除任务
+     */
+    @PostMapping("/delTask/{id}")
+    public Result delTask(@PathVariable("id") Long id) {
+        return Result.success(taskService.delTask(id));
+    }
+
+    /**
+     * 获取收藏的任务
+     */
+    @GetMapping("/getStart")
+    public Result getStartTask() {
+        return taskService.getStartTask();
+    }
+    /**
+     * 取消收藏的任务
+     */
+    @PostMapping("/delStart/{id}")
+    public Result delStartTask(@PathVariable("id") Long id) {
+        return taskService.delStartTask(id);
+    }
 }
