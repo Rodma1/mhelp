@@ -4,11 +4,10 @@
             <img :src="item.avatar" alt="" @load="itemImageLoad">
             <div class="center">
                 <div class="name">{{item.author}}</div>
-                <!-- <div class="tags">{{item.tags[0].tagsName}}</div> -->
                 <div class="time">{{item.createDate}}</div>
             </div>
             <div class="remarks">
-                <img src="@/assets/img/home/更多.png" alt="">
+                {{msg}}
             </div>
         </div>
         <div class="content">
@@ -24,26 +23,67 @@
                 </li>
             </ul>
         </div>
-        <div class="isFinish">
-            <img src="@/assets/img/publish/已完成.png" alt="" v-if="item.status==2">
-            <img src="@/assets/img/publish/未完成.png" alt="" v-else>
+        <div class="bottom">
+            <div class="deltask" v-if="isShow1" @click="delTask">删除任务</div>
+            <div class="finishTask" v-if="isShow2" @click="finishTask">完成任务</div>
         </div>
+        
     </div>
 </template>
 <script>
+import {finishTask,delTask} from "network/task.js"
 
 export default{
-    methods:{
-        itemImageLoad(){
-            this.$bus.$emit("itemImageLoad");
-        }
-    },
+    
     props:{
-        item:{
+        item:{ 
             type:Object,
             default(){
                 return {}
             }
+        }
+    },
+    data(){
+        return{
+            msg:"",
+            isShow1:false,
+            isShow2:false,
+
+        }
+    },
+    mounted(){
+        this.which()
+    },
+    methods:{
+        which(){
+            if(this.item.status==2){
+                this.msg="已完成"
+                this.isShow1=true,
+                this.isShow2=true
+            }
+            else if(this.item.status==1){
+                this.msg="正在完成"
+                this.isShow1=false
+                this.isShow2=true
+            }
+            else{
+                this.msg="待接"
+                this.isShow1=true;
+                this.isShow2=false
+            }
+        },
+        itemImageLoad(){
+            this.$bus.$emit("itemImageLoad");
+        },
+        finishTask(){
+            finishTask(this.$store.state.token,this.item.id).then((res)=>{
+                console.log(res)
+            })
+        },
+        delTask(){
+            delTask(this.$store.state.token,this.item.id).then((res)=>{
+                console.log(res)
+            })
         }
     }
 }
@@ -76,8 +116,11 @@ export default{
 }
 .title > div:nth-of-type(2){
     width: 60px;
-    /* background-color: purple; */
-    text-align: right;
+    text-align: center;
+    color: #fa5656;
+    font-size: 15px;
+    font-weight: 600;
+    /* text-align: right; */
 }
 .name{
     font-size: 18px;
@@ -152,13 +195,28 @@ export default{
     margin-bottom: 5px;
     /* margin-top: 10px; */
 }
-.isFinish{
-    position: absolute;
-    right: 50px;
-    top: 10px;
+.finishTask{
+    width: 100px;
+    height: 30px;
+    background-color: #1facf8; 
+    margin-left: 20px;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    /* border-radius: 8px; */
 }
-.isFinish img{
-    width: 50px;
-    height: 50px;
+.deltask{
+     width: 100px;
+    height: 30px;
+     margin-left: 20px;
+    text-align: center;
+    line-height: 30px;
+    color: #1facf8;
+    border: 1px solid #1facf8;
+}
+.bottom{
+    margin-top: 10px;
+    display: flex;
+    justify-content: right;
 }
 </style>

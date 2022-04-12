@@ -18,6 +18,7 @@
 <script>
 import { schools } from "network/task.js";
 import { pinyin } from "pinyin-pro";
+
 export default {
   data() {
     return {
@@ -26,9 +27,9 @@ export default {
       schoolIndexBar: [],
       schoolNames: [],
       schoolList: [],
-      // updateMsg:{
-      //   school
-      // },
+      updateMsg:{
+        school:''
+      },
     };
   },
   props: {
@@ -104,21 +105,24 @@ export default {
         this.$emit("schoolList", this.schoolList);
       });
     },
-    // chooseSchool(index, idx) {
-    //   console.log(index, idx);
-    //   console.log(this.schoolList[index].list[idx]);
-    //   this.updateMsg
-    //   this.$store.dispatch('updateUserInfo',this.updateMsg).then(()=>{
-    //     console.log(11)
-
-    //   }).then(()=>{
-    //     getUserInfo(this.$store.state.token).then((res)=>{
-    //     console.log(res)
-    //     })
-    //   })
-    // },
+    chooseSchool(index, idx) {
+      console.log(index, idx);
+      console.log(this.schoolList[index].list[idx]);
+      this.updateMsg.school=this.schoolList[index].list[idx].name
+      console.log(this.updateMsg.school)
+      this.$store.dispatch('updateUserInfo',this.updateMsg).then(()=>{
+        this.exist()
+      })
+    },
     itemImageLoad() {
       this.$bus.$emit("itemImageLoad");
+    },
+     exist() {
+      this.$store.dispatch("logout");
+      setTimeout(() => {
+        console.log(2)
+        this.$router.push("/loging");
+      }, 200);
     },
   },
 };

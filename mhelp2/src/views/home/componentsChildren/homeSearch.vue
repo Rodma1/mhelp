@@ -20,7 +20,7 @@ export default {
 <style scoped>
 .homeSearch {
   height: 34px;
-  background: rgb(154, 171, 248);
+  background: #3dbafddc;
   padding-top: 10px;
 }
 .homeSearch > div {

@@ -19,36 +19,44 @@
         {{ item.summary }}
       </div>
       <ul class="picture">
-        <li v-for="(i,index) in item.images" :key="index">
-          <img
-            :src="i"
-            alt=""
-            @load="itemImageLoad"
-          />
+        <li v-for="(i, index) in item.images" :key="index">
+          <img :src="i" alt="" @load="itemImageLoad" />
         </li>
       </ul>
     </div>
     <div class="other">
-      <div>
+      <div @click="goCollect" :class="{ isCollect: isCollect2 }">
         <span>收藏</span>
       </div>
       <div>
-        <span>3金币</span>
+        <span>{{ item.money }}金币</span>
       </div>
       <div @click="acceptTask">
         <span>接任务</span>
       </div>
     </div>
+    <toast :message="toast" :logingShow="isCollect" class="toast"></toast>
   </div>
 </template>
 <script>
-import { acceptTask } from "network/task.js";
+import { goCollect } from "network/task.js";
+import toast from "components/common/toast/toast.vue";
+
 export default {
+  components: {
+    toast,
+  },
   props: {
     item: {
       type: Object,
       default() {
         return {};
+      },
+    },
+    collectList: {
+      type: Array,
+      default() {
+        return [];
       },
     },
   },
@@ -57,20 +65,72 @@ export default {
       isActive: true,
       count: 2,
       isFinish: false,
+      msg: "收藏",
+      toast: "收藏成功",
+      isCollect: false,
+      isCollect2: false,
     };
+  },
+  created() {},
+  mounted() {
+    for (var i = 0; i < this.collectList.length; i++) {
+      if (this.collectList[i] == this.item.id) {
+        this.isCollect2 = true;
+      }
+    }
   },
   methods: {
     acceptTask() {
       if (this.$store.state.id) {
-        acceptTask(this.$store.state.token,this.item.id).then((res) => {
-          console.log(res);
-        }); 
-      }else{
-          this.$router.push("/loging")
+        if (this.item.authorId !== this.$store.state.id) {
+          var path;
+          if (this.$route.name == "home") {
+            path = "/home/pay/" + this.item.id;
+            this.$router.push(path);
+          } else {
+            path = this.$route.fullPath +"/pay/"+ this.item.id;
+            this.$router.push(path);
+          }
+        } else {
+          console.log("自己不能接自己发的任务");
+        }
+      } else {
+        this.$router.push("/loging");
+        this.$bus.$emit("getItem", this.item);
       }
     },
     itemImageLoad() {
       this.$bus.$emit("itemImageLoad");
+    },
+    goCollect() {
+      // console.log(this.collectList)
+      var a = this.collectList.find((i) => {
+        console.log(i);
+        return i == this.item.id;
+      });
+      if (a) {
+        goCollect(this.$store.state.token, this.item.id).then((res) => {
+          console.log(res);
+          this.toast = "取消收藏";
+          this.isCollect = true;
+          setTimeout(() => {
+            this.isCollect = false;
+          }, 1000);
+          this.isCollect2 = false;
+          this.$emit("updateCollectList");
+        });
+      } else {
+        goCollect(this.$store.state.token, this.item.id).then((res) => {
+          console.log(res);
+          this.toast = "收藏成功";
+          this.isCollect = true;
+          setTimeout(() => {
+            this.isCollect = false;
+          }, 1000);
+          this.isCollect2 = true;
+          this.$emit("updateCollectList");
+        });
+      }
     },
   },
 };
@@ -80,11 +140,10 @@ export default {
 .homeTaskItem {
   /* height: 150px; */
   background: white;
-  margin: 5px 5px;
-  margin-bottom: 10px;
+  margin: 10px 5px;
   padding: 0px 8px;
   padding-bottom: 10px;
-  /* border-radius: 10px; */
+  position: relative;
 }
 .title {
   height: 50px;
@@ -197,6 +256,10 @@ ul li:nth-last-child(4):first-child ~ li {
   text-align: center;
   line-height: 30px;
 }
+.other .isCollect {
+  color: #1facf8;
+  font-weight: 600;
+}
 .other div:nth-child(2) {
   border-left: 2px solid #eeeeee;
   border-right: 2px solid #eeeeee;
@@ -224,5 +287,14 @@ ul li:nth-last-child(4):first-child ~ li {
   height: 200px;
   background: red;
   z-index: 9;
+}
+.toast {
+  width: 50%;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 </style>

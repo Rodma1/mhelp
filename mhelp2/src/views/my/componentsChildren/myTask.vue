@@ -27,17 +27,21 @@
 <script>
 export default {
   methods: {
+
     toSign() {
       this.$router.push("/signIn");
     },
     nofinish(){
       this.$router.push("/taskList/1")
+      this.$bus.$emit("choosedType",1)
     },
     finish(){
       this.$router.push("/taskList/2")
+      this.$bus.$emit("choosedType",2)
     },
     collect(){
       this.$router.push("/taskList/3")
+      this.$bus.$emit("choosedType",3)
     }
   },
 };

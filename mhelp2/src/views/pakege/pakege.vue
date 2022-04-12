@@ -6,7 +6,7 @@
       </div>
       <div slot="center">我的钱包</div>
     </nav-bar>
-    <wallet></wallet>
+    <wallet :money="userInfo.money"></wallet>
     <get-gold-coin @pay="pay"></get-gold-coin>
     <pakege-rules></pakege-rules>
     <router-view class="routerView"></router-view>
@@ -17,7 +17,7 @@ import navBar from "components/common/navbar/navbar.vue";
 import wallet from "views/pakege/componentsChildren/wallet.vue";
 import getGoldCoin from "views/pakege/componentsChildren/getGoldCoin.vue";
 import pakegeRules from "views/pakege/componentsChildren/pakegeRules.vue";
-
+import {getUserInfo} from "network/loging.js"
 export default {
   components: {
     navBar,
@@ -28,7 +28,11 @@ export default {
   data() {
     return {
       isPay: false,
+      userInfo:null
     };
+  },
+  mounted(){
+    this.getuserInfo()
   },
   methods: {
     goback() {
@@ -37,6 +41,12 @@ export default {
     pay() {
         this.$router.push('/pakege/payment')
     },
+    getuserInfo(){
+    getUserInfo(this.$store.state.token).then((res)=>{
+       console.log(res)
+       this.userInfo=res.data
+     })
+    }
   },
 };
 </script>

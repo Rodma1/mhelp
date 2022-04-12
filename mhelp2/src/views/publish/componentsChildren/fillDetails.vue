@@ -30,7 +30,7 @@ export default {
       params: {
         title: "",
         summary: "",
-        images:""
+        images: "",
       },
       fileList: [
         // { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
@@ -61,15 +61,15 @@ export default {
         for (var i = 0; i < file.length; i++) {
           var formData = new FormData();
           formData.append("images", file[i].file);
-          console.log(file[i].file)
+          console.log(file[i].file);
           setTimeout(() => {
             file.status = "done";
             file.message = "";
             uploadImage(this.$store.state.token, formData).then((res) => {
               console.log(res);
-              this.params.images=res.data+","+this.params.images;
-              console.log(this.params.images)
-          });
+              this.params.images = res.data + "," + this.params.images;
+              console.log(this.params.images);
+            });
           }, 200);
         }
       } else {
@@ -78,6 +78,9 @@ export default {
         setTimeout(() => {
           file.status = "done";
           file.message = "";
+          // let reader = new FileReader();
+          // reader.readAsBinaryString(file.file);
+          // console.log(reader)
           uploadImage(this.$store.state.token, formData2).then((res) => {
             console.log(res);
             if(!this.params.images){

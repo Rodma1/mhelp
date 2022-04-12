@@ -23,7 +23,6 @@
 </template>
 <script>
 import navBar from "components/common/navbar/navbar.vue";
-import {getUserInfo} from "network/loging.js"
 export default {
   components: {
     navBar,
@@ -50,22 +49,20 @@ export default {
       this.nickname = "";
     },
     change(){
-      console.log(this.newNickname)
       this.$store.dispatch('updateUserInfo',this.updateMsg).then(()=>{
         console.log(11)
-        
-
-      }).then(()=>{
-        getUserInfo(this.$store.state.token).then((res)=>{
-        console.log(res)
-        })
+        this.exist()
       })
-      
-    }
+    },
+     exist() {
+      this.$store.dispatch("logout");
+      setTimeout(() => {
+        this.$router.push("/loging");
+      }, 200);
+    },
   },
 };
 </script>
-
 <style scoped>
 .changeNickname {
   background-color: white;

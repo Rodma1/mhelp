@@ -1,7 +1,7 @@
 <template>
   <div class="regist">
     <nav-bar>
-      <div slot="left" class="left">
+      <div slot="left" class="left" @click="goback">
         <img src="@/assets/img/example/返回.png" alt="" />
       </div>
       <div slot="center">注册</div>
@@ -17,15 +17,20 @@
         </div>
         <div class="tips" v-if="isTips">
           <img src="@/assets/img/loging/tips.png" alt="" />
-          不符合邮箱书写规范
+          字符要大于0小于10
         </div>
         <div class="item" :class="{ isActive: isTips }">
-          <img src="@/assets/img/loging/名字.png" alt="" />
-          <input type="text" name="" id="" v-model="userForm.account" />
+          <img src="@/assets/img/loging/昵称.png" alt="" />
+          <input type="text" name="" id="" v-model="userForm.nickname" />
         </div>
-        <div class="tips" v-if="isTips">
-          <img src="@/assets/img/loging/tips.png" alt="" />
-          字符要大于0小于10
+        <!-- <div class="tips"></div> -->
+        <div class="item">
+          <img src="@/assets/img/loging/学校.png" alt="" />
+          <select v-model="userForm.school">
+            <option v-for="(item, index) in schoolList" :key="index"  >
+            {{ item.name }}
+          </option>
+          </select>
         </div>
         <div class="item" :class="{ isActive: isTips }">
           <img src="@/assets/img/loging/密码.png" alt="" />
@@ -45,9 +50,11 @@
 </template>
 <script>
 import navBar from "components/common/navbar/navbar.vue";
+import { schools } from "network/task.js";
+import { pinyin } from "pinyin-pro";
 export default {
   components: {
-    navBar,
+    navBar, 
   },
   data() {
     return {
@@ -57,15 +64,25 @@ export default {
         account: "",
         nickname: "",
         password: "",
+        school:""
       },
+      schools: [],
+      schoolIndexBar: [],
+      schoolNames: [],
+      schoolList: [],
     };
+  },
+  mounted(){
+    this.school()
   },
   methods: {
     toRegist() {
       this.rule();
-      this.$store.dispatch("regist", this.userForm).then(() => {
-        this.isActive = true;
-      });
+      console.log(this.userForm.school)
+      // this.$store.dispatch("regist", this.userForm).then(() => {
+      //   this.isActive = true;
+      //   this.$router.back()
+      // });
     },
     rule() {
       if (
@@ -84,6 +101,41 @@ export default {
       } else {
         this.isTips2 = false;
       }
+    },
+    goback(){
+      this.$router.back()
+    },
+    school(){
+     schools().then((res) => {
+        console.log(res);
+        this.schools = res.data;
+        for (var i = 0; i < this.schools.length; i++) {
+          this.schoolNames[i] = this.schools[i].name;
+          var school = pinyin(this.schools[i].name).substr(0, 1).toUpperCase();
+          this.schoolIndexBar[i] = school;
+        }
+        this.schoolIndexBar = this.schoolIndexBar.sort();
+        this.schoolIndexBar = this.unique(this.schoolIndexBar);
+        this.schoolIndexBar.forEach((item) => {
+          this.schools.forEach((i) => {
+            if (pinyin(i.name).substr(0, 1).toUpperCase() == item) {
+              this.schoolList.push(i);
+            }
+          });
+        });
+       console.log(this.schoolList)
+      });
+    },
+    unique(origin) {
+      const result = [];
+      const set = new Set();
+      for (const i of origin) {
+        if (!set.has(i)) {
+          result.push(i);
+          set.add(i);
+        }
+      }
+      return result;
     },
   },
 };
@@ -123,7 +175,7 @@ export default {
   margin-bottom: 20px;
   margin-right: 10px;
 }
-.box .item:nth-child(3) {
+.box .item:nth-child(4) {
   margin-bottom: 0px;
 }
 .item img {
@@ -167,5 +219,10 @@ export default {
 }
 .content .isActive2 {
   margin-top: 10px;
+}
+.item select{
+  width: 100%;
+  border: 1px solid gray;
+  outline: 1px solid #1296db;
 }
 </style>

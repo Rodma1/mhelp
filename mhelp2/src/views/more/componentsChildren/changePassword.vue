@@ -121,7 +121,15 @@ export default {
     gochange() {
       this.$store.dispatch("updateUserInfo",this.updateMsg).then(() => {
         console.log(11);
+        this.exist()
       });
+    },
+     exist() {
+      this.$store.dispatch("logout");
+      setTimeout(() => {
+        console.log(2)
+        this.$router.push("/loging");
+      }, 200);
     },
   },
 };

@@ -2,8 +2,8 @@
   <div class="homeNavBar">
     <nav-bar >
       <div slot="left" class="left" @click="toSchool">
-        <img src="@/assets/img/navBar/定位.png" alt="" />
-        <div>运城学院</div>
+        <img src="@/assets/img/navBar/学校.png" alt="" />
+        <div>{{this.$store.state.school}}</div>
       </div>
       <div slot="center" class="center" @click="isShow">
         <span>全部</span>
@@ -45,7 +45,7 @@ export default {
 <style scoped>
 .homeNavBar {
   /* font-size: px; */
-  background: rgb(154, 171, 248);
+  background-color: #3dbafddc;
   color: white;
   height: 44px;
 }

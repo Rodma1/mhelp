@@ -19,9 +19,8 @@ export default{
         }
     },
     computed:{
-    },
+    }, 
     activated(){
-
         this.getParams()
     },
     methods:{

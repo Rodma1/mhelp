@@ -11,6 +11,7 @@
   display: flex;
   box-shadow: 0px 1px 1px rgba(100, 100, 100, 0.1);
   align-items: center;
+  /* background-color: #3dbafddc; */
 }
 .center {
   flex: 1;

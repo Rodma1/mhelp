@@ -5,6 +5,8 @@
       ref="scroll"
       @scroll="contentScroll"
       :probeType="3"
+      :pullUpLoad="true" 
+      @pullingMore="pullingMore"
     >
       <item v-for="(item, index) in types" :key="index" :item="item"></item>
     </scroll>
@@ -15,7 +17,7 @@
 <script>
 import item from "views/taskList/componentsChildren/item.vue";
 import scroll from "components/common/scroll/scroll.vue";
-import { backTopMixins } from "mixins/mixins.js";
+import { backTopMixins,itemListenerMixin } from "mixins/mixins.js";
 import backTop from "components/content/backTop/backTop.vue";
 export default {
   components: {
@@ -23,7 +25,6 @@ export default {
     scroll,
     backTop,
   },
-
   data() {
     return {
       isShowBackTop: false,
@@ -40,13 +41,16 @@ export default {
     },
   },
 
-  mixins: [backTopMixins],
+  mixins: [backTopMixins,itemListenerMixin],
   methods: {
     contentScroll(position) {
       // console.log(position)
       this.isShowBackTop = -position.y > 1000;
       this.isFixed = -position.y > this.offsetTop;
     },
+    pullingMore(){
+      this.$emit("pullingMore")
+    }
   },
 };
 </script>

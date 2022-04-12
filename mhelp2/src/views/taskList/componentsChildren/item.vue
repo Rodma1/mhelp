@@ -2,26 +2,32 @@
   <div class="item">
     <div class="top">
       <img :src="item.avatar" alt="" />
-      <div class="name">{{item.author}}</div>
-      <div class="status">已完成</div>
+      <div class="name">{{ item.author }}</div>
+      <div class="status">{{ msg }}</div>
     </div>
     <div class="center">
       <div class="content">
         <div class="categoryAndTags">
-          <div>分类：{{item.category}}</div>
-          <div>标签：</div>
+          <div>分类：{{ item.category }}</div>
+          <div>标签：{{ item.tags.tagsName }}</div>
         </div>
-        
+
         <div class="main">
-          <div class="title">{{item.title}}</div>
-          <div> {{item.content}}</div>
+          <div class="title">{{ item.title }}</div>
+          <div>{{ item.content }}</div>
         </div>
-        <div class="image" >
-          <img :src="i" alt="" v-for="(i,index) in item.images " :key="index">
+        <div class="image">
+          <img
+            :src="i"
+            alt=""
+            v-for="(i, index) in item.images"
+            :key="index"
+            @load="itemImageLoad"
+          />
         </div>
       </div>
       <div class="others">
-        <div class="time">接任务时间:2021年3月21日</div>
+        <div class="time">接任务时间:{{ item.createDate }}</div>
         <div class="price">
           <span>合计:</span>
           <span>5金币</span>
@@ -31,25 +37,37 @@
   </div>
 </template>
 <script>
-export default{
-  data(){
-    return{
-      count:5
-    }
-    
+export default {
+  data() {
+    return {
+      count: 5,
+      msg: "",
+    };
   },
-  props:{
-    item:{
-      type:Object,
-      default(){
-        return {}
-      }
-    }
+  props: {
+    item: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
-  mounted(){
-    
-  }
-}
+  mounted() {
+    this.which();
+  },
+  methods: {
+    itemImageLoad() {
+      this.$bus.$emit("itemImageLoad");
+    },
+    which() {
+      if (this.item.status == 2) {
+        this.msg = "已完成";
+      } else if (this.item.status == 1||this.item.status==null) {
+        this.msg = "正在进行";
+      } 
+    },
+  },
+};
 </script>
 <style scoped>
 .item {
@@ -106,37 +124,37 @@ export default{
   font-size: 20px;
   color: rgb(99, 129, 212);
 }
-.categoryAndTags{
+.categoryAndTags {
   height: 15px;
   display: flex;
   font-size: 8px;
   color: #5b8099;
 }
-.categoryAndTags div{
+.categoryAndTags div {
   width: 120px;
   height: 15px;
   /* border: 1px solid red; */
 }
-.main{
+.main {
   /* height: 20px; */
   /* background: red; */
   margin-top: 10px;
   font-size: 12px;
   color: #585757;
 }
-.title{
-   font-size: 14px;
-   font-weight: 500;
+.title {
+  font-size: 14px;
+  font-weight: 500;
 }
-.image{
+.image {
   margin-top: 5px;
   width: 100%;
   /* height: 50px; */
   display: flex;
 }
-.image img{
- height: 50px;
- width: 50px;
- margin-right: 5px;
+.image img {
+  height: 50px;
+  width: 50px;
+  margin-right: 5px;
 }
 </style>

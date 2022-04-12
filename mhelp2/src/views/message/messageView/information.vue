@@ -55,7 +55,7 @@ export default {
     getfriendList() {
       this.friendList = [];
       getuaccepttasks(this.$store.state.token, this.page).then((res) => {
-        // console.log(res)
+        console.log(res)
         var friend;
         for (var i = 0; i < res.data.length; i++) {
           friend = {
@@ -63,14 +63,14 @@ export default {
             avatar: "",
             nickname: "",
           };
-          if (res.data[i].status == 1&&res.data[i].authorId) {
+          if (res.data[i].authorId) {
             friend.id = res.data[i].authorId;
             friend.avatar = res.data[i].avatar;
             friend.nickname = res.data[i].author;
             this.friendList.push(friend);
           }
         }
-        // console.log(this.friendList)
+        console.log(this.friendList)
       });
     },
   },

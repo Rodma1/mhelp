@@ -29,6 +29,7 @@ export default {
         category: "",
         price: "",
         images: "",
+        school:this.$store.state.school
       },
     };
   },

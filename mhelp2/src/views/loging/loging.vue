@@ -24,71 +24,8 @@
         </div>
       </div>
       <div class="logingBtn" :class="{isActive2:isTips2}" @click="toLogin">登录</div>
-      <div class="toRegist">注册</div>
+      <div class="toRegist" @click="toRegist">注册</div>
     </div>
-    <!-- <div class="back" @click="back">
-      <img src="@/assets/img/loging/返回.png" alt="" />
-    </div>
-    
-    <div class="box">
-      <ul class="title">
-        <li :class="{ current: isActive }" @click="change1">登录</li>
-        <li @click="change2" :class="{ current: !isActive }">注册</li>
-      </ul>
-      <form
-        action=""
-        class="content1"
-        v-if="isActive"
-        :model="userForm"
-        :rules="rules"
-        ref="userForm"
-      >
-        <table>
-          <tr>
-            <td>用户名:</td>
-            <td>
-              <input
-                type="text"
-                name=""
-                id=""
-                v-model="userForm.account"
-                @blur="rules"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>密码:</td>
-            <td><input type="password" v-model="userForm.password" /></td>
-          </tr>
-        </table>
-        <input type="button" value="登录" class="btn" @click="toLogin()" />
-      </form>
-      <form
-        action=""
-        class="content2"
-        v-else
-        :modle="userForm2"
-        ref="registForm"
-      >
-        <table>
-          <tr>
-            <td>用户名:</td>
-            <td>
-              <input type="text" name="" id="" v-model="userForm2.account" />
-            </td>
-          </tr>
-          <tr>
-            <td>校园名:</td>
-            <td><input type="text" v-model="userForm2.nickname" /></td>
-          </tr>
-          <tr>
-            <td>密码:</td>
-            <td><input type="password" v-model="userForm2.password" /></td>
-          </tr>
-        </table>
-        <input type="button" value="注册" class="btn" @click="toRegist()" />
-      </form>
-    </div> -->
   </div>
 </template>
 <script>
@@ -105,21 +42,6 @@ export default {
       userForm: {
         account: "ad",
         password: "admins",
-      },
-      userForm2: {
-        account: "",
-        nickname: "",
-        password: "",
-      },
-      rules: {
-        account: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" },
-        ],
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" },
-        ],
       },
     };
   },
@@ -146,17 +68,7 @@ export default {
       });
     },
     toRegist() {
-      if (
-        this.userForm2.account.length == 0 ||
-        this.userForm2.password.length == 0 ||
-        this.userForm2.account.length > 11 ||
-        this.userForm2.password.length > 11
-      ) {
-        alert("用户名密码不能为空且长度不大于11位");
-      }
-      this.$store.dispatch("regist", this.userForm2).then(() => {
-        this.isActive = true;
-      });
+      this.$router.push("/regist")
     },
     rule() {
       if (

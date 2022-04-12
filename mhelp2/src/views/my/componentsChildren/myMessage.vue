@@ -8,7 +8,7 @@
     <div class="loging" v-else @click="tomore">
       <img :src="this.$store.state.avatar" alt="" class="profile" />
       <div class="name">{{this.$store.state.nickname}}</div>
-      <div class="school">运城学院</div>
+      <div class="school">{{this.$store.state.school}}</div>
       <img src="@/assets/img/my/右箭头.png" alt="" class="arrow" />
     </div>
   </div>
@@ -59,7 +59,7 @@ export default{
 .loging {
   height: 200px;
   position: relative;
-  background: rgb(154, 171, 248);
+  background: #3dbafddc;
   /* border-radius: 0px 0px 30px 30px; */
 }
 .profile {

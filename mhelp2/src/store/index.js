@@ -2,9 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { getToken, setToken ,removeToken} from "network/token.js"
 import { loging, regist, getUserInfo, logout,updateUserInfo } from "network/loging.js"
-import { SET_TOKEN, SET_NAME, SET_AVATAR, SET_ACCOUNT, SET_ID } from "./mutation-types.js"
+import { SET_TOKEN, SET_NAME, SET_AVATAR, SET_ACCOUNT, SET_ID ,SET_SCHOOL} from "./mutation-types.js"
 import { getChatList,setChatList} from '../network/chatList.js'
-// import {uploadAvatar} from "../network/upload.js"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -13,7 +12,7 @@ export default new Vuex.Store({
     nickname: '',
     id: '',
     avatar: '',
-    // chatKey:"chat-"+this.state.id+"-"+this.state.currentUser.id,
+    school:'',
     token: getToken(),
     chatList:getChatList(),
     msgContent:"",
@@ -35,6 +34,9 @@ export default new Vuex.Store({
     SET_AVATAR(state, avatar) {
       return state.avatar = avatar
     },
+    SET_SCHOOL(state,school){
+      return state.school = school
+    },
     pushChatList(state,data){
       setChatList(data);
       return state.chatList
@@ -49,6 +51,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         loging(user.account, user.password).then((res) => {
           if (res.success) {
+            // console.log(res)
             commit(SET_TOKEN, res.data)
             setToken(res.data);
             resolve()
@@ -71,7 +74,7 @@ export default new Vuex.Store({
           commit(SET_TOKEN, res.data)
         }
         else {
-          console.log(res.msg)
+          alert(res.msg)
         }
       }).catch(err =>
         console.log(err))
@@ -79,11 +82,11 @@ export default new Vuex.Store({
     getUserInfo({ commit, state }) {
       getUserInfo(state.token).then((res) => {
         if (res.success) {
-          // console.log(res)
           commit(SET_ACCOUNT, res.data.account);
           commit(SET_NAME, res.data.nickname);
           commit(SET_ID, res.data.id);
           commit(SET_AVATAR, res.data.avatar);
+          commit(SET_SCHOOL,res.data.school)
           // resolve(res)
         }
         else {
@@ -91,10 +94,11 @@ export default new Vuex.Store({
         }
       }).catch(()=>{
         commit('SET_TOKEN', '') 
-        commit('SET_ACCOUNT', '')
+        commit('SET_ACCOUNT', '') 
         commit('SET_NAME', '')
         commit('SET_AVATAR', '')
         commit('SET_ID', '')
+        commit('SET_SCHOOL','')
       })
     },
     logout({ commit, state }) {
@@ -106,6 +110,7 @@ export default new Vuex.Store({
           commit('SET_NAME', '')
           commit('SET_AVATAR', '')
           commit('SET_ID', '')
+          commit('SET_SCHOOL','')
           removeToken()
         }
         
@@ -118,15 +123,18 @@ export default new Vuex.Store({
         commit('SET_NAME', '')
         commit('SET_AVATAR', '')
         commit('SET_ID', '')
+        commit('SET_SCHOOL','')
         removeToken()
         resolve()
       })
     },
     updateUserInfo({commit},data){
-      console.log(data)
       updateUserInfo(this.state.token,data).then((res)=>{
         if (res.success) {
           commit(SET_NAME, data.nickname)
+          commit(SET_SCHOOL,data.school)
+          console.log(this.state.school)
+          console.log(this.state.nickname)
           console.log(res)
         }
         else {

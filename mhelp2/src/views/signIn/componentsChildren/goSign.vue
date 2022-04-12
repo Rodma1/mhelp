@@ -4,13 +4,12 @@
     <div class="signBtn" v-else>已签到</div>
     <span>你已经签到10天了！</span>
   </div>
-</template>
+</template>s
 <script>
 import { sign } from "network/sign.js";
 export default {
   data() {
     return {
-      // isSign: 0,
       currentDay:0
     };
   },

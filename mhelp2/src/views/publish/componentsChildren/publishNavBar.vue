@@ -37,7 +37,7 @@ export default {
 </script>
 <style scoped>
 .publishNavBar{
-  background: rgb(154, 171, 248);
+  background-color: #3dbafddc;
   color: white;
   font-size: 14px;
 }

@@ -10,11 +10,12 @@ export function loging(account, password) {
         data,
     })
 }
-export function regist(account,nickname,password) {
+export function regist(account,nickname,password,school) {
     const data={
         account,
         nickname,
-        password
+        password,
+        school
     }
     return request({
         url: '/register',
@@ -25,7 +26,7 @@ export function regist(account,nickname,password) {
 export function getUserInfo(token){
     return request({
         headers: {'Authorization': token},
-        url:'/users/currentUser',
+        url:'/users/userInfo',
         method:'get', 
     })
 }
@@ -46,8 +47,8 @@ export function updateUserInfo(token,data){
             avatar:data.avatar,
             email:data.email,
             beforePssword:data.oldPassword,
-            password:data.newPassword
-           
+            password:data.newPassword,
+            school:data.school
         }
     })
 }

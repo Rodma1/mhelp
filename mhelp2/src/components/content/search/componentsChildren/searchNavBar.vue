@@ -43,7 +43,7 @@ export default {
         this.msg="取消"
       }
     },
-    action(){
+    action(){ 
       if(this.msg=="取消"){
         this.$router.back();
       }
@@ -63,7 +63,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  box-shadow: 0px 1px 1px rgba(100, 100, 100, 0.1);
 }
 .right {
   width: 60px;

@@ -1,11 +1,23 @@
 <template>
     <div class="wallet">
         <div>金币余额(个)</div>
-        <div>0.00</div>
+        <div>{{money}}.00</div>
     </div>
 </template>
 <script>
+export default{
+    data(){
+        return {
 
+        }
+    },
+    props:{
+        money:{
+            type:Number,
+            default:0
+        }
+    }
+}
 </script>
 <style scoped>
 .wallet{

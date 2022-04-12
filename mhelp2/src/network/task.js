@@ -23,7 +23,7 @@ export function getTags() {
     })
 }
 
-export function getuaccepttasks(token,page) {
+export function getuaccepttasks(token, page) {
     return request({
         headers: { 'Authorization': token },
         url: '/tasks/uaccepttasks',
@@ -60,7 +60,7 @@ export function publishTask(token, params) {
                 }
             ],
             images: params.images,
-            publishSchoolName: "运城学院"
+            publishSchoolName: params.school
         }
     })
 }
@@ -76,11 +76,14 @@ export function archive(token, status) {
     })
 }
 //接任务
-export function acceptTask(token,id) {
+export function acceptTask(token, id,money) {
     return request({
         headers: { 'Authorization': token },
-        url: 'tasks/accepttask/'+id,
+        url: 'tasks/accepttask/' + id,
         method: 'post',
+        data:{
+            money
+        }
     })
 }
 export function schools() {
@@ -90,7 +93,7 @@ export function schools() {
     })
 }
 //查找任务
-export function searchTask(data) {
+export function searchTasks(data) {
     return request({
         url: "/tasks/taskbykeys",
         method: 'post',
@@ -128,14 +131,55 @@ export function noReadMsg(acceptUserId) {
     })
 }
 //我发的任务
-export function getPublishList(token,page){
+export function getPublishList(token, page) {
     return request({
         headers: { 'Authorization': token },
-        url:"/tasks/usertasks",
-        method:"post",
+        url: "/tasks/usertasks",
+        method: "post",
         data: {
             page: page.pageNumber,
             pageSize: page.pageSize
         }
+    })
+}
+//收藏
+export function goCollect(token, id) {
+    return request({
+        headers: { 'Authorization': token },
+        url: "/users/start/" + id,
+        method: "post",
+    })
+}
+export function getCollectList(token) {
+    return request({
+        headers: { 'Authorization': token },
+        url: "/tasks/getStart",
+        method: "get",
+    })
+}
+//取消收藏
+export function delCollect(token,id){
+    return request({
+        headers: { 'Authorization': token },
+        url: "/tasks/delStart/"+id,
+        method: "post",
+    })
+}
+export function finishTask(token,id) {
+    return request({
+        headers: { 'Authorization': token },
+        url: "/tasks/altertask",
+        method: "post",
+        data: {
+            id: id,
+            status: 2
+        }
+    })
+}
+export function delTask(token,id){
+    return request({
+        headers: { 'Authorization': token },
+        url: "/tasks/delTask/"+id,
+        method: "post",
     })
 }

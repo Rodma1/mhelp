@@ -3,20 +3,23 @@
     <search-nav-bar @search="search" ref="searchNavBar"></search-nav-bar>
     <search-history
       ref="searchHistory"
-      :value="data.value"
+      :value="value"
       :searchHistoryList="searchHistory"
       @del="del"
       :isShowHis="isShowHis"
     ></search-history>
     <search-guess></search-guess>
-    <router-view class="routerView" :searchTaskList="data.searchTaskList" :value="data.value"></router-view>
+    <router-view
+      class="routerView"
+      @pullingMore="pullingMore"
+    ></router-view>
   </div>
 </template>
 <script>
 import searchNavBar from "components/content/search/componentsChildren/searchNavBar.vue";
 import searchHistory from "components/content/search/componentsChildren/searchHistory.vue";
 import searchGuess from "components/content/search/componentsChildren/searchGuess.vue";
-import { searchTask } from "network/task.js";
+
 import {
   setHomeSearchHistory,
   getHomeSearchHistory,
@@ -32,46 +35,32 @@ export default {
     return {
       isShowHis: false,
       searchHistory: [],
-      data: {
-        page: 1,
-        pageSize: 10,
-        value: "",
-        schoolId: 1,
-        searchTaskList:[]
-      },
+      value:""
     };
   },
   mounted() {
     this.getHistory();
-    this.$refs.searchNavBar.$refs.inputBox.focus()
-    this.$bus.$on("searchBack",(value)=>{
-     console.log(value)
-     this.$refs.searchNavBar.value=value
-     console.log(this.$refs.searchNavBar.value)
-     this.$refs.searchNavBar.$refs.inputBox.focus()
-   })
-    
+    this.$refs.searchNavBar.$refs.inputBox.focus();
+    this.$bus.$on("searchBack", (value) => {
+      console.log(value);
+      this.$refs.searchNavBar.value = value;
+      console.log(this.$refs.searchNavBar.value);
+      this.$refs.searchNavBar.$refs.inputBox.focus();
+    });
   },
-  activated(){
-   this.$refs.searchNavBar.$refs.inputBox.focus()
-  //  this.$bus.$on("searchBack",(value)=>{
-  //    console.log(value)
-  //    this.$refs.searchNavBar.value=value
-  //    console.log(this.$refs.searchNavBar.value)
-  //  })
+  activated() {
+    this.$refs.searchNavBar.$refs.inputBox.focus();
   },
-  methods: {
+  methods: { 
     search(value) {
-      this.data.value = value;
+      this.value = value;
       setHomeSearchHistory(value);
       this.searchHistory = getHomeSearchHistory();
       this.isShowHis = true;
-      searchTask(this.data).then((res) => {
-        console.log(res);
-        this.data.searchTaskList=res.data;
-        this.$router.push("/home/homeSearch/homeSearchTasks");
-      });
+      // this.getSearchTasks();
+      this.$router.push("/home/homeSearch/homeSearchTasks/"+value);
     },
+   
     del() {
       this.searchHistory = [];
       this.isShowHis = false;
@@ -82,6 +71,9 @@ export default {
       if (this.searchHistory.length !== 0) {
         this.isShowHis = true;
       }
+    },
+    pullingMore() {
+      this.getSearchTasks();
     },
   },
 };

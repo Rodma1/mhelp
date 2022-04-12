@@ -33,6 +33,8 @@ const schoolSearchView = () => import("../views/school/childrenComponents/school
 const homeSearchTasks = () => import("../views/home/componentsChildren/homeSearchTasks.vue")
 const payment = () => import("../views/pakege/componentsChildren/payment.vue")
 const textCombat=()=>import("../views/my/componentsChildren/textCombatView.vue")
+const pay=()=>import("../views/home/componentsChildren/pay.vue")
+const check=()=>import ("../views/more/componentsChildren/check.vue")
 import { getToken } from "network/token.js";
 import store from '@/store';
 import { Message } from 'element-ui';
@@ -52,14 +54,25 @@ const routes = [
         name: "homeSearch",
         component: homeSearch,
         children: [
-          {
-            path: 'homeSearchTasks',
+          { 
+            path: 'homeSearchTasks/:value',
             name: 'homeSearchTasks',
-            component: homeSearchTasks
+            component: homeSearchTasks,
+            children:[
+              {
+                path:"pay/:id",
+                name:"pay",
+                component:pay,
+              }
+            ]
           }
         ]
       },
-
+      {
+        path:"pay/:id",
+        name:"pay",
+        component:pay,
+      }
     ],
     meta: {
       login_require: false
@@ -200,7 +213,7 @@ const routes = [
         component: changePassword,
       },
       {
-        path: 'changeNickname',
+        path: 'changeNickname', 
         name: 'changeNickname',
         component: changeNickname,
       },
@@ -209,6 +222,11 @@ const routes = [
         name: 'changeAvatar',
         component: changeAvatar,
       },
+      {
+        path:"check",
+        name:"check",
+        component:check
+      }
     ],
     meta: {
       login_require: true

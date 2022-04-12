@@ -14,7 +14,12 @@
     </div>
     <div class="item" @click="chooseSchool">
       <div>所在学校</div>
-      <div>运城学院</div>
+      <div>{{this.$store.state.school}}</div>
+      <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
+    </div>
+    <div class="item" @click="gocheck">
+      <div>进行认证</div>
+      <div></div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
     <div class="item" @click="changePassword">
@@ -55,6 +60,9 @@ export default {
     changeNickname() {
       this.$router.push("/more/changeNickname");
     },
+    gocheck(){
+      this.$router.push("/more/check")
+    }
   },
 };
 </script>

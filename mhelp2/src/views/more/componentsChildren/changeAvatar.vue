@@ -73,14 +73,15 @@ export default {
         this.updateMsg.avatar=res.data
         console.log(res)
         this.$store.dispatch("updateUserInfo", this.updateMsg).then(() => {
-          console.log(11);
+          this.exist()
         });
       });
     },
-    go() {
-      uploadAvatar(this.$store.state.token).then((res) => {
-        console.log(res);
-      });
+     exist() {
+      this.$store.dispatch("logout");
+      setTimeout(() => {
+        this.$router.push("/loging");
+      }, 200);
     },
   },
 };

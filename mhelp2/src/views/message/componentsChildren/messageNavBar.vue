@@ -37,7 +37,7 @@ export default{
 <style scoped>
 .navBar {
   /* font-size: px; */
-  background: rgb(154, 171, 248);
+  background: #3dbafddc;
   color: white;
   font-size: 14px;
 }

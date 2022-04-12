@@ -43,7 +43,7 @@ export default {
   color: rgb(174, 174, 177);
 }
 .schoolNavBar {
-  background: rgb(154, 171, 248);
+  background: #3dbafddc;
 }
 .right {
   color: white;
