@@ -5,7 +5,7 @@
         <img src="@/assets/img/home/取消.png" alt="" @click="exist" />
       </div>
       <div>支付</div>
-      <div>{{item.money}}金币</div>
+      <div>{{money}}金币</div>
       <div>
         <div class="first" v-if="isShow == 0" @click="gopay">确认支付</div>
         <img
@@ -19,19 +19,20 @@
   </div>
 </template>
 <script>
-import { acceptTask } from "network/task.js";
+// import { acceptTask } from "network/task.js";
 export default {
   data() {
     return {
       isShow: 0,
-      item:{}
-    };
+      money:0,
+      id:null
+    }
   },
-  create(){
-    this.$bus.$on("getItem",(item)=>{
-      this.item=item
-    })
-    console.log(this.item)
+  created(){
+    var a=this.$route.params.id.split(",");
+    this.id=a[0];
+    this.money=a[1];
+    console.log(this.money)
   },
   methods: {
     exist() {
@@ -40,13 +41,18 @@ export default {
     gopay() {
       this.isShow = 1;
       var id = this.$route.params.id;
+      var a=id.split(",") 
+      console.log(a[0],a[1])
+      console.log(id)
       setTimeout(() => {
         this.isShow = 2;
-        acceptTask(this.$store.state.token, id,this.item.money).then((res) => {
-          console.log(res);
-        });
+        // acceptTask(this.$store.state.token, a[0],a[1]).then((res) => {
+        //   console.log(res);
+        // });
         setTimeout(() => {
+          this.$bus.$emit("clear");
           this.$router.back();
+          this.$bus.$emit("addbill",a[1])
         }, 800);
       }, 300);
     },

@@ -5,17 +5,17 @@
       <div>吼吼哈嘿</div>
     </div>
     <div class="middle">
-      <div class="money">￥ 3金币</div>
+      <div class="money">￥ {{item.money}}金币</div>
       <div class="type">付款金额</div>
     </div>
     <div class="bottom">
       <div class="item">
         <div class="left">交易单号</div>
-        <div class="right">0110000000000000</div>
+        <div class="right">{{item.id}}</div>
       </div>
       <div class="item">
         <div class="left">交易时间</div>
-        <div class="right">2022年1月12日</div>
+        <div class="right">{{item.time}}</div>
       </div>
       <div class="item">
         <div class="left">交易状态</div>
@@ -25,6 +25,21 @@
   </div>
 </template>
 <script>
+export default{
+  data(){
+    return{
+      
+    }
+  },
+  props:{ 
+    item:{
+      type:Object,
+      default(){
+        return {}
+      }
+    }
+  }
+}
 </script>
 <style scoped>
 .billsItem {

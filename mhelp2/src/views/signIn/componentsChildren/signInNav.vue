@@ -25,7 +25,7 @@ export default{
 </script>
 <style scoped>
 .signInNav{
-   background: rgb(154, 171, 248);
+   background: #3dbafddc;
    color: white;
    line-height: 44px;
 }

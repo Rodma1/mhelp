@@ -6,7 +6,7 @@
             </div>
             <div slot="center">商城</div>
         </nav-bar>
-        <scroll class="contents">
+        <scroll class="contents" :probeType="3" ref="scroll">
             <swiper></swiper>
             <exchange-Goods></exchange-Goods>
         </scroll>
@@ -18,6 +18,7 @@ import navBar from "components/common/navbar/navbar.vue"
 import swiper from "views/shoppingmall/componentsChildren/swiper.vue"
 import exchangeGoods from "views/shoppingmall/componentsChildren/exchangeGoods.vue"
 import scroll from "components/common/scroll/scroll.vue"
+import { itemListenerMixin } from "mixins/mixins.js";
 export default{
     components:{
         navBar,
@@ -25,6 +26,7 @@ export default{
         exchangeGoods,
         scroll
     },
+    mixins: [itemListenerMixin],
     methods:{
         goback(){
             this.$router.back()

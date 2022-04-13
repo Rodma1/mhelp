@@ -25,7 +25,10 @@ export default {
     noLoging,
   },
   mixins: [isLoging],
-  mounted() {},
+  mounted() {
+    this.getfriendList();
+    this.noread();
+  },
   data() {
     return {
       chatList: this.$store.state.chatList,
@@ -39,38 +42,96 @@ export default {
     };
   },
   activated() {
-    // console.log(this.$store.state.id)
-    noReadMsg(this.$store.state.id).then((res) => {
-      console.log(res);
-    });
     this.getfriendList();
+    this.noread();
   },
   methods: {
     goChat(index) {
       this.userId = this.friendList[index].id;
       this.$router.push("/chat/" + this.userId);
-      this.$store.commit("saveCurrentUser",this.friendList[index]);
-      console.log(this.friendList[index])
+      this.$store.commit("saveCurrentUser", this.friendList[index]);
+      console.log(this.friendList[index]);
     },
     getfriendList() {
       this.friendList = [];
       getuaccepttasks(this.$store.state.token, this.page).then((res) => {
-        console.log(res)
+        console.log(res);
         var friend;
         for (var i = 0; i < res.data.length; i++) {
           friend = {
             id: "",
             avatar: "",
             nickname: "",
+            noread: [],
           };
-          if (res.data[i].authorId) {
-            friend.id = res.data[i].authorId;
-            friend.avatar = res.data[i].avatar;
-            friend.nickname = res.data[i].author;
-            this.friendList.push(friend);
+          if (
+            res.data[i].authorId &&
+            res.data[i].authorId != this.$store.state.id
+          ) {
+            var a = this.friendList.find((item) => {
+              return item.id == res.data[i].authorId;
+            });
+            if (!a) {
+              friend.id = res.data[i].authorId;
+              friend.avatar = res.data[i].avatar;
+              friend.nickname = res.data[i].author;
+              this.friendList.push(friend);
+            }
           }
         }
-        console.log(this.friendList)
+      });
+    },
+    noread() {
+      noReadMsg(this.$store.state.id).then((res) => {
+        this.noReadMsg = [];
+        console.log(res)
+        for (var i = 0; i < res.data.length; i++) {
+          if (this.noReadMsg.length == 0) {
+            var a = {
+              id: "",
+              msg: [],
+            };
+            a.id = res.data[i].sendUserId;
+            a.msg.push(res.data[i].msg);
+            this.noReadMsg.push(a);
+            // console.log(this.noReadMsg)
+          } else {
+            var cur;
+            this.noReadMsg.forEach((item) => {
+              cur = [];
+              if (item.id == res.data[i].sendUserId&&res.data[i].sendUserId!==this.$store.state.id) {
+                item.msg.push(res.data[i].msg)
+                return;
+              } else {
+                a = {
+                  id: "",
+                  msg: [],
+                };
+                a.id = res.data[i].sendUserId;
+                a.msg.push(res.data[i].msg);
+              }
+              cur.push(a);
+            });
+            this.noReadMsg.push(...cur);
+          }
+        }
+        console.log(this.noReadMsg);
+
+        console.log(this.friendList);
+        this.noReadMsg.forEach((l) => {
+          console.log(5);
+          if (this.friendList.length > 1) {
+            for (var v = 0; v < this.friendList.length; v++) {
+              if (this.friendList[v].id == l.id) {
+                console.log(this.friendList[v]);
+                this.friendList[v].noread = l.msg;
+              }
+            }
+          }
+          else{
+            this.friendList[0].noread=l.msg
+          }
+        });
       });
     },
   },

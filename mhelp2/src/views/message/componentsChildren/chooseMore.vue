@@ -16,7 +16,7 @@
   /* padding: 10px; */
   height: 230px;
   display: flex;
-  background: red;
+  background: #f3f3f3;
   padding: 10px;
 }
 .uploadPicture{

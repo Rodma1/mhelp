@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     categoryTasks(index) {
-      console.log(index);
+      this.$emit("categorySearch",index)
     },
   },
 };

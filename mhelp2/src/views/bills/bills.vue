@@ -19,7 +19,6 @@ export default{
     height: 100vh;
     position: relative;
     z-index:10;
-    
 }
 .billList{
     position: absolute;

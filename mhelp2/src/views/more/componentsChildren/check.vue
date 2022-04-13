@@ -29,7 +29,7 @@
         ></van-uploader>
       </div>
     </div>
-    <div class="checkBtn">校验</div>
+    <div class="checkBtn">{{msg}}</div>
   </div>
 </template>
 <script>
@@ -48,7 +48,9 @@ export default {
         // { url: "https://cloud-image", isImage: true },
       ],
       fileList1: [],
-      card:null
+      card:null,
+      isSuccess:false,
+      msg:""
     };
   },
   methods: {
@@ -61,30 +63,22 @@ export default {
       setTimeout(() => {
         file.status = "done";
         file.message = "";
-        let reader = new FileReader();
-        reader.readAsBinaryString(file.file);
-        console.log(reader);
-       reader.onload=function(){
-           console.log(this.result)
-
-            // var startNum = card.indexOf("base64,")
-            // console.log(startNum)
-            // startNum = startNum*1 + 7
-            //  card = card.slice(startNum);
-            //  console.log(card)
-            this.card={card:this.result}
-            // console.log(JSON.parse(this.card))
-            console.log(this.card)
-       }
+       var formData = new FormData();
+       formData.append("card",file.file)
+       console.log(formData)
           axios({
             url: "http://192.168.43.252:8000/student/train",
             method: "post",
             headers: { Authorization: "" },
-            data: {
-                card:JSON.parse(this.card) 
-            },
+            data:formData
           }).then((res) => {
-            console.log(res);
+            if(res.data=='ok'){
+              this.isSuccess=true
+            }
+            else{
+
+              this.isSuccess=false
+            }
           });
       }, 200);
     },
@@ -94,26 +88,14 @@ export default {
       setTimeout(() => {
         file.status = "done";
         file.message = "";
-        let reader = new FileReader();
-        reader.readAsBinaryString(file.file);
-        reader.onload=function(){
-           console.log(this.result)
-
-            // var startNum = card.indexOf("base64,")
-            // console.log(startNum)
-            // startNum = startNum*1 + 7
-            //  card = card.slice(startNum);
-            //  console.log(card)
-            this.card={card:this.result}
-            // console.log(JSON.parse(this.card))
-            console.log(this.card)
-       }
+         var formData = new FormData();
+       formData.append("card",file.file)
         axios({
           url: "http://192.168.43.252:8000/student/detec",
           method: "post",
           headers: { Authorization: "" },
           data: {
-            card:JSON.parse(this.card) 
+            formData
           },
         }).then((res) => {
           console.log(res);

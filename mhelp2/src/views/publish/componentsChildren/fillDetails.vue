@@ -5,7 +5,11 @@
       <input type="text" v-model="params.title" />
     </div>
     <div class="summary">
-      <textarea placeholder="输入正文..." v-model="params.summary"></textarea>
+      <textarea
+        placeholder="输入正文..."
+        v-model="params.summary"
+        @change="check"
+      ></textarea>
       <div>
         <van-uploader
           v-model="fileList"
@@ -22,7 +26,7 @@
 </template>
 <script>
 import { uploadImage } from "network/upload.js";
-
+import axios from "axios";
 export default {
   components: {},
   data() {
@@ -38,6 +42,8 @@ export default {
         // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
         // { url: "https://cloud-image", isImage: true },
       ],
+      ischeck: false,
+      ischeck2: false,
     };
   },
   created() {},
@@ -45,7 +51,11 @@ export default {
     publish() {
       if (this.$store.state.id) {
         if (this.params.title && this.params.summary) {
-          this.$emit("isShow");
+          if(this.ischeck&&this.ischeck2){
+            this.$emit("isShow");
+          }else{
+            console.log("不和规则")
+          }
         } else {
           this.$toast("标题和内容均不能为空");
           // Toast('内容和文字均不能为空')
@@ -54,6 +64,25 @@ export default {
         this.$router.push("/loging");
       }
     },
+    check() {
+      setTimeout(() => {
+        axios({
+          url: "http://192.168.43.252:8000/student/model",
+          method: "post",
+          headers: { Authorization: "" },
+          data: {
+            wenben: this.summary,
+          },
+        }).then((res) => {
+          if (this.summary == res.data) {
+            this.ischeck = true;
+          } else {
+            this.check = false;
+          }
+        });
+      }, 1000);
+    },
+
     afterRead(file) {
       file.status = "uploading";
       file.message = "上传中...";
@@ -61,7 +90,22 @@ export default {
         for (var i = 0; i < file.length; i++) {
           var formData = new FormData();
           formData.append("images", file[i].file);
-          console.log(file[i].file);
+          axios({
+            url: "http://192.168.43.252:8000/student/model",
+            method: "post",
+            headers: { Authorization: "" },
+            data: {
+              wenben: this.summary,
+            },
+          }).then((res) => {
+            if (res.data==true) {
+              this.ischeck2 = true;
+            } else {
+              this.check2 = false;
+              return
+            }
+          });
+          console.log(formData);
           setTimeout(() => {
             file.status = "done";
             file.message = "";
@@ -75,20 +119,32 @@ export default {
       } else {
         var formData2 = new FormData();
         formData2.append("images", file.file);
+        console.log(formData2);
         setTimeout(() => {
           file.status = "done";
           file.message = "";
-          // let reader = new FileReader();
-          // reader.readAsBinaryString(file.file);
-          // console.log(reader)
           uploadImage(this.$store.state.token, formData2).then((res) => {
             console.log(res);
-            if(!this.params.images){
-              this.params.images=res.data;
-            }else{
-              this.params.images=this.params.images+","+res.data
+            if (!this.params.images) {
+              this.params.images = res.data;
+            } else {
+              this.params.images = this.params.images + "," + res.data;
             }
-            console.log(this.params.images)
+            console.log(this.params.images);
+          });
+          axios({
+            url: "http://192.168.43.252:8000/student/model",
+            method: "post",
+            headers: { Authorization: "" },
+            data: {
+              wenben: this.summary,
+            },
+          }).then((res) => {
+            if (res.data==true) {
+              this.ischeck2 = true;
+            } else {
+              this.check2 = false;
+            }
           });
         }, 200);
       }

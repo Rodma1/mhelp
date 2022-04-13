@@ -11,6 +11,7 @@
     height: 70px;
     background-color: #ffffff;
     align-items: center;
+    /* box-shadow: 0px 0px 5px 0px #ccc */
 }
 .right{
     width: 80px;

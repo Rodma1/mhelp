@@ -1,10 +1,10 @@
 <template>
   <div class="swiper">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
+      <van-swipe-item><img src="@/assets/img/example/banner1.jpg" alt=""></van-swipe-item>
+      <van-swipe-item><img src="@/assets/img/example/banner2.jpg" alt=""></van-swipe-item>
+      <van-swipe-item><img src="@/assets/img/example/banner3.jpg" alt=""></van-swipe-item>
+      <van-swipe-item><img src="@/assets/img/example/banner4.jpg" alt=""></van-swipe-item>
     </van-swipe>
   </div>
 </template>
@@ -14,8 +14,13 @@
 .my-swipe .van-swipe-item {
     color: #fff;
     font-size: 20px;
-    line-height: 160px;
     text-align: center;
     background-color: #39a9ed;
+    height: 150px;
+  }
+  .img{
+    /* height: 160px; */
+    height: 100%;
+    width: 100%;
   }
 </style>

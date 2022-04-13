@@ -15,7 +15,7 @@
       <div class="item">
         <div>分类:</div>
         <select v-model="params.category">
-          <option v-for="(item, index) in category" :key="index" @change="choose(index)">
+          <option v-for="(item, index) in category" :key="index">
             {{ item.categoryName }}
           </option>
         </select>
@@ -68,8 +68,8 @@ export default {
         "其他",
       ],
       tags: ["聊天", "吃饭", "逛街", "玩耍"],
-      currentCategory:'',
-      currentTags:''
+      currentCategory:{},
+      currentTags:[]
     };
   },
   props: {
@@ -82,9 +82,32 @@ export default {
   },
   created() {
   },
+  updated(){
+    if(this.params.category){
+      for(var i=0;i<this.category.length;i++){
+        if(this.params.category==this.category[i].categoryName ){
+          this.currentCategory={
+            id:this.category[i].id,
+            avatar:this.category[i].avatar,
+            categoryName:this.category[i].categoryName
+          }
+        }
+      }
+      console.log(this.currentCategory)
+    }
+    if(this.params.tags){
+       for(var j=0;j<this.tags.length;j++){
+        if(this.params.tags==this.tags[j].tagName){
+          this.currentTags[0]=this.tags[j]
+        }
+      }
+      console.log(this.currentTags)
+    }
+  },
   mounted(){
     this.getCategory();
     this.getTags()
+
   },
   methods: {
     cancle() {

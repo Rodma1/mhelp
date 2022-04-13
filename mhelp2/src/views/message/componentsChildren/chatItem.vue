@@ -14,7 +14,7 @@
       <img :src="this.$store.state.avatar" alt=""  @load="itemImageLoad"/>
     </div>
     <div class="you common" v-else>
-      <img :src="item.avatar" alt=""  @load="itemImageLoad"/>
+      <img :src="this.$store.state.currentUser.avatar" alt=""  @load="itemImageLoad"/>
       <div class="content">
         <div class="text text2" >{{ item.msg }}</div>
       </div>
@@ -96,7 +96,7 @@ export default {
   padding: 10px 10px;
   word-wrap: break-word;
   word-break: normal;
-  background-color: rgb(171, 202, 238);
+  background-color: #8bd5fc;
   position: relative;
   border-radius: 8px;
 }
@@ -110,7 +110,7 @@ export default {
   content: "";
   width: 12px;
   height: 12px;
-  background: rgb(171, 202, 238);
+  background: #8bd5fc;
   position: absolute;
   top: 10px;
   transform: rotateZ(45deg);

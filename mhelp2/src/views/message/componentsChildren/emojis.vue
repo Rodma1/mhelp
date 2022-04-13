@@ -123,7 +123,7 @@ export default {
   /* padding: 10px; */
   height: 250px;
   display: flex;
-  background: yellow;
+  background: #f3f3f3;
   flex-wrap: wrap;
   /* justify-content: center; */
   text-align: center;

@@ -4,7 +4,8 @@
       <img :src="item.avatar" alt="" @load="itemImageLoad" />
       <div class="center">
         <div class="name">{{ item.author }}</div>
-        <!-- <div class="tags">{{item.tags[0].tagsName}}</div> -->
+        <div class="tags">{{item.category.categoryName}}</div>
+
         <div class="time">{{ item.createDate }}</div>
       </div>
       <div class="remarks">
@@ -79,16 +80,20 @@ export default {
       }
     }
   },
+  activated(){
+    this.itemImageLoad()
+  },
   methods: {
     acceptTask() {
       if (this.$store.state.id) {
         if (this.item.authorId !== this.$store.state.id) {
           var path;
           if (this.$route.name == "home") {
-            path = "/home/pay/" + this.item.id;
+            console.log(1)
+            path = "/home/pay/" + this.item.id+","+this.item.money;
             this.$router.push(path);
           } else {
-            path = this.$route.fullPath +"/pay/"+ this.item.id;
+            path = this.$route.fullPath +"/pay/"+ this.item.id+","+this.item.money;
             this.$router.push(path);
           }
         } else {
@@ -96,7 +101,7 @@ export default {
         }
       } else {
         this.$router.push("/loging");
-        this.$bus.$emit("getItem", this.item);
+       
       }
     },
     itemImageLoad() {
@@ -139,11 +144,13 @@ export default {
 <style scoped>
 .homeTaskItem {
   /* height: 150px; */
-  background: white;
-  margin: 10px 5px;
+  background: #ffffff;
+  margin: 10px 8px;
   padding: 0px 8px;
   padding-bottom: 10px;
   position: relative;
+  /* border-radius: 10px; */
+  
 }
 .title {
   height: 50px;

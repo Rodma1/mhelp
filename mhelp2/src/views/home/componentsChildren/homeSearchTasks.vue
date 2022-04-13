@@ -1,7 +1,7 @@
 <template>
   <div class="homeSearchTasks">
     <router-view class="routerView"></router-view>
-    <search-task-nav-bar :value="params.value"></search-task-nav-bar>
+    <search-task-nav-bar :value="params.words"></search-task-nav-bar>
     <scroll
       class="contents"
       ref="scroll"
@@ -35,7 +35,7 @@ export default {
       params: {
         page: 0,
         pageSize: 10,
-        value: "",
+        words: "",
         schoolId: 1,
         searchTaskList: [],
       },
@@ -46,7 +46,7 @@ export default {
   },
   created() {
     console.log(this.$route)
-    this.params.value=this.$route.params.value
+    this.params.words=this.$route.params.value
   },
   mounted(){
     this.getSearchTasks()

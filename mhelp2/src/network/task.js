@@ -35,6 +35,7 @@ export function getuaccepttasks(token, page) {
     })
 }
 export function publishTask(token, params) {
+    console.log(params)
     return request({
         headers: { 'Authorization': token },
         url: '/tasks/publish',
@@ -45,22 +46,12 @@ export function publishTask(token, params) {
                 content: "ww",
                 contentHtml: "<p>ww</p >↵"
             },
-            category: {
-                id: 2,
-                avatar: "",
-                categoryName: params.category
-            },
+            category: params.category,
             summary: params.summary,
-            tags: [
-                {
-                    "id": 5
-                },
-                {
-                    "id": 6
-                }
-            ],
+            tags:params.tags,
             images: params.images,
-            publishSchoolName: params.school
+            publishSchoolName: params.school,
+            money:params.price
         }
     })
 }
@@ -95,14 +86,13 @@ export function schools() {
 //查找任务
 export function searchTasks(data) {
     return request({
-        url: "/tasks/taskbykeys",
+        url: "/tasks/taskbynostatus",
         method: 'post',
         data: {
             page: data.page,
             pageSize: data.pageSize,
             words: data.words,
             school: data.schoolid,
-
         }
     })
 }
@@ -181,5 +171,15 @@ export function delTask(token,id){
         headers: { 'Authorization': token },
         url: "/tasks/delTask/"+id,
         method: "post",
+    })
+}
+//类型筛选
+export function categoryTask(params){
+    return request({
+        url:"/tasks",
+        method:"post",
+        data:{
+            params
+        }
     })
 }

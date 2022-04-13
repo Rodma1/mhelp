@@ -25,14 +25,18 @@
       </div>
       <div class="logingBtn" :class="{isActive2:isTips2}" @click="toLogin">登录</div>
       <div class="toRegist" @click="toRegist">注册</div>
+      
     </div>
+    <!-- <toast class="toast" :toast="toast" :logingShow="wrong"></toast> -->
   </div>
 </template>
 <script>
 import logingNavBar from "views/loging/componentsChildren/logingNavBar.vue";
+// import toast from 'components/common/toast/toast.vue';
 export default {
   components: {
     logingNavBar,
+    // toast,
   },
   data() {
     return {
@@ -42,7 +46,9 @@ export default {
       userForm: {
         account: "ad",
         password: "admins",
+        toast:"用户名或密码不存在"
       },
+      wrong:false
     };
   },
   methods: {
@@ -59,6 +65,12 @@ export default {
       this.rule()
       this.$store.dispatch("login", this.userForm).then(() => {
         console.log(this.$store.state.token);
+        // if(!this.$store.state.token){
+        //   this.wrong=true;
+        //   setTimeout(()=>{
+        //     this.wrong=false
+        //   },800)
+        // }
         this.$store.dispatch("getUserInfo").then(() => {
           setTimeout(() => {
             console.log(this.$store.state.token);
@@ -166,86 +178,10 @@ export default {
 .content .isActive2{
   margin-top: 10px;
 }
-/* .box {
-  width: 300px;
-  height: 250px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-} */
-/* .title {
-  width: 300px;
+.toast {
   height: 40px;
-  display: flex;
-  list-style-type: none;
-}
-.title li {
-  flex: 1;
-  background: rgb(154, 171, 248);
-  color: white;
-  line-height: 40px;
-  text-align: center;
-}
-form {
-  width: 300px;
-  height: 200px;
-  background: #ffffff;
-}
-form input {
-  width: 180px;
-  height: 30px;
-  outline: none;
-  border: 2px solid rgb(154, 171, 248);
-  margin-top: 20px;
-}
-.content1 {
-  padding-top: 10px;
-}
-.content2 {
-  height: 250px;
-}
-form {
-  background: white;
-}
-table {
-  width: 100%;
-  height: 70%;
-}
-table tr {
-  text-align: right;
-  vertical-align: 10px;
-}
-
-table tr td:nth-child(2) input {
-  position: relative;
-  right: 30px;
-}
-ul .current {
-  font-size: 23px;
-  background-color: white;
-  color: rgb(154, 171, 248);
-}
-.back {
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
+  width: 80%;
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 200px;
 }
-.back img {
-  width: 40px;
-  height: 40px;
-}
-.btn {
-  position: absolute;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 40px;
-  border: 0px;
-} */
 </style>

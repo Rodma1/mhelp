@@ -1,14 +1,12 @@
 <template>
   <div class="home">
-    <router-view class="routerView" ></router-view>
-    <home-nav-bar
-      @isShowClick="isShow()"
-      ref="navBar"
-    ></home-nav-bar>
+    <router-view class="routerView"></router-view>
+    <home-nav-bar @isShowClick="isShow()" ref="navBar"></home-nav-bar>
     <home-category
       v-if="isActive"
       class="category"
       :category="category"
+      @categorySearch="categorySearch"
     ></home-category>
     <scroll
       class="contents"
@@ -29,7 +27,7 @@
 <script>
 import homeNavBar from "views/home/componentsChildren/homeNavBar.vue";
 import homeCategory from "views/home/componentsChildren/homeCategory.vue";
-import homeSearch from "views/home/componentsChildren/homeSearch.vue";
+import homeSearch from "views/home/componentsChildren/homeSearch.vue"; 
 import scroll from "components/common/scroll/scroll.vue";
 import homeTask from "views/home/componentsChildren/homeTask.vue";
 import backTop from "components/content/backTop/backTop.vue";
@@ -37,7 +35,7 @@ import toast from "components/common/toast/toast.vue";
 import { getTask, getCategory, getTags } from "network/task.js";
 import { itemListenerMixin, backTopMixins, isLoging } from "mixins/mixins.js";
 // import {getuaccepttasks} from "network/task.js"
-
+import { categoryTask } from "network/task.js";
 export default {
   components: {
     homeNavBar,
@@ -64,6 +62,7 @@ export default {
       offsetTop: 0,
       toast: "您当前未登录，请先登录！",
       logingShow: false,
+      params: { page: 0, pageSize: 10, categoryId:null },
     };
   },
   created() {
@@ -71,9 +70,13 @@ export default {
     this.getCategory();
     this.getTags();
     // this.getuaccepttasks();
-    console.log(this.$route)
+    console.log(this.$route);
   },
-
+  activated() {
+    this.$bus.$on("clear", () => {
+      this.refreshing();
+    });
+  },
   computed: {},
   methods: {
     isShow() {
@@ -81,6 +84,7 @@ export default {
       this.$refs.navBar.isActive = !this.$refs.navBar.isActive;
     },
     getTasks() {
+      console.log(1);
       this.page.pageNumber = this.page.pageNumber + 1;
       getTask(this.page)
         .then((res) => {
@@ -106,6 +110,7 @@ export default {
       getCategory().then((res) => {
         this.category.push(...res.data);
       });
+      console.log(this.category)
     },
     getTags() {
       getTags().then((res) => {
@@ -131,9 +136,41 @@ export default {
     },
     pullingMore() {
       this.getTasks();
-      this.$refs.homeTask.getCollectList()
+      this.$refs.homeTask.getCollectList();
     },
-
+    refreshing() {
+      (this.page = {
+        pageNumber: 0,
+        pageSize: 20,
+      }),
+        (this.task = []);
+      this.$refs.homeTask.getCollectList();
+      this.getTasks();
+    },
+    categorySearch(index) {
+      console.log(this.category[index]);
+      this.task=[]
+      this.params.categoryId=this.category[index].id
+       categoryTask(this.params).then((res)=>{
+         console.log(res)
+          var a = this.task.length;
+        // this.data.searchTaskList.push(...res.data);
+         for(var j=0;j<res.data.length;j++){
+            if(!res.data[j].status){
+              this.task.push(res.data[j])
+            }
+          }
+          console.log(this.task)
+        for (var i = a; i < this.task.length; i++) {
+          if (this.task[i].images) {
+           this.task[i].images =
+              this.task[i].images.split(",");
+          }
+        }
+        console.log(this.task);
+        this.isActive=false
+       })
+    },
   },
 };
 </script>

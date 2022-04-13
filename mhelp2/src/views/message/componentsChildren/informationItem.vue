@@ -1,13 +1,13 @@
 <template>
   <div class="informationItem">
-    <img :src="item.avatar" alt="" />
+    <img :src="item.avatar" alt="" @load="itemImageLoad"/>
     <div class="content">
       <div class="netName">{{item.nickname}}</div>
       <div class="newMessage">{{ chatSnapShotMsg }}</div>
     </div>
     <div class="time">
       <div class="timeTime">16:42</div>
-      <div class="new">3</div>
+      <div class="new">{{item.noread.length}}</div>
     </div>
   </div>
 </template>
@@ -38,6 +38,9 @@ export default {
   created() {
     this.findchatSnapShot();
   },
+  activated(){
+    this.itemImageLoad()
+  },
   methods: {
     findchatSnapShot() {
       this.chatSnapShot = getChatSnapShot(this.myId);
@@ -47,13 +50,16 @@ export default {
         }
       }
     },
+     itemImageLoad() {
+      this.$bus.$emit("itemImageLoad");
+    },
   },
 };
 </script>
 
 <style scoped>
 .informationItem {
-  height: 60px;
+  height: 70px;
   /* background-color: pink; */
   padding: 10px;
   display: flex;

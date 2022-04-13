@@ -48,14 +48,18 @@ export default {
 <style scoped>
 .goSign {
   height: 140px;
-  background: #426eb7;
+  /* background: #426eb7; */
   position: relative;
-  color: white;
+  color: black;
+  background-image: url("../../../assets/img/signIn/太空发展.png");
+  background-size: 60% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .signBtn {
   width: 120px;
   height: 40px;
-  border: 2px solid white;
+  border: 2px solid black;
   text-align: center;
   line-height: 40px;
   position: absolute;
@@ -63,7 +67,9 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   border-radius: 20px;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 500;
+
 }
 .goSign span {
   position: absolute;

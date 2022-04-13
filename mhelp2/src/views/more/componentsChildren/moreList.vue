@@ -19,7 +19,7 @@
     </div>
     <div class="item" @click="gocheck">
       <div>进行认证</div>
-      <div></div>
+      <div class="check">未认证</div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
     <div class="item" @click="changePassword">
@@ -165,5 +165,9 @@ export default {
   text-align: right;
   top: 0;
   cursor: pointer;
+}
+.check{
+  color: rgb(247, 85, 85);
+  font-weight: 600;
 }
 </style>

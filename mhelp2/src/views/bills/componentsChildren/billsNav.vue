@@ -25,7 +25,7 @@ export default{
 </script>
 <style scoped>
 .billsNav{
-    background-color: white;
+    /* background-color: white; */
 }
 .left img{
     width: 30px;

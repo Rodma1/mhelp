@@ -26,7 +26,7 @@
     ></chat-tab-bar>
     <chat-tab-bar
       class="tabBar"
-      @send="send"
+      @send="sending"
       @showEmojis="showEmojis"
       ref="chatTabBar"
       @showMore="showMore"
@@ -62,7 +62,6 @@ export default {
   mixins: [itemListenerMixin],
   data() {
     return {
-      socket: null,
       messageList: [],
       text: "",
       my: {
@@ -70,8 +69,8 @@ export default {
         nickname: this.$store.state.nikname,
         avatar: "",
       },
-      user: { 
-        userNickname: "",
+      user: {
+        userNickname: this.$store.state.currentUser.nickname,
         id: this.$store.state.currentUser.id,
         avatar: "",
       },
@@ -83,39 +82,35 @@ export default {
       isRead: false,
       nosendMsg: [],
       maxScrollY: null,
-      contentsHeight:null
+      contentsHeight: null,
     };
   },
   mounted() {
-    console.log(this.user.id)
+    console.log(this.user.id);
     this.messageList = getmsgContent(this.my.id, this.user.id);
-    
+  },
+  created() {
+    this.init();
+    // this.websock.error()
+     
   },
   activated() {
-    //  this.messageList = getmsgContent(this.my.id, this.user.id);
     this.isRead = true;
     this.itemImageLoad();
-    setTimeout(()=>{
-      this.$refs.scroll.scroller(0, -this.maxScrollY + this.contentsHeight);
-    },100)
-    // console.log(this.user.id)
-    this.init();
   },
   deactivated() {
     this.isRead = false;
-    this.websock.onclose = this.close;
+    console.log(22)
+    this.websock.close();
   },
-  destroyed(){
-    
+  destroyed() {
+
   },
   methods: {
     goback() {
       this.$router.back();
     },
-    // contentScroll(position) {
-    //   // console.log(position);
-    // },
-    send(value) {
+    sending(value) {
       if (
         this.websock != null &&
         this.websock != undefined &&
@@ -129,15 +124,14 @@ export default {
         //构建chatMsg聊天消息
         var chatMsgParam = new ChatMsgParam(myId, youId, value, null);
         //    第一次(或重连)初始化连接
-        var dataContent = new DataContent(2, chatMsgParam, null);
+        var dataContent = new DataContent(2, chatMsgParam, 1);
         // 1是我 2是朋友
         setmsgContent(myId, youId, value, 1);
         this.messageList = getmsgContent(this.my.id, this.user.id);
         console.log(this.messageList);
         //将客户输入的消息进行发送
-        console.log(dataContent)
+        console.log(dataContent);
         this.websock.send(JSON.stringify(dataContent));
-
         //保存聊天快照到本地缓存
         setChatSnapShot(myId, youId, value, this.isRead);
       } else {
@@ -179,7 +173,7 @@ export default {
           this.websock.onopen = this.open;
           this.websock.onmessage = this.message;
           this.websock.onerror = this.error;
-          this.websock.onclose=this.close;
+          this.websock.onclose = this.close;
         }
       } else {
         console.log("您的版本太低暂不支持webSoket协议");
@@ -188,16 +182,11 @@ export default {
     open(e) {
       console.log(e);
       //    构建chatMsg聊天消息
-      var chatMsgParam = new ChatMsgParam(
-        this.my.id,
-        this.user.id,
-        "我们可以开始聊天了",
-        null
-      );
+      var chatMsgParam = new ChatMsgParam(this.my.id, this.user.id, "剖", null);
       //    第一次(或重连)初始化连接
       var dataContent = new DataContent(2, chatMsgParam, null);
       //    转变为string类型发送到服务器
-      console.log(chatMsgParam);
+      // console.log(chatMsgParam);
       this.chats(JSON.stringify(dataContent));
     },
     message(e) {
@@ -219,7 +208,7 @@ export default {
       );
       setmsgContent(chatMsgParam);
       this.messageList = getmsgContent(this.my.id, this.user.id);
-      console.log(this.messageList)
+      console.log(this.messageList);
       this.chats(JSON.stringify(dataContentSign));
       setChatSnapShot(
         this.my.id,
@@ -269,7 +258,7 @@ export default {
   z-index: 10;
 }
 .navbar {
-  background-color: rgb(154, 171, 248);
+  background-color: #3dbafddc;
   color: white;
   position: absolute;
   top: 0px;

@@ -46,8 +46,8 @@ export default {
     },
     publish() {
       this.params.remark = this.$refs.publishToast.params.remark;
-      this.params.tags = this.$refs.publishToast.params.tags;
-      this.params.category = this.$refs.publishToast.params.category;
+      this.params.tags = this.$refs.publishToast.currentTags;
+      this.params.category = this.$refs.publishToast.currentCategory;
       this.params.price = this.$refs.publishToast.params.price;
       console.log(this.$refs.publishToast.params.category)
       console.log(this.params)
