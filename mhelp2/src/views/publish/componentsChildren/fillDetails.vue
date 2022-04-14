@@ -2,7 +2,7 @@
   <div class="fillDetails">
     <div class="title">
       <div>任务标题</div>
-      <input type="text" v-model="params.title" />
+      <input type="text" v-model="params.title"  @change="check1"/>
     </div>
     <div class="summary">
       <textarea
@@ -22,13 +22,17 @@
     <div class="publishBtn">
       <div @click="publish">发布</div>
     </div>
+    <!-- <toast :message="toast" :logingShow="ischeck3" class="toast"></toast> -->
   </div>
 </template>
 <script>
+// import toast from "components/common/toast/toast.vue";
 import { uploadImage } from "network/upload.js";
 import axios from "axios";
 export default {
-  components: {},
+  components: {
+    // toast,
+  },
   data() {
     return {
       params: {
@@ -37,13 +41,11 @@ export default {
         images: "",
       },
       fileList: [
-        // { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
-        // Uploader 根据文件后缀来判断是否为图片文件
-        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-        // { url: "https://cloud-image", isImage: true },
       ],
-      ischeck: false,
+      ischeck:false,
       ischeck2: false,
+      ischeck3:false,
+      // toast:"任务不和规则，请重新输入"
     };
   },
   created() {},
@@ -54,7 +56,11 @@ export default {
           if(this.ischeck&&this.ischeck2){
             this.$emit("isShow");
           }else{
-            console.log("不和规则")
+          //   setTimeout(()=>{
+          //      this.ischeck3=true
+          //   },800)
+          //  this.ischeck3=false
+          this.$toast("任务不和规则，请重新输入")
           }
         } else {
           this.$toast("标题和内容均不能为空");
@@ -64,6 +70,25 @@ export default {
         this.$router.push("/loging");
       }
     },
+    check1() {
+      console.log(1)
+      setTimeout(() => {
+        axios({
+          url: "http://192.168.43.252:8000/student/model",
+          method: "post",
+          headers: { Authorization: "" },
+          data: {
+            wenben:this.params.title,
+          },
+        }).then((res) => {
+          if (this.params.title == res.data) {
+            this.ischeck = true;
+          } else {
+            this.check2 = false;
+          }
+        });
+      }, 300);
+    },
     check() {
       setTimeout(() => {
         axios({
@@ -71,16 +96,16 @@ export default {
           method: "post",
           headers: { Authorization: "" },
           data: {
-            wenben: this.summary,
+            wenben: this.params.summary,
           },
         }).then((res) => {
-          if (this.summary == res.data) {
+          if (this.params.summary == res.data) {
             this.ischeck = true;
           } else {
             this.check = false;
           }
         });
-      }, 1000);
+      }, 300);
     },
 
     afterRead(file) {
@@ -90,21 +115,21 @@ export default {
         for (var i = 0; i < file.length; i++) {
           var formData = new FormData();
           formData.append("images", file[i].file);
-          axios({
-            url: "http://192.168.43.252:8000/student/model",
-            method: "post",
-            headers: { Authorization: "" },
-            data: {
-              wenben: this.summary,
-            },
-          }).then((res) => {
-            if (res.data==true) {
-              this.ischeck2 = true;
-            } else {
-              this.check2 = false;
-              return
-            }
-          });
+          // axios({
+          //   url: "http://192.168.43.252:8000/student/model",
+          //   method: "post",
+          //   headers: { Authorization: "" },
+          //   data: {
+          //     wenben: this.summary,
+          //   },
+          // }).then((res) => {
+          //   if (res.data==true) {
+          //     this.ischeck2 = true;
+          //   } else {
+          //     this.check2 = false;
+          //     return
+          //   }
+          // });
           console.log(formData);
           setTimeout(() => {
             file.status = "done";
@@ -132,20 +157,20 @@ export default {
             }
             console.log(this.params.images);
           });
-          axios({
-            url: "http://192.168.43.252:8000/student/model",
-            method: "post",
-            headers: { Authorization: "" },
-            data: {
-              wenben: this.summary,
-            },
-          }).then((res) => {
-            if (res.data==true) {
-              this.ischeck2 = true;
-            } else {
-              this.check2 = false;
-            }
-          });
+          // axios({
+          //   url: "http://192.168.43.252:8000/student/model",
+          //   method: "post",
+          //   headers: { Authorization: "" },
+          //   data: {
+          //     wenben: this.summary,
+          //   },
+          // }).then((res) => {
+          //   if (res.data==true) {
+          //     this.ischeck2 = true;
+          //   } else {
+          //     this.check2 = false;
+          //   }
+          // });
         }, 200);
       }
     },
@@ -223,5 +248,13 @@ export default {
   text-align: center;
   line-height: 35px;
   color: white;
+}
+.toast{
+  height: 30px;
+  width: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
 }
 </style>

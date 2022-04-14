@@ -12,7 +12,7 @@
         <van-uploader
           v-model="fileList"
           multiple
-          :max-count="9"
+          :max-count="1"
           :after-read="afterRead"
           class="item"
         ></van-uploader>
@@ -77,7 +77,7 @@ export default {
           },
           data: formData,
         }).then((res) => {
-          console.log(res);
+          this.after=res.data
         });
       }, 200);
     },

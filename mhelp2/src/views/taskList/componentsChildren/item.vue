@@ -8,8 +8,8 @@
     <div class="center">
       <div class="content">
         <div class="categoryAndTags">
-          <div>分类：{{ item.category}}</div>
-          <div>标签：{{ item.tags[0] }}</div>
+          <div>分类：{{ item.category.categoryName}}</div>
+          <div>标签：{{ item.tags[0].tagName }}</div>
         </div>
 
         <div class="main">

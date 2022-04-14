@@ -83,34 +83,41 @@ export default {
       nosendMsg: [],
       maxScrollY: null,
       contentsHeight: null,
+   
     };
   },
   mounted() {
     console.log(this.user.id);
     this.messageList = getmsgContent(this.my.id, this.user.id);
+    this.websock.onmessage = this.message;
+    this.websock.onmessage = this.message;
+    this.websock.onmessage = this.message;
+    this.websock.onmessage = this.message;
+    this.websock.onmessage = this.message;
+
   },
   created() {
     this.init();
-    // this.websock.error()
-     
+
   },
   activated() {
     this.isRead = true;
     this.itemImageLoad();
+    // this.websock.message()
+    this.websock.onmessage = this.message;
   },
   deactivated() {
     this.isRead = false;
-    console.log(22)
-    this.websock.close();
+    console.log(22);
+    // this.websock.close();
   },
-  destroyed() {
-
-  },
+  destroyed() {},
   methods: {
     goback() {
       this.$router.back();
     },
     sending(value) {
+      console.log(value)
       if (
         this.websock != null &&
         this.websock != undefined &&
@@ -131,12 +138,13 @@ export default {
         console.log(this.messageList);
         //将客户输入的消息进行发送
         console.log(dataContent);
+
         this.websock.send(JSON.stringify(dataContent));
         //保存聊天快照到本地缓存
         setChatSnapShot(myId, youId, value, this.isRead);
       } else {
-        // this.init();
-        // console.log(22);
+        this.init();
+        console.log(22);
       }
     },
     showEmojis() {
@@ -168,12 +176,14 @@ export default {
           this.websock.readyState == WebSocket.OPEN
         ) {
           return false;
-        } else {
+        } try {
           this.websock = new WebSocket(url);
           this.websock.onopen = this.open;
           this.websock.onmessage = this.message;
           this.websock.onerror = this.error;
           this.websock.onclose = this.close;
+        }catch(e){
+          console.log(e)
         }
       } else {
         console.log("您的版本太低暂不支持webSoket协议");
@@ -182,14 +192,16 @@ export default {
     open(e) {
       console.log(e);
       //    构建chatMsg聊天消息
-      var chatMsgParam = new ChatMsgParam(this.my.id, this.user.id, "剖", null);
+      var chatMsgParam = new ChatMsgParam(this.my.id, this.user.id, "哈", null);
       //    第一次(或重连)初始化连接
       var dataContent = new DataContent(2, chatMsgParam, null);
       //    转变为string类型发送到服务器
       // console.log(chatMsgParam);
       this.chats(JSON.stringify(dataContent));
+      console.log( this.websock.readyState )
     },
     message(e) {
+      console.log(1)
       console.log(e);
       console.log("接受到消息:" + e.data);
       var dataConetent = JSON.parse(e.data);

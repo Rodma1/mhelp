@@ -7,6 +7,7 @@
       @publish="publish"
       ref="publishToast"
     ></publish-toast>
+    
   </div>
 </template>
 <script>
@@ -29,7 +30,8 @@ export default {
         category: "",
         price: "",
         images: "",
-        school:this.$store.state.school
+        school:this.$store.state.school,
+        toast:"任务不和规则，请重新输入"
       },
     };
   },
