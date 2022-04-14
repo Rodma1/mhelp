@@ -18,7 +18,7 @@
 <script>
 import { schools } from "network/task.js";
 import { pinyin } from "pinyin-pro";
-
+import { searchTasks } from "network/task.js";
 export default {
   data() {
     return {
@@ -27,8 +27,8 @@ export default {
       schoolIndexBar: [],
       schoolNames: [],
       schoolList: [],
-      updateMsg:{
-        school:''
+      updateMsg: {
+        school: "",
       },
     };
   },
@@ -55,6 +55,7 @@ export default {
   },
   mounted() {
     this.school();
+    console.log(this.$route.name);
   },
   updated() {
     this.itemImageLoad();
@@ -106,21 +107,38 @@ export default {
       });
     },
     chooseSchool(index, idx) {
-      console.log(index, idx);
+      // console.log();
       console.log(this.schoolList[index].list[idx]);
-      this.updateMsg.school=this.schoolList[index].list[idx].name
-      console.log(this.updateMsg.school)
-      this.$store.dispatch('updateUserInfo',this.updateMsg).then(()=>{
-        this.exist()
-      })
+      this.updateMsg.school = this.schoolList[index].list[idx].name;
+      var schoolName=this.schoolList[index].list[idx].name
+      var schoolid = this.schoolList[index].list[idx].id;
+      console.log(this.updateMsg.school);
+      if (this.$route.name == "changeSchool") {
+        this.$store.dispatch("updateUserInfo", this.updateMsg).then(() => {
+          this.exist();
+        });
+      } else {
+        var params = {
+          page: 0,
+          pageSize: 10,
+          words: "",
+          publishSchoolId: schoolid,
+          publishSchoolName: schoolName,
+        };
+        searchTasks(params).then((res) => {
+          console.log(res);
+          this.$router.push("/home")
+          this.$bus.$emit("schoolTasks",res.data)
+        });
+      }
     },
     itemImageLoad() {
       this.$bus.$emit("itemImageLoad");
     },
-     exist() {
+    exist() {
       this.$store.dispatch("logout");
       setTimeout(() => {
-        console.log(2)
+        console.log(2);
         this.$router.push("/loging");
       }, 200);
     },

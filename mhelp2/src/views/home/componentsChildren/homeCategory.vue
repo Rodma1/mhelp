@@ -12,9 +12,7 @@
     </ul>
     <span>标签</span>
     <ul class="tag">
-      <li>陪吃</li>
-      <li>陪聊</li>
-      <li>玩耍</li>
+      <li v-for="(item,index) in tags" :key="index"  @click="tagsTasks(index)">{{item.tagName}}</li>
     </ul>
     <!-- <div class="mask"></div> -->
   </div>
@@ -28,11 +26,20 @@ export default {
         return [];
       },
     },
+    tags:{
+      type:Array,
+      default(){
+        return []
+      }
+    }
   },
   methods: {
     categoryTasks(index) {
       this.$emit("categorySearch",index)
     },
+    tagsTasks(index){
+      this.$emit("tagsTasks",index)
+    }
   },
 };
 </script>

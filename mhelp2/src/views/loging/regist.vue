@@ -79,10 +79,10 @@ export default {
     toRegist() {
       this.rule();
       console.log(this.userForm.school)
-      // this.$store.dispatch("regist", this.userForm).then(() => {
-      //   this.isActive = true;
-      //   this.$router.back()
-      // });
+      this.$store.dispatch("regist", this.userForm).then(() => {
+        this.isActive = true;
+        this.$router.back()
+      });
     },
     rule() {
       if (

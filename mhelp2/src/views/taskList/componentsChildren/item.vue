@@ -8,8 +8,8 @@
     <div class="center">
       <div class="content">
         <div class="categoryAndTags">
-          <div>分类：{{ item.category.categoryName}}</div>
-          <div>标签：{{ item.tags[0].tagName }}</div>
+          <div>分类：{{ item.category.categoryName }}</div>
+          <div>标签：{{tag}}</div>
         </div>
 
         <div class="main">
@@ -55,6 +55,17 @@ export default {
   mounted() {
     this.which();
   },
+  computed: {
+    tag() {
+      console.log(this.item.tags)
+      if (this.item.tags.length=={}||this.item.tags==[]) {
+        return this.item.tags[0].tagName;
+      } else {
+        return "";
+      }
+    },
+  },
+
   methods: {
     itemImageLoad() {
       this.$bus.$emit("itemImageLoad");
@@ -62,9 +73,9 @@ export default {
     which() {
       if (this.item.status == 2) {
         this.msg = "已完成";
-      } else if (this.item.status == 1||this.item.status==null) {
+      } else if (this.item.status == 1 || this.item.status == null) {
         this.msg = "正在进行";
-      } 
+      }
     },
   },
 };

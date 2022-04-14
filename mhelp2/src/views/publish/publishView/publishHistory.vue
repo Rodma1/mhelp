@@ -40,6 +40,9 @@ export default {
   },
   mounted() {
     this.getPublishList();
+    this.$bus.$on("clear",()=>{
+      this.refreshing()
+    })
   },
   methods: {
     getPublishList() {
@@ -73,6 +76,14 @@ export default {
         };
         this.getPublishList();
       }
+    },
+    refreshing() {
+      this.page = {
+        pageNumber: 0,
+        pageSize: 20,
+      },
+      this.list  = [];
+      this.getPublishList()
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="billsItem">
     <div class="title">
-      <img src="@/assets/img/message/头像.png" alt="" />
+      <img src="@/assets/img/message/头像.png" alt="" @load="itemImageLoad"/>
       <div>吼吼哈嘿</div>
     </div>
     <div class="middle">
@@ -38,6 +38,11 @@ export default{
         return {}
       }
     }
+  },
+  methods:{
+    itemImageLoad() {
+      this.$bus.$emit("itemImageLoad");
+    },
   }
 }
 </script>

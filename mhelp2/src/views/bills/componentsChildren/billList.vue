@@ -8,6 +8,7 @@
 <script>
 import billsItem from "views/bills/componentsChildren/billsItem.vue";
 import scroll from "components/common/scroll/scroll.vue";
+import { itemListenerMixin } from "mixins/mixins.js"
 export default {
   components: {
     billsItem,
@@ -37,6 +38,7 @@ export default {
       ]
     }
   },
+   mixins: [itemListenerMixin],
   mounted(){
     this.$bus.$on("addbill",(i)=>{
       var params={

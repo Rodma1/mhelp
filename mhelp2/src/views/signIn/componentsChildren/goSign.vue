@@ -2,7 +2,7 @@
   <div class="goSign">
     <div class="signBtn" @click="sign" v-if="!isSign">点击签到</div>
     <div class="signBtn" v-else>已签到</div>
-    <span>你已经签到10天了！</span>
+    <span>你已经签到{{days}}天了！</span>
   </div>
 </template>s
 <script>
@@ -15,6 +15,12 @@ export default {
   },
   props:{
     isSign:{
+      type:Number,
+      default(){
+        return 0
+      }
+    },
+    days:{
       type:Number,
       default(){
         return 0

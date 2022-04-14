@@ -16,7 +16,12 @@
           :after-read="afterRead"
           class="item"
         ></van-uploader>
+        <!-- <div class="success" v-if="isShow">
+          <img src="@/assets/img/example/成功.png" alt="" v-if="isSuccess" />
+          <img src="@/assets/img/example/错误.png" alt="" v-else />
+        </div> -->
       </div>
+
       <div>
         <div class="tips">上传脸部照片</div>
 
@@ -27,9 +32,16 @@
           :after-read="afterRead"
           class="item"
         ></van-uploader>
+        <!-- <div class="success" v-if="isShow2">
+          <img src="@/assets/img/example/成功.png" alt="" v-if="isSuccess2" />
+          <img src="@/assets/img/example/错误.png" alt="" v-else />
+        </div> -->
       </div>
     </div>
-    <div class="checkBtn">{{msg}}</div>
+    <div class="checkBtn" @click="checking">
+      <img src="@/assets/img/example/加载.png" alt="" v-if="isCheck">
+      <div v-else>{{ msg }}</div>
+    </div>
   </div>
 </template>
 <script>
@@ -48,9 +60,11 @@ export default {
         // { url: "https://cloud-image", isImage: true },
       ],
       fileList1: [],
-      card:null,
-      isSuccess:false,
-      msg:""
+      card: null,
+      isSuccess: false,
+      isSuccess2: false,
+      msg: "校验",
+      isCheck:false
     };
   },
   methods: {
@@ -63,23 +77,23 @@ export default {
       setTimeout(() => {
         file.status = "done";
         file.message = "";
-       var formData = new FormData();
-       formData.append("card",file.file)
-       console.log(formData)
-          axios({
-            url: "http://192.168.43.252:8000/student/train",
-            method: "post",
-            headers: { Authorization: "" },
-            data:formData
-          }).then((res) => {
-            if(res.data=='ok'){
-              this.isSuccess=true
-            }
-            else{
+        var formData = new FormData();
+        formData.append("card", file.file);
+        console.log(formData);
+        axios({
+          url: "http://192.168.43.252:8000/student/train",
+          method: "post",
+          headers: { Authorization: "" },
+          data: formData,
+        }).then((res) => {
+          if (res.data == "ok") {
 
-              this.isSuccess=false
-            }
-          });
+            this.isSuccess = true;
+          } else {
+
+            this.isSuccess = false;
+          }
+        });
       }, 200);
     },
     afterRead2(file) {
@@ -88,20 +102,43 @@ export default {
       setTimeout(() => {
         file.status = "done";
         file.message = "";
-         var formData = new FormData();
-       formData.append("card",file.file)
+        var formData = new FormData();
+        formData.append("card", file.file);
         axios({
           url: "http://192.168.43.252:8000/student/detec",
           method: "post",
           headers: { Authorization: "" },
           data: {
-            formData
+            formData,
           },
         }).then((res) => {
-          console.log(res);
+          if (res.data == true) {
+
+            this.isSuccess2 = true;
+          } else {
+
+            this.isSuccess2 = false;
+          }
         });
-        console.log(2);
       }, 200);
+    },
+    checking() {
+      if (this.isSuccess == true && this.isSuccess2 == true) {
+        this.isCheck=true
+        setTimeout(()=>{
+          this.isCheck=false;
+        },800)
+        this.msg="校验成功"
+        this.$bus.$emit("check")
+      }
+      else{
+        this.isCheck=true
+        setTimeout(()=>{
+          this.isCheck=false;
+        },800)
+        this.msg="校验失败"
+        this.$toast("检车上传是否是学生证和本人照片")
+      }
     },
   },
 };
@@ -120,6 +157,9 @@ export default {
 .upload {
   height: 300px;
   padding: 20px;
+}
+.upload > div {
+  position: relative;
 }
 .tips {
   margin-bottom: 10px;
@@ -141,5 +181,30 @@ export default {
   text-align: center;
   line-height: 40px;
   color: white;
+}
+.checkBtn img{
+  height: 30px;
+  width: 30px;
+  animation: rotate 1s infinite;
+}
+.success {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  right: 20%;
+  top: 50px;
+}
+.success img {
+  height: 50px;
+  width: 50px;
+}
+@keyframes rotate {
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
 }
 </style>

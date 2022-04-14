@@ -7,6 +7,8 @@
       class="category"
       :category="category"
       @categorySearch="categorySearch"
+      @tagsTasks="tagsTasks"
+      :tags="tags"
     ></home-category>
     <scroll
       class="contents"
@@ -20,14 +22,19 @@
       <home-task :task="task" :page="page" ref="homeTask"></home-task>
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
-    <toast :message="toast" :logingShow="!logingShow" class="toast"></toast>
+    <toast
+      :message="toast"
+      :logingShow="!logingShow"
+      class="toast"
+      @click.native="tologing"
+    ></toast>
     <div :class="{ mask: isActive }" @click="isShow"></div>
   </div>
 </template> 
 <script>
 import homeNavBar from "views/home/componentsChildren/homeNavBar.vue";
 import homeCategory from "views/home/componentsChildren/homeCategory.vue";
-import homeSearch from "views/home/componentsChildren/homeSearch.vue"; 
+import homeSearch from "views/home/componentsChildren/homeSearch.vue";
 import scroll from "components/common/scroll/scroll.vue";
 import homeTask from "views/home/componentsChildren/homeTask.vue";
 import backTop from "components/content/backTop/backTop.vue";
@@ -62,7 +69,7 @@ export default {
       offsetTop: 0,
       toast: "您当前未登录，请先登录！",
       logingShow: false,
-      params: { page: 0, pageSize: 10, categoryId:null },
+      params: { page: 0, pageSize: 10, categoryId: null },
     };
   },
   created() {
@@ -75,6 +82,27 @@ export default {
   activated() {
     this.$bus.$on("clear", () => {
       this.refreshing();
+    });
+    this.$bus.$on("schoolTasks", (data) => {
+      console.log(this.task);
+      this.task = [];
+      this.page = {
+        pageNumber: 0,
+        pageSize: 20,
+      };
+      var a = this.task.length;
+      this.page.pageNumber = this.page.pageNumber + 1;
+      for (var j = 0; j < data.length; j++) {
+        if (!data[j].status) {
+          this.task.push(data[j]);
+        }
+      }
+      console.log(this.task);
+      for (var i = a; i < this.task.length; i++) {
+        if (this.task[i].images) {
+          this.task[i].images = this.task[i].images.split(",");
+        }
+      }
     });
   },
   computed: {},
@@ -110,13 +138,13 @@ export default {
       getCategory().then((res) => {
         this.category.push(...res.data);
       });
-      console.log(this.category)
+      console.log(this.category);
     },
     getTags() {
       getTags().then((res) => {
         // console.log(res);
         this.tags.push(...res.data);
-        // console.log(this.tags);
+        console.log(this.tags);
       });
     },
     backTop() {
@@ -149,27 +177,33 @@ export default {
     },
     categorySearch(index) {
       console.log(this.category[index]);
-      this.task=[]
-      this.params.categoryId=this.category[index].id
-       categoryTask(this.params).then((res)=>{
-         console.log(res)
-          var a = this.task.length;
+      this.task = [];
+      this.params.categoryId = this.category[index].id;
+      categoryTask(this.params).then((res) => {
+        console.log(res);
+        var a = this.task.length;
         // this.data.searchTaskList.push(...res.data);
-         for(var j=0;j<res.data.length;j++){
-            if(!res.data[j].status){
-              this.task.push(res.data[j])
-            }
-          }
-          console.log(this.task)
-        for (var i = a; i < this.task.length; i++) {
-          if (this.task[i].images) {
-           this.task[i].images =
-              this.task[i].images.split(",");
+        for (var j = 0; j < res.data.length; j++) {
+          if (!res.data[j].status) {
+            this.task.push(res.data[j]);
           }
         }
         console.log(this.task);
-        this.isActive=false
-       })
+        for (var i = a; i < this.task.length; i++) {
+          if (this.task[i].images) {
+            this.task[i].images = this.task[i].images.split(",");
+          }
+        }
+        console.log(this.task);
+        this.isActive = false;
+      });
+    },
+    tagsTasks(index) {
+      console.log(index);
+      this.task = [];
+    },
+    tologing() {
+      this.$router.push("/loging");
     },
   },
 };

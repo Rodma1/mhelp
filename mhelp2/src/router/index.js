@@ -221,6 +221,11 @@ const routes = [
         path: 'changeAvatar',
         name: 'changeAvatar',
         component: changeAvatar,
+      }, 
+      {
+        path: 'changeSchool',
+        name: 'changeSchool',
+        component: school,
       },
       {
         path:"check",

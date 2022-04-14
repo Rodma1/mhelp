@@ -7,7 +7,7 @@
     </div>
     <div class="time">
       <div class="timeTime">16:42</div>
-      <div class="new">{{item.noread.length}}</div>
+      <div class="new">{{noread}}</div>
     </div>
   </div>
 </template>
@@ -40,6 +40,17 @@ export default {
   },
   activated(){
     this.itemImageLoad()
+  },
+  computed:{
+    noread(){
+      if(this.item.noReadMsg){
+        return this.item.noReadMsg.length
+      }
+      else{
+        return 0
+      }
+    }
+    
   },
   methods: {
     findchatSnapShot() {

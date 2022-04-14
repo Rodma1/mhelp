@@ -1,7 +1,7 @@
 <template>
   <div class="signIn">
     <sign-in-nav></sign-in-nav>
-    <go-sign :isSign="isSign"></go-sign>
+    <go-sign :isSign="isSign" :days="allListSign.length"></go-sign>
     <calendar
       class="calendar"
       :listSign="listSign"

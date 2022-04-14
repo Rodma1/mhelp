@@ -4,8 +4,10 @@
       <img :src="item.avatar" alt="" @load="itemImageLoad" />
       <div class="center">
         <div class="name">{{ item.author }}</div>
-        <div class="tags">{{item.category.categoryName}}</div>
-
+        <div class="cAt">
+          <div class="category">{{ item.category.categoryName }}</div>
+          <div class="tags">{{ tag }}</div>
+        </div>
         <div class="time">{{ item.createDate }}</div>
       </div>
       <div class="remarks">
@@ -73,6 +75,16 @@ export default {
     };
   },
   created() {},
+  computed: {
+    tag() {
+      // console.log(this.item.tags);
+      if (this.item.tags.length == {} || this.item.tags == []) {
+        return this.item.tags[0].tagName;
+      } else {
+        return "";
+      }
+    },
+  },
   mounted() {
     for (var i = 0; i < this.collectList.length; i++) {
       if (this.collectList[i] == this.item.id) {
@@ -80,8 +92,8 @@ export default {
       }
     }
   },
-  activated(){
-    this.itemImageLoad()
+  activated() {
+    this.itemImageLoad();
   },
   methods: {
     acceptTask() {
@@ -89,19 +101,24 @@ export default {
         if (this.item.authorId !== this.$store.state.id) {
           var path;
           if (this.$route.name == "home") {
-            console.log(1)
-            path = "/home/pay/" + this.item.id+","+this.item.money;
+            console.log(1);
+            path = "/home/pay/" + this.item.id + "," + this.item.money;
             this.$router.push(path);
           } else {
-            path = this.$route.fullPath +"/pay/"+ this.item.id+","+this.item.money;
+            path =
+              this.$route.fullPath +
+              "/pay/" +
+              this.item.id +
+              "," +
+              this.item.money;
             this.$router.push(path);
           }
         } else {
-          console.log("自己不能接自己发的任务");
+          // console.log("自己不能接自己发的任务");
+          this.$toast("自己不能接自己发的任务")
         }
       } else {
         this.$router.push("/loging");
-       
       }
     },
     itemImageLoad() {
@@ -150,7 +167,6 @@ export default {
   padding-bottom: 10px;
   position: relative;
   /* border-radius: 10px; */
-  
 }
 .title {
   height: 50px;
@@ -180,6 +196,15 @@ export default {
 }
 .center {
   margin-left: 10px;
+}
+.cAt {
+  width: 50%;
+  display: flex;
+  font-size: 12px;
+  color: #757373;
+}
+.cAt div {
+  flex: 1;
 }
 .time,
 .tags {
@@ -303,5 +328,6 @@ ul li:nth-last-child(4):first-child ~ li {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  border-radius: 8px;
 }
 </style>

@@ -85,14 +85,16 @@ export function schools() {
 }
 //查找任务
 export function searchTasks(data) {
+    console.log(data)
     return request({
-        url: "/tasks/taskbynostatus",
+        url: "/tasks/taskbykeys",
         method: 'post',
         data: {
             page: data.page,
             pageSize: data.pageSize,
             words: data.words,
-            school: data.schoolid,
+            school: 1,
+            publishSchoolName:data.publishSchoolName
         }
     })
 }

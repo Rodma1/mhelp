@@ -19,7 +19,7 @@
     </div>
     <div class="item" @click="gocheck">
       <div>进行认证</div>
-      <div class="check">未认证</div>
+      <div class="check">{{msg}}</div>
       <div><img src="@/assets/img/my/右箭头.png" alt="" /></div>
     </div>
     <div class="item" @click="changePassword">
@@ -35,7 +35,13 @@ export default {
   data() {
     return {
       // isShow:false
+      msg:"未认证"
     };
+  },
+  mounted(){
+    this.$bus.$on("check",()=>{
+      this.msg="认证成功"
+    })
   },
   methods: {
     exist() {
@@ -52,7 +58,7 @@ export default {
     //   this.isShow=false
     // },
     chooseSchool() {
-      this.$router.push("/school");
+      this.$router.push("/more/changeSchool");
     },
     changePassword() {
       this.$router.push("/more/changePassword");

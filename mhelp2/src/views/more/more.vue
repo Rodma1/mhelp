@@ -15,9 +15,7 @@ export default {
     moreList,
   },
   mounted() {
-    // getUserInfo(this.$store.state.token).then((res)=>{
-    // console.log(res)
-    // })
+    
   },
 };
 </script>

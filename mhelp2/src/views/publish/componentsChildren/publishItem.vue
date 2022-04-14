@@ -57,9 +57,9 @@ export default{
     methods:{
         which(){
             if(this.item.status==2){
-                this.msg="已完成"
-                this.isShow1=true,
-                this.isShow2=true
+                this.msg="已完成";
+                this.isShow1=false;
+                this.isShow2=true;
             }
             else if(this.item.status==1){
                 this.msg="正在完成"
@@ -69,7 +69,7 @@ export default{
             else{
                 this.msg="待接"
                 this.isShow1=true;
-                this.isShow2=false
+                this.isShow2=false 
             }
         },
         itemImageLoad(){
@@ -78,11 +78,15 @@ export default{
         finishTask(){
             finishTask(this.$store.state.token,this.item.id).then((res)=>{
                 console.log(res)
+                this.$toast("完成任务")
+                this.$bus.$emit("clear")
             })
         },
         delTask(){
             delTask(this.$store.state.token,this.item.id).then((res)=>{
                 console.log(res)
+                this.$toast("删除任务成功")
+                this.$bus.$emit("clear")
             })
         }
     }
