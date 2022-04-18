@@ -1,0 +1,29 @@
+<template>
+  <div class="logingNavabar">
+    <nav-bar>
+      <div slot="left" class="left" @click="goback()">
+        <img src="@/assets/img/example/back.png" alt="" />
+      </div>
+      <div slot="center">登录</div>
+    </nav-bar>
+  </div>
+</template> 
+<script>
+import navBar from "components/common/navbar/navbar.vue";
+export default {
+  components: {
+    navBar,
+  },
+  methods:{
+    goback(){
+      this.$router.back()
+    }
+  }
+};
+</script>
+<style scoped>
+.left img {
+  width: 25px;
+  height: 25px;
+}
+</style>
