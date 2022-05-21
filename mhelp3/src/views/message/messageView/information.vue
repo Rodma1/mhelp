@@ -116,15 +116,13 @@ export default {
             this.noReadMsg.push(...cur);
           }
         }
-        console.log(this.noReadMsg);
-
-        console.log(this.friendList);
+        // console.log(this.noReadMsg);
+        // console.log(this.friendList);
         this.noReadMsg.forEach((l) => {
-          console.log(5);
           if (this.friendList.length > 1) {
             for (var v = 0; v < this.friendList.length; v++) {
               if (this.friendList[v].id == l.id) {
-                console.log(this.friendList[v]);
+                // console.log(this.friendList[v]);
                 this.friendList[v].noread = l.msg;
               }
             }

@@ -8,12 +8,11 @@
 </template>
 <script>
 import mainTabBar from "components/content/mainTabBar/mainTabBar.vue";
-
 export default {
   components: {
     mainTabBar,
   },
-};
+}; 
 </script>
 
 

@@ -7,10 +7,11 @@
       ref="scroll"
       @scroll="contentScroll"
       :probeType="3"
-      :pullUpLoad="true" 
+      :pullUpLoad="true"  
       @pullingMore="pullingMore"
     >
-      <search-task class="searchTasks" :task="params.searchTaskList"></search-task>
+      <search-task class="searchTasks" :task="params.searchTaskList" v-if="isTask"></search-task>
+      <img src="@/assets/img/taskList/noTask.png" alt="" v-else class="isTask">
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
   </div>
@@ -39,13 +40,13 @@ export default {
         schoolId: 1,
         searchTaskList: [],
       },
+      isTask:true
     };
   },
   mixins:[itemListenerMixin,backTopMixins],
   props: {
   },
   created() {
-    console.log(this.$route)
     this.params.words=this.$route.params.value
   },
   mounted(){
@@ -66,10 +67,9 @@ export default {
      getSearchTasks() {
       this.params.page = this.params.page + 1;
       searchTasks(this.params).then((res) => {
-        console.log(res);
         var a = this.params.searchTaskList.length;
-        // this.data.searchTaskList.push(...res.data);
          for(var j=0;j<res.data.length;j++){
+           console.log(res.data[j].status)
             if(!res.data[j].status){
               this.params.searchTaskList.push(res.data[j])
             }
@@ -80,6 +80,14 @@ export default {
             this.params.searchTaskList[i].images =
               this.params.searchTaskList[i].images.split(",");
           }
+        }
+        if(this.params.searchTaskList.length){
+          console.log(this.params.searchTaskList)
+          this.isTask=true
+        }
+        else{
+          console.log(2)
+          this.isTask=false
         }
       });
     },
@@ -109,5 +117,12 @@ export default {
   right: 0px;
   bottom: 0px;
   z-index: 15;
+}
+.isTask{
+  position: absolute;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 </style>

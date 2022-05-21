@@ -65,12 +65,6 @@ export default {
       this.rule()
       this.$store.dispatch("login", this.userForm).then(() => {
         console.log(this.$store.state.token);
-        // if(!this.$store.state.token){
-        //   this.wrong=true;
-        //   setTimeout(()=>{
-        //     this.wrong=false
-        //   },800)
-        // }
         this.$store.dispatch("getUserInfo").then(() => {
           setTimeout(() => {
             console.log(this.$store.state.token);

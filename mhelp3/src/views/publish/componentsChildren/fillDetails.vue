@@ -68,9 +68,8 @@ export default {
     },
     check1() {
       console.log(1)
-     
         axios({
-          url: "http://127.0.0.1:8000/student/model",
+          url: "http://121.5.158.83:8002/student/model",
           method: "post",
           headers: { Authorization: "" },
           data: {
@@ -83,14 +82,14 @@ export default {
             this.ischeck = true;
           } else {
             this.check = false;
-          }
+          } 
         });
 
     },
     check() {
       setTimeout(() => {
         axios({
-          url: "http://127.0.0.1:8000/student/model",
+          url: "http://121.5.158.83:8002/student/model",
           method: "post",
           headers: { Authorization: "" },
           data: {
@@ -144,7 +143,10 @@ export default {
       } else {
         var formData2 = new FormData();
         formData2.append("images", file.file);
+        console.log(file)
+        console.log(file.file)
         console.log(formData2);
+        console.log(formData2.get("images"))
         setTimeout(() => {
           file.status = "done";
           file.message = "";

@@ -23,6 +23,7 @@ export function regist(account,nickname,password,school) {
         data
     })
 }
+//获取器自己用户信息
 export function getUserInfo(token){
     return request({
         headers: {'Authorization': token},
@@ -50,5 +51,13 @@ export function updateUserInfo(token,data){
             password:data.newPassword,
             school:data.school
         }
+    })
+}
+//通过id获取他人用户信息
+export function getOtherUserInfo(token,id){
+    return request({
+        headers: {'Authorization': token},
+        url:'/users/userInfo/'+id,
+        method:'post', 
     })
 }

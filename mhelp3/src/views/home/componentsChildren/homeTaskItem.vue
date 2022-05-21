@@ -44,7 +44,6 @@
 <script>
 import { goCollect } from "network/task.js";
 import toast from "components/common/toast/toast.vue";
-
 export default {
   components: {
     toast,

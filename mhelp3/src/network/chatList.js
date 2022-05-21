@@ -27,7 +27,7 @@ export function getmsgContent(myId, friendId) {
     var data = localStorage.getItem(chatKey);
     if (data !== null) {
         return JSON.parse(data);
-    }
+    } 
     else {
         return [];
     }
@@ -35,7 +35,9 @@ export function getmsgContent(myId, friendId) {
 //保存聊天消息
 export function setmsgContent(myId, friendId, msg, flag) {
     var singleMsg = new saveHistory(myId, friendId, msg, flag)
+    // console.log(myId, friendId, msg, flag)
     var list = getmsgContent(myId, friendId);
+    // console.log(list)
     var chatKey = "chat-" + myId + "-" + friendId;
     list.push(singleMsg);
     localStorage.setItem(chatKey, JSON.stringify(list));

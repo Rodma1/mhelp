@@ -36,9 +36,11 @@ export default {
   methods: {
     categoryTasks(index) {
       this.$emit("categorySearch",index)
+      this.$bus.$emit("categorySearch",this.category[index].categoryName)
     },
     tagsTasks(index){
       this.$emit("categorySearch",index)
+      this.$bus.$emit("categorySearch",this.tags[index].tagName)
     }
   },
 };

@@ -47,6 +47,7 @@
 <script>
 import navBar from "components/common/navbar/navbar.vue";
 import axios from "axios";
+import {setCheck} from "network/token.js"
 export default {
   components: {
     navBar,
@@ -129,6 +130,7 @@ export default {
         },800)
         this.msg="校验成功"
         this.$bus.$emit("check")
+        setCheck(this.isSuccess2)
       }
       else{
         this.isCheck=true
@@ -138,6 +140,7 @@ export default {
         this.msg="校验失败"
         this.$toast("检车上传是否是学生证和本人照片")
       }
+      
     },
   },
 };

@@ -57,7 +57,6 @@ export default {
   },
   computed: {
     tag() {
-      console.log(this.item.tags)
       if (this.item.tags.length=={}||this.item.tags==[]) {
         return this.item.tags[0].tagName;
       } else {

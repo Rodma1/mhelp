@@ -7,7 +7,7 @@
       <div slot="center">我的钱包</div>
     </nav-bar>
     <wallet :money="userInfo.money"></wallet>
-    <get-gold-coin @pay="pay"></get-gold-coin>
+    <get-gold-coin ></get-gold-coin>
     <pakege-rules></pakege-rules>
     <router-view class="routerView"></router-view>
   </div>

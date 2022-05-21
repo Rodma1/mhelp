@@ -14,12 +14,23 @@
       class="contents"
       ref="scroll"
       @scroll="contentScroll"
-      :probeType="3" 
+      :probeType="3"
       :pullUpLoad="true"
       @pullingMore="pullingMore"
     >
       <home-search></home-search>
-      <home-task :task="task" :page="page" ref="homeTask"></home-task>
+      <home-task
+        :task="task"
+        :page="page"
+        ref="homeTask"
+        v-if="isTask"
+      ></home-task>
+      <img
+        src="@/assets/img/taskList/noTask.png"
+        alt=""
+        v-else
+        class="isTask"
+      />
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
     <toast
@@ -70,6 +81,9 @@ export default {
       toast: "您当前未登录，请先登录！",
       logingShow: false,
       params: { page: 0, pageSize: 10, categoryId: null },
+      isTask: true,
+      status: 0,
+      currentIndex: 0,
     };
   },
   created() {
@@ -83,7 +97,7 @@ export default {
     this.$bus.$on("clear", () => {
       this.refreshing();
     });
-    this.$bus.$on("schoolTasks", (data,schoolName) => {
+    this.$bus.$on("schoolTasks", (data, schoolName) => {
       console.log(this.task);
       this.task = [];
       this.page = {
@@ -103,7 +117,8 @@ export default {
           this.task[i].images = this.task[i].images.split(",");
         }
       }
-      this.$refs.navBar.school=schoolName
+      this.$refs.navBar.school = schoolName;
+      this.isTaskList();
     });
   },
   computed: {},
@@ -130,6 +145,7 @@ export default {
               this.task[i].images = this.task[i].images.split(",");
             }
           }
+          this.isTaskList();
         })
         .catch((res) => {
           console.log(res);
@@ -139,34 +155,36 @@ export default {
       getCategory().then((res) => {
         this.category.push(...res.data);
       });
-      console.log(this.category);
     },
     getTags() {
       getTags().then((res) => {
         // console.log(res);
         this.tags.push(...res.data);
-        console.log(this.tags); 
       });
     },
     backTop() {
       this.$refs.scroll.scroller(0, 0, 500);
     },
     contentScroll(position) {
-      // console.log(position)
       this.isShowBackTop = -position.y > 1000;
       this.isFixed = -position.y > this.offsetTop;
       if (position.y > 50 && position.y < 51 && position.y > 0) {
-        this.task=[]
+        this.task = [];
         this.page = {
           pageNumber: 0,
           pageSize: 20,
         };
         this.getTasks();
+        this.$bus.$emit("categorySearch","全部")
       }
     },
     pullingMore() {
-      this.getTasks();
-      this.$refs.homeTask.getCollectList();
+      if (this.status == 1) {
+        this.categorySearch(this.currentIndex);
+      } else {
+        this.getTasks();
+        this.$refs.homeTask.getCollectList();
+      }
     },
     refreshing() {
       (this.page = {
@@ -178,35 +196,51 @@ export default {
       this.getTasks();
     },
     categorySearch(index) {
+      this.currentIndex = index;
       this.$refs.navBar.isActive = !this.$refs.navBar.isActive;
-      console.log(this.category[index]);
       this.task = [];
       this.params.categoryId = this.category[index].id;
-      categoryTask(this.params).then((res) => {
-        console.log(res);
-        var a = this.task.length;
-        // this.data.searchTaskList.push(...res.data);
-        for (var j = 0; j < res.data.length; j++) {
-          if (!res.data[j].status) {
-            this.task.push(res.data[j]);
-          }
-        }
-        console.log(this.task);
-        for (var i = a; i < this.task.length; i++) {
-          if (this.task[i].images) {
-            this.task[i].images = this.task[i].images.split(",");
-          }
-        }
-        console.log(this.task);
+      if (index == 0) {
+        this.getTasks();
         this.isActive = false;
-      });
+          this.isTaskList();
+        this.status = 0;
+        this.refreshing()
+      } else {
+        console.log(this.params)
+        categoryTask(this.params).then((res) => {
+          console.log(res)
+          var a = this.task.length;
+          for (var j = 0; j < res.data.length; j++) {
+            if (!res.data[j].status) {
+              this.task.push(res.data[j]);
+            }
+          }
+          for (var i = a; i < this.task.length; i++) {
+            if (this.task[i].images) {
+              this.task[i].images = this.task[i].images.split(",");
+            }
+          }
+          this.isActive = false;
+          this.isTaskList();
+          this.status = 1;
+        });
+      }
     },
     tagsTasks(index) {
       console.log(index);
       // categoryTask
+      this.isTaskList();
     },
     tologing() {
       this.$router.push("/loging");
+    },
+    isTaskList() {
+      if (this.task.length !== 0) {
+        this.isTask = true;
+      } else {
+        this.isTask = false;
+      }
     },
   },
 };
@@ -257,5 +291,12 @@ export default {
   right: 0px;
   text-align: center;
   line-height: 35px;
+}
+.isTask {
+  position: absolute;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
 }
 </style> 

@@ -180,8 +180,17 @@ export function categoryTask(params){
     return request({
         url:"/tasks",
         method:"post",
-        data:{
-            params
+        data:params
+        
+    })
+}
+//签收消息
+export function signMsg(MsgIds){
+    return request({
+        url:"/chat/upmsg",
+        method:"post",
+        params:{
+            MsgIds:MsgIds
         }
     })
 }

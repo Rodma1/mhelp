@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-// import axios from "axios";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -76,7 +76,7 @@ export default {
       } else {
         this.isActive = true;
       }
-    },
+    }, 
     send() {
       this.init();
       if (this.isActiveEmojis) {
@@ -84,28 +84,30 @@ export default {
       } else {
         this.textarea.focus();
       }
-      // axios({
-      //   url: "http://127.0.0.1:8000/student/model",
-      //   method: "post",
-      //   headers: { Authorization: "" },
-      //   data: {
-      //     wenben: this.value,
-      //   },
-      // }).then((res) => {
-        // this.after = res.data;
-        // if (res.data == this.value) {
+      console.log(11)
+      axios({
+        url: "http://121.5.158.83:8002/student/model",
+        method: "post",
+        headers: { Authorization: "" },
+        data: { 
+          wenben: this.value,
+        },
+      }).then((res) => {
+        console.log(res)
+        this.after = res.data;
+        if (res.data == this.value) {
           this.$emit("send", this.value);
           this.textarea.style.height = "30px";
           this.value = "";
           this.isActive = true;
-        // }
-        // else{
-          // this.value=""
-          // this.$toast("您发的信息具有侮辱性词汇，不允许发送")
-        // }
-      // });
+        }
+        else{
+          this.value=""
+          this.$toast("您发的信息具有侮辱性词汇，不允许发送")
+        }
+      });
 
-      // this.isActive=true
+      this.isActive=true
     },
     goemojis() {
       this.$emit("showEmojis");

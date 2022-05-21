@@ -84,7 +84,7 @@ export default {
     },
     todaysign() {
       todaysign(this.$store.state.token).then((res) => {
-        console.log(typeof res.data);
+        console.log(res);
         if (typeof res.data == String) {
           if (res.data == "你未签到过") {
             this.isSign = 0;

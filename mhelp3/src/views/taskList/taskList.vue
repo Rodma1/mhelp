@@ -51,13 +51,10 @@ export default {
     };
   },
   activated() {
-    // this.getParams();
-    // this.$bus.$on("choosedType",(i)=>{
-    // })
+     this.getuaccepttasks();
+    this.getCollectList();
   },
   mounted() {
-    this.getuaccepttasks();
-    this.getCollectList();
   },
   computed: {
     showTaskList() {
@@ -78,13 +75,14 @@ export default {
           }
           if (
             this.archiveList.all.list[i].status == 1 ||
-            this.archiveList.all.list[i].status ==0||
-            this.archiveList.all.list[i].status==null
+            this.archiveList.all.list[i].status == 0 ||
+            this.archiveList.all.list[i].status == null
           ) {
             this.archiveList.incomplete.list.push(this.archiveList.all.list[i]);
           } else {
             this.archiveList.complete.list.push(this.archiveList.all.list[i]);
           }
+          this.tabClick(parseInt(this.$route.params.id))
         }
       });
     },
@@ -92,7 +90,7 @@ export default {
       this.page.pageNumber = this.page.pageNumber + 1;
       var a = this.archiveList.all.list.length;
       getCollectList(this.$store.state.token).then((res) => {
-        console.log(res)
+        console.log(res);
         this.archiveList.collect.list.push(...res.data);
         for (var i = a; i < res.data.length; i++) {
           if (this.archiveList.collect.list[i].images) {
@@ -100,6 +98,7 @@ export default {
               this.archiveList.collect.list[i].images.split(",");
           }
         }
+        this.tabClick(parseInt(this.$route.params.id))
       });
     },
     tabClick(index) {
@@ -127,13 +126,9 @@ export default {
       this.currentType = "all";
     },
     isTaskShow() {
-      // console.log(this.archiveList[this.currentType].list);
-      // console.log(this.archiveList[this.currentType].list.length);
       if (this.archiveList[this.currentType].list.length) {
-        console.log(1);
         this.isTask = true;
       } else {
-        console.log(2);
         this.isTask = false;
       }
     },
@@ -141,10 +136,6 @@ export default {
       this.getuaccepttasks();
       this.getCollectList();
     },
-    // getParams(){
-    //   // this.currentIndex=parseInt(this.$route.params.id)
-    //   //  this.tabClick(this.currentIndex)
-    // },
   },
 };
 </script>

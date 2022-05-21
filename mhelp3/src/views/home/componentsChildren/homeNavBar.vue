@@ -6,7 +6,7 @@
         <div>{{school}}</div>
       </div>
       <div slot="center" class="center" @click="isShow">
-        <span>全部</span>
+        <span>{{categoryName}}</span>
         <img src="@/assets/img/navBar/down.png" alt="" :class="{rotateImg:isActive}"/>
       </div>
       <div slot="right" class="right" @click="toSignIN">
@@ -26,12 +26,19 @@ export default {
   data(){
       return{
           isActive:false,
-          school:this.$store.state.school
+          school:this.$store.state.school,
+          categoryName:"全部"
       }
+  },
+  mounted(){
+    this.$bus.$on("categorySearch",(categoryName)=>{
+      this.categoryName=categoryName
+    })
   },
   methods:{
       isShow(){
           this.$emit('isShowClick');
+          
         // this.isActive=!this.isActive
       },
       toSchool(){
@@ -43,7 +50,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped> 
 .homeNavBar {
   /* font-size: px; */
   background-color: #3dbafddc;

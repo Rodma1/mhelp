@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getToken, setToken, removeToken } from "network/token.js"
+import { getToken, setToken, removeToken ,getCheck} from "network/token.js"
 import { loging, regist, getUserInfo, logout, updateUserInfo } from "network/loging.js"
 import { SET_TOKEN, SET_NAME, SET_AVATAR, SET_ACCOUNT, SET_ID, SET_SCHOOL } from "./mutation-types.js"
 import { getChatList, setChatList } from '../network/chatList.js'
+import { setCheck } from '../network/token.js'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -16,7 +17,9 @@ export default new Vuex.Store({
     token: getToken(),
     chatList: getChatList(),
     msgContent: "",
-    currentUser: {}
+    check:false,
+    currentUser: {},
+    ischeck:getCheck()
   },
   mutations: {
     SET_TOKEN(state, data) {
@@ -37,6 +40,9 @@ export default new Vuex.Store({
     SET_SCHOOL(state, school) {
       return state.school = school
     },
+    SET_CHECK(state, check){
+      return state.check=check
+    },
     pushChatList(state, data) {
       setChatList(data);
       return state.chatList
@@ -46,7 +52,7 @@ export default new Vuex.Store({
     },
     deleteCurrentUser(state) {
       return state.currentUser = {}
-    }
+    },
   },
   actions: {
     //此处的{commit}绝不可省略
@@ -57,6 +63,7 @@ export default new Vuex.Store({
             // console.log(res)
             commit(SET_TOKEN, res.data)
             setToken(res.data);
+            setCheck(false)
             resolve()
           }
           else {
@@ -89,7 +96,7 @@ export default new Vuex.Store({
           commit(SET_NAME, res.data.nickname);
           commit(SET_ID, res.data.id);
           commit(SET_AVATAR, res.data.avatar);
-          commit(SET_SCHOOL, res.data.school)
+          commit(SET_SCHOOL, res.data.school);
           // resolve(res)
         }
         else {

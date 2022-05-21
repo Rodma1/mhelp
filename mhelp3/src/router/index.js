@@ -7,7 +7,7 @@ const writeTask = () => import('../views/writeTask/writeTask.vue');
 const message = () => import('../views/message/message.vue');
 const my = () => import('../views/my/my.vue');
 const loging = () => import('../views/loging/loging.vue');
-const regist =()=>import("../views/loging/regist.vue")
+const regist = () => import("../views/loging/regist.vue")
 const school = () => import('../views/school/school.vue');
 const signIn = () => import('../views/signIn/signIn.vue');
 const notice = () => import('../views/message/messageView/notice.vue');
@@ -32,10 +32,10 @@ const changeAvatar = () => import("../views/more/componentsChildren/changeAvatar
 const schoolSearchView = () => import("../views/school/childrenComponents/schoolSearchView.vue")
 const homeSearchTasks = () => import("../views/home/componentsChildren/homeSearchTasks.vue")
 const payment = () => import("../views/pakege/componentsChildren/payment.vue")
-const textCombat=()=>import("../views/my/componentsChildren/textCombatView.vue")
-const pay=()=>import("../views/home/componentsChildren/pay.vue")
-const check=()=>import ("../views/more/componentsChildren/check.vue")
-const imageView=()=>import("../views/my/componentsChildren/imageView.vue")
+const textCombat = () => import("../views/my/componentsChildren/textCombatView.vue")
+const pay = () => import("../views/home/componentsChildren/pay.vue")
+const check = () => import("../views/more/componentsChildren/check.vue")
+const imageView = () => import("../views/my/componentsChildren/imageView.vue")
 import { getToken } from "network/token.js";
 import store from '@/store';
 import { Message } from 'element-ui';
@@ -55,24 +55,24 @@ const routes = [
         name: "homeSearch",
         component: homeSearch,
         children: [
-          { 
+          {
             path: 'homeSearchTasks/:value',
             name: 'homeSearchTasks',
             component: homeSearchTasks,
-            children:[
+            children: [
               {
-                path:"pay/:id",
-                name:"pay",
-                component:pay,
+                path: "pay/:id",
+                name: "pay",
+                component: pay,
               }
             ]
           }
         ]
       },
       {
-        path:"pay/:id",
-        name:"pay",
-        component:pay,
+        path: "pay/:id",
+        name: "pay",
+        component: pay,
       }
     ],
     meta: {
@@ -195,8 +195,8 @@ const routes = [
     children: [
       {
         path: 'payment',
-        name:'payment',
-        component:payment
+        name: 'payment',
+        component: payment
       },
     ],
     meta: {
@@ -222,7 +222,7 @@ const routes = [
         component: changePassword,
       },
       {
-        path: 'changeNickname', 
+        path: 'changeNickname',
         name: 'changeNickname',
         component: changeNickname,
       },
@@ -230,16 +230,16 @@ const routes = [
         path: 'changeAvatar',
         name: 'changeAvatar',
         component: changeAvatar,
-      }, 
+      },
       {
         path: 'changeSchool',
         name: 'changeSchool',
         component: school,
       },
       {
-        path:"check",
-        name:"check",
-        component:check
+        path: "check",
+        name: "check",
+        component: check
       }
     ],
     meta: {
@@ -293,7 +293,7 @@ const routes = [
   {
     path: '/textCombat',
     name: 'textCombat',
-    component:textCombat,
+    component: textCombat,
     meta: {
       login_require: false
     }

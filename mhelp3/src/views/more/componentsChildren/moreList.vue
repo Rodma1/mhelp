@@ -39,9 +39,15 @@ export default {
     };
   },
   mounted(){
-    this.$bus.$on("check",()=>{
-      this.msg="认证成功"
-    })
+    // this.$bus.$on("check",()=>{
+    //   this.msg="认证成功"
+    // })
+  },
+  activated(){
+    this.isMsg()
+  },
+  computed:{
+    
   },
   methods: {
     exist() {
@@ -68,6 +74,17 @@ export default {
     },
     gocheck(){
       this.$router.push("/more/check")
+    },
+    isMsg(){
+      console.log(1)
+      if(this.$store.state.ischeck){
+        console.log(2)
+        return this.msg="认证成功"
+      }
+      else{
+        console.log(3)
+        return this.msg="未认证"
+      }
     }
   },
 };

@@ -4,7 +4,7 @@
       <div slot="left" @click="goback">
         <img src="@/assets/img/example/back.png" alt="" />
       </div>
-      <div slot="center">{{this.$store.state.currentUser.nickname}}</div>
+      <div slot="center">{{ this.$store.state.currentUser.nickname }}</div>
     </chat-nav-bar>
     <scroll class="contents" ref="scroll" :probeType="3">
       <chat-list
@@ -49,8 +49,8 @@ import {
   setChatSnapShot,
 } from "network/chatList.js";
 import { ChatMsgParam, DataContent } from "network/app.js";
-// import {cwebsocket} from "network/websocket.js"
-// import CHAT from "network/a.js"
+import { noReadMsg,signMsg} from "network/task.js";
+
 export default {
   components: {
     chatNavBar,
@@ -84,29 +84,31 @@ export default {
       nosendMsg: [],
       maxScrollY: null,
       contentsHeight: null,
-   
     };
   },
   mounted() {
-    console.log(this.user.id);
-    this.messageList = getmsgContent(this.my.id, this.user.id);
   },
   created() {
     // this.init();
     // CHAT.init();
-
   },
   activated() {
+    // console.log(this.user.id);
     this.init();
+    this.noread()
     this.isRead = true;
     this.itemImageLoad();
     // this.websock.message()
     this.websock.onmessage = this.message;
+    this.messageList = getmsgContent(
+      this.my.id,
+      this.$store.state.currentUser.id
+    );
   },
   deactivated() {
     this.isRead = false;
     console.log(22);
-    // this.websock.close();
+    this.websock.close();
   },
   destroyed() {},
   methods: {
@@ -114,28 +116,27 @@ export default {
       this.$router.back();
     },
     send(value) {
-      console.log(value)
-   
-        //  获取当前用户id
-        var myId = this.my.id;
-        //接受者id
-        var youId = this.user.id;
-        //获取发送消息框中所输入的内容
-        //构建chatMsg聊天消息
-        var chatMsgParam = new ChatMsgParam(myId, youId, value, null);
-        //    第一次(或重连)初始化连接
-        var dataContent = new DataContent(2, chatMsgParam, null);
-        this.chats(JSON.stringify(dataContent))
-        // 1是我 2是朋友
-        setmsgContent(myId, youId, value, 1);
-        this.messageList = getmsgContent(this.my.id, this.user.id);
-        console.log(this.messageList);
-        //将客户输入的消息进行发送
-        console.log(dataContent);
+      console.log(value);
+      //  获取当前用户id
+      var myId = this.my.id;
+      //接受者id
+      var youId = this.user.id;
+      //获取发送消息框中所输入的内容
+      //构建chatMsg聊天消息
+      var chatMsgParam = new ChatMsgParam(myId, youId, value, null);
+      //    第一次(或重连)初始化连接
+      var dataContent = new DataContent(2, chatMsgParam, null);
+      this.chats(JSON.stringify(dataContent));
+      // 1是我 2是朋友
+      setmsgContent(myId, youId, value, 1);
+      this.messageList = getmsgContent(this.my.id, this.user.id);
+      console.log(this.messageList);
+      //将客户输入的消息进行发送
+      console.log(dataContent);
 
-        // this.websock.send(JSON.stringify(dataContent));
-        //保存聊天快照到本地缓存
-        setChatSnapShot(myId, youId, value, this.isRead);
+      // this.websock.send(JSON.stringify(dataContent));
+      //保存聊天快照到本地缓存
+      setChatSnapShot(myId, youId, value, this.isRead);
     },
     showEmojis() {
       this.isActive = !this.isActive;
@@ -166,14 +167,15 @@ export default {
           this.websock.readyState == WebSocket.OPEN
         ) {
           return false;
-        } try {
+        }
+        try {
           this.websock = new WebSocket(url);
           this.websock.onopen = this.open;
           this.websock.onmessage = this.message;
           this.websock.onerror = this.error;
-          this.websock.onclose = this.close;
-        }catch(e){
-          console.log(e)
+          // this.websock.onclose = this.close;
+        } catch (e) {
+          console.log(e);
         }
       } else {
         console.log("您的版本太低暂不支持webSoket协议");
@@ -182,40 +184,39 @@ export default {
     open(e) {
       console.log(e);
       //    构建chatMsg聊天消息
-      var chatMsgParam = new ChatMsgParam(this.my.id, this.user.id, "哈", null);
+      var chatMsgParam = new ChatMsgParam(this.my.id, null, null, null);
       //    第一次(或重连)初始化连接
-      var dataContent = new DataContent(2, chatMsgParam, null);
+      var dataContent = new DataContent(1, chatMsgParam, null);
       //    转变为string类型发送到服务器
       // console.log(chatMsgParam);
       this.chats(JSON.stringify(dataContent));
-      console.log( this.websock.readyState )
+      // console.log(this.websock.readyState);
     },
     message(e) {
-      console.log(1)
+      console.log(1);
       console.log(e);
       console.log("接受到消息:" + e.data);
       var dataConetent = JSON.parse(e.data);
       //构建签收消息模型
-      var dataContentSign = DataContent(
-        3,
-        this.user.id,
-        dataConetent.chatMsgParam.msgId
-      );
+      console.log(dataConetent);
+      // var dataContentSign = new DataContent(
+      //   3,
+      //   null,
+      //   dataConetent.chatMsgParam.msgId
+      // );
       //构建chatMsg聊天消息
-      var chatMsgParam = new ChatMsgParam(
-        this.my.id,
-        this.user.id,
-        dataConetent.chatMsgParam.msg,
-        2
-      );
-      setmsgContent(chatMsgParam);
+      // var chatMsgParam = new ChatMsgParam(
+      //   this.my.id,
+      //   this.user.id,
+      //   dataConetent.chatMsgParam.msg,
+      //   2
+      // );
+      setmsgContent(this.my.id, this.user.id, dataConetent.chatMsgParam.msg, 2);
       this.messageList = getmsgContent(this.my.id, this.user.id);
-      console.log(this.messageList);
-      this.chats(JSON.stringify(dataContentSign));
       setChatSnapShot(
         this.my.id,
         this.user.id,
-        dataConetent.chatMsgParam.msgId,
+        dataConetent.chatMsgParam.msg,
         this.isRead
       );
     },
@@ -245,6 +246,20 @@ export default {
         this.contentsHeight =
           document.getElementsByClassName("contents")[0].clientHeight;
         this.$refs.scroll.scroller(0, -this.maxScrollY + this.contentsHeight);
+      });
+    },
+    noread() {
+      noReadMsg(this.$store.state.id).then((res) => {
+        console.log(res)
+        for (var i = 0; i < res.data.length; i++) {
+          if (res.data[i].sendUserId == this.$store.state.currentUser.id) {
+            console.log(res.data[i])
+             signMsg(res.data[i].id).then((res)=>{
+            console.log(res)
+          })
+            setmsgContent(this.my.id, this.user.id, res.data[i].msg, 2)
+          }
+        }
       });
     },
   },
